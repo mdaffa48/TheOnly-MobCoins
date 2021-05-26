@@ -2,6 +2,7 @@ package me.aglerr.mobcoins.commands;
 
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.commands.abstraction.SubCommand;
+import me.aglerr.mobcoins.commands.subcommands.HelpCommand;
 import me.aglerr.mobcoins.configs.ConfigValue;
 import me.aglerr.mobcoins.utils.Common;
 import org.bukkit.command.Command;
@@ -24,6 +25,8 @@ public class MainCommand implements CommandExecutor, TabCompleter {
 
     public MainCommand(MobCoins plugin){
         this.plugin = plugin;
+
+        this.subCommandMap.put("help", new HelpCommand());
     }
 
     @Override
