@@ -3,6 +3,7 @@ package me.aglerr.mobcoins;
 import me.aglerr.mobcoins.configs.Config;
 import me.aglerr.mobcoins.configs.ConfigValue;
 import me.aglerr.mobcoins.database.SQLDatabase;
+import me.aglerr.mobcoins.listeners.ListenerHandler;
 import me.aglerr.mobcoins.managers.ManagerHandler;
 import me.aglerr.mobcoins.utils.Common;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -12,6 +13,8 @@ public class MobCoins extends JavaPlugin {
     private static MobCoins instance;
 
     private final ManagerHandler managerHandler = new ManagerHandler(this);
+    private final ListenerHandler listenerHandler = new ListenerHandler(this);
+
     private SQLDatabase database;
 
     @Override
@@ -26,6 +29,7 @@ public class MobCoins extends JavaPlugin {
         database = new SQLDatabase(this);
 
         this.managerHandler.loadAllManagers();
+        this.listenerHandler.registerAllListeners();
     }
 
     @Override

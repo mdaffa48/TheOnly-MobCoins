@@ -1,5 +1,17 @@
+me\aglerr\mobcoins\PlayerData$1.class
 me\aglerr\mobcoins\configs\Config.class
 me\aglerr\mobcoins\configs\ConfigValue.class
+me\aglerr\mobcoins\managers\ManagerHandler.class
+me\aglerr\mobcoins\listeners\ListenerHandler.class
 me\aglerr\mobcoins\utils\Common.class
 me\aglerr\mobcoins\configs\CustomConfig.class
+me\aglerr\mobcoins\managers\Manager.class
+me\aglerr\mobcoins\PlayerData.class
+me\aglerr\mobcoins\managers\ManagerHandler$ManagerType.class
+me\aglerr\mobcoins\managers\managers\PlayerDataManager.class
+me\aglerr\mobcoins\PlayerData$CoinAction.class
+me\aglerr\mobcoins\managers\managers\CoinMobManager.class
+me\aglerr\mobcoins\database\SQLDatabase.class
+me\aglerr\mobcoins\coinmob\CoinMob.class
 me\aglerr\mobcoins\MobCoins.class
+me\aglerr\mobcoins\listeners\listeners\PlayerListeners.class

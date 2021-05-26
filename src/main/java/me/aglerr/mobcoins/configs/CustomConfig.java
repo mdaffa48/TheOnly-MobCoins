@@ -24,12 +24,23 @@ public class CustomConfig {
 
         if(directory == null){
             file = new File(plugin.getDataFolder(), configName);
-        } else {
-            file = new File(plugin.getDataFolder() + File.separator + directory, configName);
-        }
 
-        if(!file.exists()){
-            plugin.saveResource(configName, false);
+            if(!file.exists()){
+                plugin.saveResource(configName, false);
+            }
+
+        } else {
+            File directoryFile = new File(plugin.getDataFolder() + File.separator + directory);
+            if(!directoryFile.exists()){
+                directoryFile.mkdirs();
+            }
+
+            file = new File(plugin.getDataFolder() + File.separator + directory, configName);
+
+            if(!file.exists()){
+                plugin.saveResource(directory + File.separator + configName, false);
+            }
+
         }
 
         config = YamlConfiguration.loadConfiguration(file);
