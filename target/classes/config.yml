@@ -9,5 +9,15 @@ mysql:
   port: 3306
   useSSL: false
 
-# Do not enable this!
-debug: false
+messages:
+  prefix: "&e[TheOnly-MobCoins]"
+  noPermission: "&cYou don't have enough permission!"
+  balance: "{prefix} &fYour coins: &e{coins}"
+  help:
+    - "Current Help"
+    - "/mobcoins help"
+    - "/mobcoins balance"
+  helpAdmin:
+    - "Admin Help"
+    - "/mobcoins help"
+    - "/mobcoins balance"

@@ -5,6 +5,7 @@ import me.aglerr.mobcoins.configs.ConfigValue;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,9 +51,9 @@ public class Common {
 
         for(String message : args){
             if (withPrefix) {
-                System.out.println("[TheOnly-MobCoins] " + message);
+                Bukkit.getConsoleSender().sendMessage(color("&e[TheOnly-MobCoins] " + message));
             } else {
-                System.out.println(message);
+                Bukkit.getConsoleSender().sendMessage(color("&e" + message));
             }
         }
     }
@@ -75,6 +76,10 @@ public class Common {
                 Bukkit.getConsoleSender().sendMessage(color("&a" + message));
             }
         }
+    }
+
+    public static DecimalFormat getDecimalFormat(){
+        return new DecimalFormat("###,###,###,###,###.##");
     }
 
     public static void runTask(Runnable runnable){

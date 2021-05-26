@@ -6,6 +6,7 @@ import me.aglerr.mobcoins.database.SQLDatabase;
 import me.aglerr.mobcoins.managers.Manager;
 import me.aglerr.mobcoins.utils.Common;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
 import java.sql.*;
 import java.util.HashMap;
@@ -19,6 +20,11 @@ public class PlayerDataManager implements Manager {
 
     public PlayerDataManager(MobCoins plugin){
         this.plugin = plugin;
+    }
+
+    @Nullable
+    public PlayerData getPlayerData(Player player){
+        return this.playerDataMap.get(player.getUniqueId().toString());
     }
 
     public void handlePlayerJoin(Player player){
@@ -74,8 +80,7 @@ public class PlayerDataManager implements Manager {
         PlayerData playerData = this.playerDataMap.get(player.getUniqueId().toString());
         if(playerData == null) return;
 
-        playerData.save(plugin.getDatabase());
-
+        Common.runTaskAsynchronously(() -> playerData.save(plugin.getDatabase()));
     }
 
     @Override
@@ -112,8 +117,26 @@ public class PlayerDataManager implements Manager {
     @Override
     public void save() {
         SQLDatabase database = plugin.getDatabase();
-        for(String uuid : this.playerDataMap.keySet()){
-            this.playerDataMap.get(uuid).save(database);
+        try(Connection connection = database.getConnection()){
+
+            for(String uuid : this.playerDataMap.keySet()){
+                PlayerData playerData = this.playerDataMap.get(uuid);
+
+                String command = "UPDATE {table} SET `coins`=? WHERE `uuid`=?"
+                        .replace("{table}", database.getTable());
+
+                PreparedStatement statement = connection.prepareStatement(command);
+                statement.setString(1, String.valueOf(playerData.getCoins()));
+                statement.setString(2, playerData.getUUID());
+
+                statement.executeUpdate();
+            }
+
+            Common.success(true, "Successfully saved all player data!");
+
+        } catch (SQLException e){
+            Common.error(true, "Error while trying to save all players data");
+            e.printStackTrace();
         }
     }
 

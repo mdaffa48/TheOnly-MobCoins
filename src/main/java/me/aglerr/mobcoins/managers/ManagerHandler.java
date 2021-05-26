@@ -33,8 +33,12 @@ public class ManagerHandler {
         }
     }
 
-    public Manager getManager(ManagerType managerType){
-        return this.managerList.get(managerType);
+    public CoinMobManager getCoinMobManager(){
+        return (CoinMobManager) this.managerList.get(ManagerType.COIN_MOB_MANAGER);
+    }
+
+    public PlayerDataManager getPlayerDataManager(){
+        return (PlayerDataManager) this.managerList.get(ManagerType.PLAYER_DATA_MANAGER);
     }
 
     public enum ManagerType{

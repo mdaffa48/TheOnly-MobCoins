@@ -1,5 +1,6 @@
 package me.aglerr.mobcoins;
 
+import me.aglerr.mobcoins.commands.MainCommand;
 import me.aglerr.mobcoins.configs.Config;
 import me.aglerr.mobcoins.configs.ConfigValue;
 import me.aglerr.mobcoins.database.SQLDatabase;
@@ -30,11 +31,18 @@ public class MobCoins extends JavaPlugin {
 
         this.managerHandler.loadAllManagers();
         this.listenerHandler.registerAllListeners();
+        this.registerCommands();
     }
 
     @Override
     public void onDisable(){
         this.managerHandler.saveAllManagers();
+    }
+
+    private void registerCommands(){
+        MainCommand mainCommand = new MainCommand(this);
+        this.getCommand("mobcoins").setExecutor(mainCommand);
+        this.getCommand("mobcoins").setTabCompleter(mainCommand);
     }
 
     /**

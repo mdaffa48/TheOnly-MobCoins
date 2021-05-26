@@ -2,6 +2,7 @@ package me.aglerr.mobcoins.commands;
 
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.commands.abstraction.SubCommand;
+import me.aglerr.mobcoins.commands.subcommands.BalanceCommand;
 import me.aglerr.mobcoins.commands.subcommands.HelpCommand;
 import me.aglerr.mobcoins.configs.ConfigValue;
 import me.aglerr.mobcoins.utils.Common;
@@ -12,10 +13,7 @@ import org.bukkit.command.TabCompleter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MainCommand implements CommandExecutor, TabCompleter {
 
@@ -27,6 +25,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
         this.plugin = plugin;
 
         this.subCommandMap.put("help", new HelpCommand());
+        this.subCommandMap.put("balance", new BalanceCommand());
     }
 
     @Override
@@ -59,11 +58,16 @@ public class MainCommand implements CommandExecutor, TabCompleter {
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, @NotNull String[] args) {
 
-        if(args.length == 0){
-            return Arrays.asList("help");
+        if(args.length == 1){
+            return Arrays.asList("help", "balance");
         }
 
-        return this.subCommandMap.get(args[0].toLowerCase()).parseTabCompletion(plugin, sender, args);
+        if(args.length == 2){
+            SubCommand subCommand = this.subCommandMap.get(args[0].toLowerCase());
+            return subCommand == null ? new ArrayList<>() : subCommand.parseTabCompletion(plugin, sender, args);
+        }
+
+        return null;
     }
 
     private void sendHelpMessages(CommandSender sender){

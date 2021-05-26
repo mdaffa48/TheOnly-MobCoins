@@ -9,5 +9,17 @@ mysql:
   port: 3306
   useSSL: false
 
-# Do not enable this!
-debug: false
+messages:
+  prefix: "&e[TheOnly-MobCoins]"
+  noPermission: "&cYou don't have enough permission!"
+  balance: "{prefix} &fYour coins: &e{coins}"
+  balanceOthers: "{prefix} &f{player}'s coins: &e{coins}"
+  playerNotExists: "{prefix} &cThat player is not online!"
+  help:
+    - "Current Help"
+    - "/mobcoins help"
+    - "/mobcoins balance"
+  helpAdmin:
+    - "Admin Help"
+    - "/mobcoins help"
+    - "/mobcoins balance"

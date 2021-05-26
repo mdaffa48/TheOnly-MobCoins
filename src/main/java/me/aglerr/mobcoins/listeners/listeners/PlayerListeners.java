@@ -18,14 +18,14 @@ public class PlayerListeners implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event){
         ManagerHandler managerHandler = plugin.getManagerHandler();
-        PlayerDataManager manager = (PlayerDataManager) managerHandler.getManager(ManagerHandler.ManagerType.PLAYER_DATA_MANAGER);
+        PlayerDataManager manager = managerHandler.getPlayerDataManager();
         manager.handlePlayerJoin(event.getPlayer());
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event){
         ManagerHandler managerHandler = plugin.getManagerHandler();
-        PlayerDataManager manager = (PlayerDataManager) managerHandler.getManager(ManagerHandler.ManagerType.PLAYER_DATA_MANAGER);
+        PlayerDataManager manager = managerHandler.getPlayerDataManager();
         manager.handlePlayerQuit(event.getPlayer());
     }
 

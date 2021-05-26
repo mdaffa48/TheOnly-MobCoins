@@ -107,9 +107,11 @@ public class SQLDatabase {
                 statement.execute();
             }
         } catch (SQLException e){
-            Common.error(true, "Error while inserting data.");
-            Common.error(true, "UUID: " + uuid);
-            Common.error(true, "Coins: " + coins);
+            Common.error(true,
+                    "Error while inserting data.",
+                    "UUID: " + uuid,
+                    "Coins: " + coins
+            );
             e.printStackTrace();
         }
     }
@@ -125,9 +127,11 @@ public class SQLDatabase {
                 statement.execute();
             }
         } catch (SQLException e){
-            Common.error(true, "Error while inserting data.");
-            Common.error(true, "UUID: " + uuid);
-            Common.error(true, "Coins: " + coins);
+            Common.error(true,
+                    "Error while inserting data.",
+                    "UUID: " + uuid,
+                    "Coins: " + coins
+            );
             e.printStackTrace();
         }
     }

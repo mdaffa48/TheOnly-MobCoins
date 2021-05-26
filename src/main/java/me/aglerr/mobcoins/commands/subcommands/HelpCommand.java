@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class HelpCommand extends SubCommand {
+
     @Nullable
     @Override
     public String getPermission() {
