@@ -2,6 +2,8 @@ package me.aglerr.mobcoins.configs;
 
 import org.bukkit.configuration.file.FileConfiguration;
 
+import java.util.List;
+
 public class ConfigValue {
 
     public static boolean isDebug = false;
@@ -14,6 +16,10 @@ public class ConfigValue {
     public static int MYSQL_PORT;
     public static boolean MYSQL_USESSL;
 
+    public static String MESSAGES_NO_PERMISSION;
+    public static List<String> MESSAGES_HELP;
+    public static List<String> MESSAGES_HELP_ADMIN;
+
     public static void initializeValue(FileConfiguration config){
         isDebug = config.getBoolean("debug");
 
@@ -24,6 +30,11 @@ public class ConfigValue {
         MYSQL_PASSWORD = config.getString("mysql.password");
         MYSQL_PORT = config.getInt("mysql.port");
         MYSQL_USESSL = config.getBoolean("mysql.useSSL");
+
+        MESSAGES_NO_PERMISSION = config.getString("messages.noPermission");
+
+        MESSAGES_HELP = config.getStringList("messages.help");
+        MESSAGES_HELP_ADMIN = config.getStringList("messages.helpAdmin");
 
     }
 
