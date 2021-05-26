@@ -1,0 +1,13 @@
+
+# If MySQL is disabled, we will use SQLite
+mysql:
+  enabled: false
+  host: 'localhost'
+  database: 'database'
+  username: 'username'
+  password: 'password'
+  port: 3306
+  useSSL: false
+
+# Do not enable this!
+debug: false

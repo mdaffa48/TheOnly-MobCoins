@@ -4,6 +4,7 @@ import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.configs.ConfigValue;
 import me.aglerr.mobcoins.utils.Common;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -41,18 +42,23 @@ public class SQLDatabase {
                 PreparedStatement statement = connection.prepareStatement(command);
                 statement.execute();
 
-                Common.log(true, "MySQL connected!");
+                Common.success(true, "MySQL connected!");
                 statement.close();
                 connection.close();
 
             } catch (Exception e){
-                Common.log(true, "There is an error connecting with the database!");
+                Common.error(true, "There is an error connecting with the database!");
                 e.printStackTrace();
             }
 
         } else {
             Common.log(true, "Database type is SQLite.");
             try{
+
+                File databaseFile = new File(plugin.getDataFolder(), "database.db");
+                if(!databaseFile.exists()){
+                    databaseFile.createNewFile();
+                }
 
                 Class.forName("org.sqlite.JDBC");
                 Connection connection = this.getConnection();
@@ -61,16 +67,20 @@ public class SQLDatabase {
                 PreparedStatement statement = connection.prepareStatement(command);
                 statement.execute();
 
-                Common.log(true, "SQLite connected!");
+                Common.success(true, "SQLite connected!");
                 statement.close();
                 connection.close();
 
             } catch(Exception e){
-                Common.log(true, "There is an error connecting with the database!");
+                Common.error(true, "There is an error connecting with the database!");
                 e.printStackTrace();
             }
         }
 
+    }
+
+    public String getTable(){
+        return table;
     }
 
     public Connection getConnection() throws SQLException {
@@ -87,48 +97,37 @@ public class SQLDatabase {
     }
 
     public void insert(String uuid, String coins){
-        try{
+        String command = "INSERT INTO `{table}` (uuid, coins) VALUES (`?`, `?`);"
+                .replace("{table}", this.table);
 
-            String command = "INSERT INTO {table} (uuid, coins) VALUES ('{uuid}', '{coins}');"
-                    .replace("{table}", this.table)
-                    .replace("{uuid}", uuid)
-                    .replace("{coins}", coins);
-
-            Connection connection = this.getConnection();
-            PreparedStatement statement = connection.prepareStatement(command);
-            statement.execute();
-
-            statement.close();
-            connection.close();
-
+        try(Connection connection = this.getConnection()){
+            try(PreparedStatement statement = connection.prepareStatement(command)){
+                statement.setString(1, uuid);
+                statement.setString(2, coins);
+                statement.execute();
+            }
         } catch (SQLException e){
-            Common.log(true, "Error while inserting data.");
-            Common.log(true, "UUID: " + uuid);
-            Common.log(true, "Coins: " + coins);
+            Common.error(true, "Error while inserting data.");
+            Common.error(true, "UUID: " + uuid);
+            Common.error(true, "Coins: " + coins);
             e.printStackTrace();
         }
-
     }
 
     public void update(String uuid, String coins){
-        try{
+        String command = "UPDATE `{table}` SET `coins`=? WHERE `uuid`=?"
+                .replace("{table}", this.table);
 
-            String command = "UPDATE {table} SET coins='{coins}' WHERE uuid='{uuid}'"
-                    .replace("{table}", this.table)
-                    .replace("{uuid}", uuid)
-                    .replace("{coins}", coins);
-
-            Connection connection = this.getConnection();
-            PreparedStatement statement = connection.prepareStatement(command);
-            statement.execute();
-
-            statement.close();
-            connection.close();
-
+        try(Connection connection = this.getConnection()){
+            try(PreparedStatement statement = connection.prepareStatement(command)){
+                statement.setString(1, coins);
+                statement.setString(2, uuid);
+                statement.execute();
+            }
         } catch (SQLException e){
-            Common.log(true, "Error while updating data.");
-            Common.log(true, "UUID: " + uuid);
-            Common.log(true, "Coins: " + coins);
+            Common.error(true, "Error while inserting data.");
+            Common.error(true, "UUID: " + uuid);
+            Common.error(true, "Coins: " + coins);
             e.printStackTrace();
         }
     }

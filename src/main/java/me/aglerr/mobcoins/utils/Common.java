@@ -1,6 +1,8 @@
 package me.aglerr.mobcoins.utils;
 
+import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.configs.ConfigValue;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
 import java.util.List;
@@ -53,6 +55,34 @@ public class Common {
                 System.out.println(message);
             }
         }
+    }
+
+    public static void error(boolean withPrefix, String... args){
+        for(String message : args){
+            if (withPrefix) {
+                Bukkit.getConsoleSender().sendMessage(color("&c[TheOnly-MobCoins] " + message));
+            } else {
+                Bukkit.getConsoleSender().sendMessage(color("&c" + message));
+            }
+        }
+    }
+
+    public static void success(boolean withPrefix, String... args){
+        for(String message : args){
+            if (withPrefix) {
+                Bukkit.getConsoleSender().sendMessage(color("&a[TheOnly-MobCoins] " + message));
+            } else {
+                Bukkit.getConsoleSender().sendMessage(color("&a" + message));
+            }
+        }
+    }
+
+    public static void runTask(Runnable runnable){
+        Bukkit.getScheduler().runTask(MobCoins.getInstance(), runnable);
+    }
+
+    public static void runTaskAsynchronously(Runnable runnable){
+        Bukkit.getScheduler().runTaskAsynchronously(MobCoins.getInstance(), runnable);
     }
 
 }
