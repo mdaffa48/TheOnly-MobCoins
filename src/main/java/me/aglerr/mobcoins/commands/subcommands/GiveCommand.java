@@ -5,7 +5,6 @@ import me.aglerr.mobcoins.PlayerData;
 import me.aglerr.mobcoins.api.MobCoinsAPI;
 import me.aglerr.mobcoins.commands.abstraction.SubCommand;
 import me.aglerr.mobcoins.configs.ConfigValue;
-import me.aglerr.mobcoins.enums.ModifyCoin;
 import me.aglerr.mobcoins.utils.Common;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -84,7 +83,7 @@ public class GiveCommand extends SubCommand {
         }
 
         if(this.isVirtual(type)){
-            playerData.modifyCoins(ModifyCoin.ADD, amount);
+            playerData.addCoins(amount);
 
             sender.sendMessage(Common.color(ConfigValue.MESSAGES_ADD_COINS
                     .replace("{prefix}", ConfigValue.PREFIX)

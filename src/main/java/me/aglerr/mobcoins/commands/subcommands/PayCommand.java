@@ -5,7 +5,6 @@ import me.aglerr.mobcoins.PlayerData;
 import me.aglerr.mobcoins.api.MobCoinsAPI;
 import me.aglerr.mobcoins.commands.abstraction.SubCommand;
 import me.aglerr.mobcoins.configs.ConfigValue;
-import me.aglerr.mobcoins.enums.ModifyCoin;
 import me.aglerr.mobcoins.utils.Common;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -102,8 +101,8 @@ public class PayCommand extends SubCommand {
             return;
         }
 
-        playerData.modifyCoins(ModifyCoin.REDUCE, amount);
-        targetData.modifyCoins(ModifyCoin.ADD, amount);
+        playerData.reduceCoins(amount);
+        targetData.addCoins(amount);
 
         player.sendMessage(Common.color(ConfigValue.MESSAGES_PAY
                 .replace("{prefix}", ConfigValue.PREFIX)

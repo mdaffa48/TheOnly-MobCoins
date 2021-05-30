@@ -5,7 +5,6 @@ import me.aglerr.mobcoins.PlayerData;
 import me.aglerr.mobcoins.api.MobCoinsAPI;
 import me.aglerr.mobcoins.commands.abstraction.SubCommand;
 import me.aglerr.mobcoins.configs.ConfigValue;
-import me.aglerr.mobcoins.enums.ModifyCoin;
 import me.aglerr.mobcoins.utils.Common;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -72,7 +71,7 @@ public class SetCommand extends SubCommand {
         }
 
         double amount = Double.parseDouble(args[2]);
-        playerData.modifyCoins(ModifyCoin.SET, amount);
+        playerData.setCoins(amount);
 
         sender.sendMessage(Common.color(ConfigValue.MESSAGES_SET_COINS
                 .replace("{prefix}", ConfigValue.PREFIX)

@@ -1,10 +1,8 @@
 package me.aglerr.mobcoins;
 
 import me.aglerr.mobcoins.database.SQLDatabase;
-import me.aglerr.mobcoins.enums.ModifyCoin;
 import me.aglerr.mobcoins.utils.Common;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.Connection;
@@ -51,24 +49,16 @@ public class PlayerData implements Cloneable {
         return Common.shortFormat(this.coins);
     }
 
-    public void modifyCoins(ModifyCoin action, double amount) {
-        switch (action) {
-            case ADD: {
-                this.coins = (this.coins + amount);
-                break;
-            }
-            case REDUCE: {
-                this.coins = (this.coins - amount);
-                break;
-            }
-            case SET: {
-                this.coins = amount;
-                break;
-            }
-            default: {
-                throw new IllegalStateException("Invalid enum for ModifyCoin Action!");
-            }
-        }
+    public void addCoins(double amount){
+        this.coins = (this.coins + amount);
+    }
+
+    public void reduceCoins(double amount){
+        this.coins = (this.coins - amount);
+    }
+
+    public void setCoins(double amount){
+        this.coins = amount;
     }
 
     public void save(SQLDatabase database) {

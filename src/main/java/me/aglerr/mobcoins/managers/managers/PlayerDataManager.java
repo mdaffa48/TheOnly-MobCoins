@@ -4,16 +4,12 @@ import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.PlayerData;
 import me.aglerr.mobcoins.configs.ConfigValue;
 import me.aglerr.mobcoins.database.SQLDatabase;
-import me.aglerr.mobcoins.enums.ModifyCoin;
 import me.aglerr.mobcoins.managers.Manager;
 import me.aglerr.mobcoins.utils.Common;
-import org.bukkit.Material;
-import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 import java.sql.*;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
