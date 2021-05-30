@@ -1,8 +1,8 @@
 package me.aglerr.mobcoins.listeners.listeners;
 
 import me.aglerr.mobcoins.MobCoins;
-import me.aglerr.mobcoins.managers.ManagerHandler;
 import me.aglerr.mobcoins.managers.managers.PlayerDataManager;
+import me.aglerr.mobcoins.utils.Common;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -17,16 +17,14 @@ public class PlayerListeners implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event){
-        ManagerHandler managerHandler = plugin.getManagerHandler();
-        PlayerDataManager manager = managerHandler.getPlayerDataManager();
-        manager.handlePlayerJoin(event.getPlayer());
+        PlayerDataManager manager = plugin.getManagerHandler().getPlayerDataManager();
+        Common.runTaskAsynchronously(() -> manager.forceLoadPlayerData(event.getPlayer()));
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event){
-        ManagerHandler managerHandler = plugin.getManagerHandler();
-        PlayerDataManager manager = managerHandler.getPlayerDataManager();
-        manager.handlePlayerQuit(event.getPlayer());
+        PlayerDataManager manager = plugin.getManagerHandler().getPlayerDataManager();
+        Common.runTaskAsynchronously(() -> manager.forceSavePlayerData(event.getPlayer()));
     }
 
 }

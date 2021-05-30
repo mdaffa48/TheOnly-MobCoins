@@ -18,6 +18,15 @@ public class MobCoins extends JavaPlugin {
 
     private SQLDatabase database;
 
+    /**
+     * TODO Add more commands
+     * TODO Shop (main menu, category shop, rotating shop)
+     * TODO Limit purchase
+     * TODO Stock system
+     * TODO MythicMobs integration
+     * TODO Salary system
+     */
+
     @Override
     public void onEnable(){
         instance = this;

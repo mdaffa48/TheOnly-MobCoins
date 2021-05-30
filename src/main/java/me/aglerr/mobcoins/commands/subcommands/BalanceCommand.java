@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class BalanceCommand extends SubCommand {
@@ -26,10 +27,12 @@ public class BalanceCommand extends SubCommand {
     @Override
     public List<String> parseTabCompletion(MobCoins plugin, CommandSender sender, String[] args) {
 
-        if(args.length == 2){
-            List<String> suggestions = new ArrayList<>();
-            Bukkit.getOnlinePlayers().forEach(player -> suggestions.add(player.getName()));
-            return suggestions;
+        if(sender.hasPermission("mobcoins.balance.others")){
+            if(args.length == 2){
+                List<String> suggestions = new ArrayList<>();
+                Bukkit.getOnlinePlayers().forEach(player -> suggestions.add(player.getName()));
+                return suggestions;
+            }
         }
 
         return null;
@@ -64,6 +67,12 @@ public class BalanceCommand extends SubCommand {
 
         if(args.length == 2){
 
+            if(!(sender.hasPermission("mobcoins.balance.others"))){
+                sender.sendMessage(Common.color(ConfigValue.MESSAGES_NO_PERMISSION
+                        .replace("{prefix}", ConfigValue.PREFIX)));
+                return;
+            }
+
             Player player = Bukkit.getPlayer(args[1]);
             if(player == null){
                 sender.sendMessage(Common.color(ConfigValue.MESSAGES_PLAYER_NOT_EXISTS
@@ -74,7 +83,7 @@ public class BalanceCommand extends SubCommand {
             PlayerData playerData = MobCoinsAPI.getPlayerData(player);
             if(playerData == null){
                 Common.debug(true,
-                        "Command: /mobcoins balance",
+                        "Command: /mobcoins balance [others]",
                         "No PlayerData found for " + player.getName()
                 );
                 return;

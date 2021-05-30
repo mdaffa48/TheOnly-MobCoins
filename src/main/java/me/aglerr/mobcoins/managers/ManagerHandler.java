@@ -17,8 +17,12 @@ public class ManagerHandler {
 
     public ManagerHandler(MobCoins plugin){
         this.plugin = plugin;
-        this.managerList.put(ManagerType.COIN_MOB_MANAGER, new CoinMobManager());
-        this.managerList.put(ManagerType.PLAYER_DATA_MANAGER, new PlayerDataManager(plugin));
+
+        CoinMobManager coinMobManager = new CoinMobManager();
+        PlayerDataManager playerDataManager = new PlayerDataManager(plugin);
+
+        this.managerList.put(ManagerType.COIN_MOB_MANAGER, coinMobManager);
+        this.managerList.put(ManagerType.PLAYER_DATA_MANAGER, playerDataManager);
     }
 
     public void loadAllManagers(){

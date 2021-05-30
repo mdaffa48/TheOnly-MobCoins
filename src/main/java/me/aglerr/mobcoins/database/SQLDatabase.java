@@ -97,8 +97,8 @@ public class SQLDatabase {
     }
 
     public void insert(String uuid, String coins){
-        String command = "INSERT INTO `{table}` (uuid, coins) VALUES (`?`, `?`);"
-                .replace("{table}", this.table);
+        String command = "INSERT INTO " + this.table +
+                         "(uuid, coins) VALUES (?, ?);";
 
         try(Connection connection = this.getConnection()){
             try(PreparedStatement statement = connection.prepareStatement(command)){
@@ -117,18 +117,19 @@ public class SQLDatabase {
     }
 
     public void update(String uuid, String coins){
-        String command = "UPDATE `{table}` SET `coins`=? WHERE `uuid`=?"
-                .replace("{table}", this.table);
+        String command = "UPDATE " + this.table +
+                         "SET coins = ? " +
+                         "WHERE uuid = ?";
 
         try(Connection connection = this.getConnection()){
             try(PreparedStatement statement = connection.prepareStatement(command)){
                 statement.setString(1, coins);
                 statement.setString(2, uuid);
-                statement.execute();
+                statement.executeUpdate();
             }
         } catch (SQLException e){
             Common.error(true,
-                    "Error while inserting data.",
+                    "Error while updating data.",
                     "UUID: " + uuid,
                     "Coins: " + coins
             );

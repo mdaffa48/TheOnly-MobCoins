@@ -9,10 +9,23 @@ mysql:
   port: 3306
   useSSL: false
 
+# How many mobcoins should player start with
+starting-balance: 0
+
 messages:
   prefix: "&e[TheOnly-MobCoins]"
-  noPermission: "&cYou don't have enough permission!"
+  noPermission: "{prefix} &cYou don't have enough permission!"
   balance: "{prefix} &fYour coins: &e{coins}"
+  balanceOthers: "{prefix} &f{player}'s coins: &e{coins}"
+  playerNotExists: "{prefix} &cThat player is not online!"
+  notInt: "{prefix} &cThe amount argument is not a number!"
+  addCoins: "{prefix} &aYou have given &e{amount} {type} coins &ato &e{player}"
+  addCoinsOthers: "{prefix} &aYou have received &e{amount} {type} coins&a."
+  invalidType: "{prefix} &aAvaiable types are: &ephysical &aand &evirtual&a."
+  removeCoins: "{prefix} &aYou have removed &e{amount} coins &afrom &e{player}"
+  removeCoinsOthers: "{prefix} &e{amount} coins &ahas been removed from your account!"
+  setCoins: "{prefix} &aYou have set &e{player} &acoins to &e{amount}"
+  setCoinsOthers: "{prefix} &aYour coins has been set to &e{amount}"
   help:
     - "Current Help"
     - "/mobcoins help"

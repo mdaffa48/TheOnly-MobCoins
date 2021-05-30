@@ -3,7 +3,9 @@ package me.aglerr.mobcoins.commands;
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.commands.abstraction.SubCommand;
 import me.aglerr.mobcoins.commands.subcommands.BalanceCommand;
+import me.aglerr.mobcoins.commands.subcommands.GiveCommand;
 import me.aglerr.mobcoins.commands.subcommands.HelpCommand;
+import me.aglerr.mobcoins.commands.subcommands.SetCommand;
 import me.aglerr.mobcoins.configs.ConfigValue;
 import me.aglerr.mobcoins.utils.Common;
 import org.bukkit.command.Command;
@@ -24,8 +26,13 @@ public class MainCommand implements CommandExecutor, TabCompleter {
     public MainCommand(MobCoins plugin){
         this.plugin = plugin;
 
+        BalanceCommand balanceCommand = new BalanceCommand();
+        this.subCommandMap.put("balance", balanceCommand);
+        this.subCommandMap.put("bal", balanceCommand);
+
         this.subCommandMap.put("help", new HelpCommand());
-        this.subCommandMap.put("balance", new BalanceCommand());
+        this.subCommandMap.put("set", new SetCommand());
+        this.subCommandMap.put("give", new GiveCommand());
     }
 
     @Override
@@ -44,7 +51,8 @@ public class MainCommand implements CommandExecutor, TabCompleter {
 
         if(subCommand.getPermission() != null){
             if(!(sender.hasPermission(subCommand.getPermission()))){
-                sender.sendMessage(Common.color(ConfigValue.MESSAGES_NO_PERMISSION));
+                sender.sendMessage(Common.color(ConfigValue.MESSAGES_NO_PERMISSION
+                        .replace("{prefix}", ConfigValue.PREFIX)));
                 return true;
             }
         }
@@ -59,12 +67,37 @@ public class MainCommand implements CommandExecutor, TabCompleter {
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, @NotNull String[] args) {
 
         if(args.length == 1){
-            return Arrays.asList("help", "balance");
+            List<String> suggestions = new ArrayList<>();
+
+            suggestions.add("help");
+
+            if(sender.hasPermission("mobcoins.balance")){ suggestions.add("balance"); }
+
+            if(sender.hasPermission("mobcoins.admin")){
+                suggestions.add("set");
+                suggestions.add("give");
+                suggestions.add("take");
+            }
+
+            return suggestions;
         }
 
         if(args.length == 2){
             SubCommand subCommand = this.subCommandMap.get(args[0].toLowerCase());
-            return subCommand == null ? new ArrayList<>() : subCommand.parseTabCompletion(plugin, sender, args);
+            if(subCommand == null) return null;
+
+            if(subCommand.getPermission() == null){
+                return subCommand.parseTabCompletion(plugin, sender, args);
+            }
+
+            if(subCommand.getPermission() != null){
+                if(!sender.hasPermission(subCommand.getPermission())){
+                    return null;
+                } else {
+                    return subCommand.parseTabCompletion(plugin, sender, args);
+                }
+            }
+
         }
 
         return null;

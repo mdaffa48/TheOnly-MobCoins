@@ -2,142 +2,135 @@ package me.aglerr.mobcoins.managers.managers;
 
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.PlayerData;
+import me.aglerr.mobcoins.configs.ConfigValue;
 import me.aglerr.mobcoins.database.SQLDatabase;
+import me.aglerr.mobcoins.enums.ModifyCoin;
 import me.aglerr.mobcoins.managers.Manager;
 import me.aglerr.mobcoins.utils.Common;
+import org.bukkit.Material;
+import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 import java.sql.*;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
 public class PlayerDataManager implements Manager {
 
     private final Map<String, PlayerData> playerDataMap = new HashMap<>();
+    private final Map<String, PlayerData> valueModify = new HashMap<>();
 
     private final MobCoins plugin;
 
-    public PlayerDataManager(MobCoins plugin){
+    public PlayerDataManager(MobCoins plugin) {
         this.plugin = plugin;
     }
 
     @Nullable
-    public PlayerData getPlayerData(Player player){
+    public PlayerData getPlayerData(Player player) {
         return this.playerDataMap.get(player.getUniqueId().toString());
     }
 
-    public void handlePlayerJoin(Player player){
-        forceLoad(player);
-    }
-
-    public void handlePlayerQuit(Player player){
-        forceSave(player);
-    }
-
-    public void forceLoad(Player player){
+    public void forceLoadPlayerData(Player player) {
         SQLDatabase database = plugin.getDatabase();
-
-        String command = "SELECT * FROM {table} WHERE `UUID`=?"
-                .replace("{table}", database.getTable());
         String uuid = player.getUniqueId().toString();
 
-        Common.runTaskAsynchronously(() -> {
-            try(Connection connection = database.getConnection()){
-                try(PreparedStatement statement = connection.prepareStatement(command)){
-                    statement.setString(1, uuid);
-                    try(ResultSet resultSet = statement.executeQuery()){
+        String command = "SELECT * FROM `" + database.getTable() + "` " +
+                         "WHERE `uuid`=?";
 
-                        if(resultSet.next()){
-                            PlayerData playerData = this.playerDataMap.get(uuid);
-                            double coins = Double.parseDouble(resultSet.getString("coins"));
+        Common.debug(true,
+                "Loading " + player.getName() + " data"
+        );
 
-                            if(playerData == null){
-                                PlayerData newPlayerData = new PlayerData(uuid);
-                                newPlayerData.modifyCoins(PlayerData.CoinAction.SET, coins);
-                                this.playerDataMap.put(uuid, newPlayerData);
+        try (Connection connection = database.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(command)) {
+                statement.setString(1, uuid);
+                try (ResultSet resultSet = statement.executeQuery()) {
 
-                            } else {
-                                playerData.modifyCoins(PlayerData.CoinAction.SET, coins);
-                            }
-
-                        } else {
-
-                            this.playerDataMap.put(uuid, new PlayerData(uuid));
-
-                        }
+                    PlayerData playerData;
+                    if (resultSet.next()) {
+                        double coins = Double.parseDouble(resultSet.getString("coins"));
+                        playerData = new PlayerData(uuid, coins);
+                    } else {
+                        playerData = new PlayerData(uuid, ConfigValue.STARTING_BALANCE);
                     }
+
+                    this.playerDataMap.put(uuid, playerData);
+                    this.valueModify.put(uuid, playerData.clone());
+
+                    Common.debug(true,
+                            "Successfully loaded " + player.getName() + " data. (Coins: " + playerData.getCoins() + ")"
+                    );
                 }
-            } catch (SQLException e){
-                Common.error(true, "Error while loading " + player.getName() + " data!");
-                e.printStackTrace();
             }
-        });
+        } catch (SQLException e) {
+            Common.error(true, "Error while loading " + player.getName() + " data!");
+            e.printStackTrace();
+        }
+
 
     }
 
-    public void forceSave(Player player){
-        PlayerData playerData = this.playerDataMap.get(player.getUniqueId().toString());
-        if(playerData == null) return;
+    public void forceSavePlayerData(Player player) {
+        String uuid = player.getUniqueId().toString();
+        PlayerData playerData = this.playerDataMap.get(uuid);
+        PlayerData valueModify = this.valueModify.get(uuid);
 
-        Common.runTaskAsynchronously(() -> playerData.save(plugin.getDatabase()));
+        Common.debug(true, "Saving " + player.getName() + " data");
+
+        if (playerData == null) {
+            Common.debug(true, "Returned because Player Data is null");
+            return;
+        }
+
+        if (valueModify == null) {
+            Common.debug(true, "Returned because Value Modify is null");
+            return;
+        }
+
+        double coins1 = playerData.getCoins();
+        double coins2 = valueModify.getCoins();
+
+        if(coins1 != coins2){
+            Common.debug(true, "Saving data to the database because value is not the same");
+            Common.runTaskAsynchronously(() -> playerData.save(plugin.getDatabase()));
+        }
+
+        this.playerDataMap.remove(uuid);
+        this.valueModify.remove(uuid);
+
+        Common.debug(true, "Saving tasks is completed");
+
     }
 
     @Override
     public void load() {
-        SQLDatabase database = plugin.getDatabase();
 
-        String command = "SELECT * FROM {table}"
-                .replace("{table}", database.getTable());
-
-        Common.runTaskAsynchronously(() -> {
-            try(Connection connection = database.getConnection()){
-                try(PreparedStatement statement = connection.prepareStatement(command)){
-                    try(ResultSet resultSet = statement.executeQuery()){
-                        while(resultSet.next()){
-
-                            String uuid = resultSet.getString("uuid");
-                            String coins = resultSet.getString("coins");
-
-                            PlayerData playerData = new PlayerData(uuid);
-                            playerData.modifyCoins(PlayerData.CoinAction.SET, Double.parseDouble(coins));
-
-                            this.playerDataMap.put(uuid, playerData);
-
-                        }
-                    }
-                }
-            } catch (SQLException e){
-                Common.error(true, "Error while loading all players data!");
-                e.printStackTrace();
-            }
-        });
     }
 
     @Override
     public void save() {
         SQLDatabase database = plugin.getDatabase();
-        try(Connection connection = database.getConnection()){
 
-            for(String uuid : this.playerDataMap.keySet()){
-                PlayerData playerData = this.playerDataMap.get(uuid);
+        Common.debug(true, "Trying to save all players data");
+        for(String uuid : this.playerDataMap.keySet()){
+            PlayerData playerData = this.playerDataMap.get(uuid);
+            PlayerData valueModify = this.valueModify.get(uuid);
 
-                String command = "UPDATE {table} SET `coins`=? WHERE `uuid`=?"
-                        .replace("{table}", database.getTable());
-
-                PreparedStatement statement = connection.prepareStatement(command);
-                statement.setString(1, String.valueOf(playerData.getCoins()));
-                statement.setString(2, playerData.getUUID());
-
-                statement.executeUpdate();
+            if(playerData.getCoins() == valueModify.getCoins()){
+                Common.debug(true,
+                        "Not saving " + uuid + "data (Reason: coins amount the same)"
+                );
+                continue;
             }
 
-            Common.success(true, "Successfully saved all player data!");
+            Common.debug(true, "Trying to save " + uuid + " data");
+            playerData.save(database);
 
-        } catch (SQLException e){
-            Common.error(true, "Error while trying to save all players data");
-            e.printStackTrace();
         }
+        Common.debug(true, "All players data are successfully saved");
     }
 
 }

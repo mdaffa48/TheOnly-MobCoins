@@ -1,8 +1,11 @@
 package me.aglerr.mobcoins;
 
 import me.aglerr.mobcoins.database.SQLDatabase;
+import me.aglerr.mobcoins.enums.ModifyCoin;
 import me.aglerr.mobcoins.utils.Common;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.jetbrains.annotations.NotNull;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,13 +13,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
-public class PlayerData {
+public class PlayerData implements Cloneable {
 
     private final String uuid;
     private double coins = 0;
 
     public PlayerData(String uuid) {
         this.uuid = uuid;
+    }
+
+    public PlayerData(String uuid, double coins){
+        this.uuid = uuid;
+        this.coins = coins;
     }
 
     public String getUUID() {
@@ -35,7 +43,15 @@ public class PlayerData {
         return Common.getDecimalFormat().format(this.coins);
     }
 
-    public void modifyCoins(CoinAction action, double amount) {
+    public double getCoinsRounded(){
+        return Math.round(this.coins);
+    }
+
+    public String getCoinsShortFormat(){
+        return Common.shortFormat(this.coins);
+    }
+
+    public void modifyCoins(ModifyCoin action, double amount) {
         switch (action) {
             case ADD: {
                 this.coins = (this.coins + amount);
@@ -50,7 +66,7 @@ public class PlayerData {
                 break;
             }
             default: {
-                throw new IllegalStateException("Invalid enum for CoinAction!");
+                throw new IllegalStateException("Invalid enum for ModifyCoin Action!");
             }
         }
     }
@@ -58,6 +74,8 @@ public class PlayerData {
     public void save(SQLDatabase database) {
         String command = "SELECT * FROM {table} WHERE `UUID`=?"
                 .replace("{table}", database.getTable());
+
+        Common.debug(true, "Start saving player data");
 
         try (Connection connection = database.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(command)) {
@@ -68,6 +86,7 @@ public class PlayerData {
                     } else {
                         database.insert(this.uuid, String.valueOf(this.coins));
                     }
+                    Common.debug(true, "Sucessfully saved " + this.uuid + " data");
                 }
             }
         } catch (SQLException e) {
@@ -81,10 +100,13 @@ public class PlayerData {
 
     }
 
-    public enum CoinAction {
-        ADD,
-        REDUCE,
-        SET
+    @NotNull
+    public PlayerData clone() {
+        try {
+            return (PlayerData) super.clone();
+        } catch (CloneNotSupportedException var2) {
+            throw new Error(var2);
+        }
     }
 
 }

@@ -6,7 +6,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class Common {
@@ -78,6 +80,24 @@ public class Common {
         }
     }
 
+    public static boolean isInt(String s){
+        try{
+            Integer.parseInt(s);
+            return true;
+        } catch (NumberFormatException e){
+            return false;
+        }
+    }
+
+    public static boolean isDouble(String s){
+        try{
+            Double.parseDouble(s);
+            return true;
+        } catch (NumberFormatException e){
+            return false;
+        }
+    }
+
     public static DecimalFormat getDecimalFormat(){
         return new DecimalFormat("###,###,###,###,###.##");
     }
@@ -88,6 +108,36 @@ public class Common {
 
     public static void runTaskAsynchronously(Runnable runnable){
         Bukkit.getScheduler().runTaskAsynchronously(MobCoins.getInstance(), runnable);
+    }
+
+    private static String format(double d){
+        NumberFormat format = NumberFormat.getInstance(Locale.ENGLISH);
+        format.setMaximumFractionDigits(2);
+        format.setMinimumFractionDigits(0);
+        return format.format(d);
+    }
+
+    public static String shortFormat(double d){
+        if (d < 1000L) {
+            return format(d);
+        }
+        if (d < 1000000L) {
+            return format(d / 1000L) + "K";
+        }
+        if (d < 1000000000L) {
+            return format(d / 1000000L) + "M";
+        }
+        if (d < 1000000000000L) {
+            return format(d / 1000000000L) + "B";
+        }
+        if (d < 1000000000000000L) {
+            return format(d / 1000000000000L) + "T";
+        }
+        if (d < 1000000000000000000L) {
+            return format(d / 1000000000000000L) + "Q";
+        }
+
+        return String.valueOf((long) d);
     }
 
 }
