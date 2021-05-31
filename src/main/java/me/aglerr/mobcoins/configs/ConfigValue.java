@@ -35,9 +35,18 @@ public class ConfigValue {
     public static String MESSAGES_SELF_PAY;
     public static String MESSAGES_PAY;
     public static String MESSAGES_PAY_OTHERS;
+    public static String MESSAGES_REDEEM;
 
     public static List<String> MESSAGES_HELP;
     public static List<String> MESSAGES_HELP_ADMIN;
+
+    public static String USER_ID = "%%__USER__%%";
+
+    // Mobcoins Item
+    public static String MOBCOINS_ITEM_MATERIAL;
+    public static String MOBCOINS_ITEM_NAME;
+    public static boolean MOBCOINS_ITEM_GLOW;
+    public static List<String> MOBCOINS_ITEM_LORE;
 
     public static void initializeValue(FileConfiguration config){
         PREFIX = config.getString("messages.prefix");
@@ -66,11 +75,17 @@ public class ConfigValue {
         MESSAGES_SELF_PAY = config.getString("messages.selfPay");
         MESSAGES_PAY = config.getString("messages.pay");
         MESSAGES_PAY_OTHERS = config.getString("messages.payOthers");
+        MESSAGES_REDEEM = config.getString("messages.redeem");
 
         MESSAGES_HELP = config.getStringList("messages.help");
         MESSAGES_HELP_ADMIN = config.getStringList("messages.helpAdmin");
 
         STARTING_BALANCE = config.getDouble("starting-balance");
+
+        MOBCOINS_ITEM_MATERIAL = config.getString("mobcoinsItem.material");
+        MOBCOINS_ITEM_NAME = config.getString("mobcoinsItem.name");
+        MOBCOINS_ITEM_GLOW = config.getBoolean("mobcoinsItem.glow");
+        MOBCOINS_ITEM_LORE = config.getStringList("mobcoinsItem.lore");
 
     }
 

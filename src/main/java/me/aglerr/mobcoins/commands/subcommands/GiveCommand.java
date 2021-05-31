@@ -9,6 +9,7 @@ import me.aglerr.mobcoins.utils.Common;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -99,7 +100,26 @@ public class GiveCommand extends SubCommand {
         }
 
         if(this.isPhysical(type)){
-            sender.sendMessage("Coming Soon!");
+            ItemStack stack = Common.createMobCoinItem(
+                    ConfigValue.MOBCOINS_ITEM_MATERIAL,
+                    ConfigValue.MOBCOINS_ITEM_NAME,
+                    ConfigValue.MOBCOINS_ITEM_LORE,
+                    ConfigValue.MOBCOINS_ITEM_GLOW,
+                    amount
+            );
+
+            sender.sendMessage(Common.color(ConfigValue.MESSAGES_ADD_COINS
+                    .replace("{prefix}", ConfigValue.PREFIX)
+                    .replace("{type}", type)
+                    .replace("{amount}", String.valueOf(amount))
+                    .replace("{player}", player.getName())));
+
+            player.sendMessage(Common.color(ConfigValue.MESSAGES_ADD_COINS_OTHERS
+                    .replace("{prefix}", ConfigValue.PREFIX)
+                    .replace("{type}", type)
+                    .replace("{amount}", String.valueOf(amount))));
+
+            player.getInventory().addItem(stack);
             return;
         }
 

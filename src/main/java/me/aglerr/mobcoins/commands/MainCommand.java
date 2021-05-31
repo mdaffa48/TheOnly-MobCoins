@@ -2,10 +2,7 @@ package me.aglerr.mobcoins.commands;
 
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.commands.abstraction.SubCommand;
-import me.aglerr.mobcoins.commands.subcommands.BalanceCommand;
-import me.aglerr.mobcoins.commands.subcommands.GiveCommand;
-import me.aglerr.mobcoins.commands.subcommands.HelpCommand;
-import me.aglerr.mobcoins.commands.subcommands.SetCommand;
+import me.aglerr.mobcoins.commands.subcommands.*;
 import me.aglerr.mobcoins.configs.ConfigValue;
 import me.aglerr.mobcoins.utils.Common;
 import org.bukkit.command.Command;
@@ -25,6 +22,8 @@ public class MainCommand implements CommandExecutor, TabCompleter {
 
     public MainCommand(MobCoins plugin){
         this.plugin = plugin;
+
+        this.subCommandMap.put("about", new AboutCommand());
 
         BalanceCommand balanceCommand = new BalanceCommand();
         this.subCommandMap.put("balance", balanceCommand);
@@ -77,6 +76,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 suggestions.add("set");
                 suggestions.add("give");
                 suggestions.add("take");
+                suggestions.add("about");
             }
 
             return suggestions;

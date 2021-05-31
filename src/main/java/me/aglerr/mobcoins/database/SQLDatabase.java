@@ -97,7 +97,7 @@ public class SQLDatabase {
     }
 
     public void insert(String uuid, String coins){
-        String command = "INSERT INTO " + this.table +
+        String command = "INSERT INTO " + this.table + " " +
                          "(uuid, coins) VALUES (?, ?);";
 
         try(Connection connection = this.getConnection()){
@@ -117,7 +117,7 @@ public class SQLDatabase {
     }
 
     public void update(String uuid, String coins){
-        String command = "UPDATE " + this.table +
+        String command = "UPDATE " + this.table + " " +
                          "SET coins = ? " +
                          "WHERE uuid = ?";
 

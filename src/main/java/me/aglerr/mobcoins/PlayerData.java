@@ -62,7 +62,7 @@ public class PlayerData implements Cloneable {
     }
 
     public void save(SQLDatabase database) {
-        String command = "SELECT * FROM {table} WHERE `UUID`=?"
+        String command = "SELECT * FROM {table} WHERE `uuid`=?"
                 .replace("{table}", database.getTable());
 
         Common.debug(true, "Start saving player data");
@@ -87,7 +87,6 @@ public class PlayerData implements Cloneable {
             );
             e.printStackTrace();
         }
-
     }
 
     @NotNull

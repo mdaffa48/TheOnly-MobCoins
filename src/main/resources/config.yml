@@ -12,6 +12,28 @@ mysql:
 # How many mobcoins should player start with
 starting-balance: 0
 
+mobcoins:
+  type: VIRTUAL
+
+mobcoinsItem:
+  material: SUNFLOWER
+  name: "&e&lMobcoins &7(Right Click)"
+  glow: false
+  lore:
+    - '&7You can use mobcoins to purchase'
+    - '&7items on /mobcoins shop!'
+    - ''
+    - '&6{amount} coins &7are stored in this item!'
+    - ''
+    - '&6Right click to redeem!'
+
+sounds:
+  onCoinsRedeem:
+    enabled: true
+    name: ENTITY_PLAYER_LEVELUP
+    volume: 1.0
+    pitch: 1.0
+
 messages:
   prefix: "&e[MobCoins]"
   noPermission: "{prefix} &cYou don't have enough permission!"
@@ -30,6 +52,7 @@ messages:
   selfPay: "{prefix} &cYou can not give yourself coins!"
   pay: "{prefix} &aYou have given &e{amount} coins &ato &e{player}"
   payOthers: "{prefix} &aYou have received &e{amount} coins &afrom &e{player}"
+  redeem: "{prefix} &aYou have redeemed &e{amount} coins&a."
   help:
     - "Current Help"
     - "/mobcoins help"

@@ -109,22 +109,59 @@ public class PlayerDataManager implements Manager {
     @Override
     public void save() {
         SQLDatabase database = plugin.getDatabase();
-
         Common.debug(true, "Trying to save all players data");
-        for(String uuid : this.playerDataMap.keySet()){
-            PlayerData playerData = this.playerDataMap.get(uuid);
-            PlayerData valueModify = this.valueModify.get(uuid);
+        try(Connection connection = database.getConnection()){
+            for(String uuid : this.playerDataMap.keySet()){
+                PlayerData playerData = this.playerDataMap.get(uuid);
+                PlayerData valueModify = this.valueModify.get(uuid);
 
-            if(playerData.getCoins() == valueModify.getCoins()){
-                Common.debug(true,
-                        "Not saving " + uuid + "data (Reason: coins amount the same)"
-                );
-                continue;
+                if(playerData.getCoins() == valueModify.getCoins()){
+                    Common.debug(true,
+                            "Not saving " + uuid + "data (Reason: coins amount the same)"
+                    );
+                    continue;
+                }
+
+                Common.debug(true, "Trying to save " + uuid + " data");
+
+                String getRowCommand = "SELECT * FROM {table} WHERE uuid=?"
+                        .replace("{table}", database.getTable());
+
+                try(PreparedStatement statement = connection.prepareStatement(getRowCommand)){
+                    statement.setString(1, playerData.getUUID());
+                    try(ResultSet resultSet = statement.executeQuery()){
+                        if(resultSet.next()){
+
+                            String updateCommand = "UPDATE {table} SET coins=? WHERE uuid=?"
+                                    .replace("{table}", database.getTable());
+
+                            try(PreparedStatement updateStatement = connection.prepareStatement(updateCommand)){
+                                updateStatement.setString(1, String.valueOf(playerData.getCoins()));
+                                updateStatement.setString(2, playerData.getUUID());
+                                updateStatement.executeUpdate();
+                                Common.debug(true, "Updating " + playerData.getUUID() + " data (coins: " + playerData.getCoins() + ")");
+                            }
+
+                        } else {
+
+                            String insertCommand = "INSERT INTO {table} (uuid, coins) VALUES (?,?);"
+                                    .replace("{table}", database.getTable());
+
+                            try(PreparedStatement insertStatement = connection.prepareStatement(insertCommand)){
+                                insertStatement.setString(1, playerData.getUUID());
+                                insertStatement.setString(2, String.valueOf(playerData.getCoins()));
+                                insertStatement.execute();
+                                Common.debug(true, "Inserting " + playerData.getUUID() + " data (coins: " + playerData.getCoins() + ")");
+                            }
+
+                        }
+                    }
+                }
             }
-
-            Common.debug(true, "Trying to save " + uuid + " data");
-            playerData.save(database);
-
+        } catch (SQLException e) {
+            Common.error(true, "Error saving all players data!");
+            e.printStackTrace();
+            return;
         }
         Common.debug(true, "All players data are successfully saved");
     }
