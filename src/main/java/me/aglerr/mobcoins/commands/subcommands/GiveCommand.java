@@ -100,13 +100,7 @@ public class GiveCommand extends SubCommand {
         }
 
         if(this.isPhysical(type)){
-            ItemStack stack = Common.createMobCoinItem(
-                    ConfigValue.MOBCOINS_ITEM_MATERIAL,
-                    ConfigValue.MOBCOINS_ITEM_NAME,
-                    ConfigValue.MOBCOINS_ITEM_LORE,
-                    ConfigValue.MOBCOINS_ITEM_GLOW,
-                    amount
-            );
+            ItemStack stack = Common.createMobCoinItem(amount);
 
             sender.sendMessage(Common.color(ConfigValue.MESSAGES_ADD_COINS
                     .replace("{prefix}", ConfigValue.PREFIX)

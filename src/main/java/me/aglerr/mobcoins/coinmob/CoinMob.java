@@ -1,5 +1,7 @@
 package me.aglerr.mobcoins.coinmob;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class CoinMob {
 
     private final String type;
@@ -23,4 +25,20 @@ public class CoinMob {
     public double getChance() {
         return chance;
     }
+
+    public boolean willDropCoins(){
+        return ThreadLocalRandom.current().nextDouble(101) <= getChance();
+    }
+
+    public double getAmountToDrop(){
+        if(this.getCoinAmount().contains("-")){
+            String[] split = this.getCoinAmount().split("-");
+            double minimumAmount = Double.parseDouble(split[0]);
+            double maximumAmount = Double.parseDouble(split[1]);
+
+            return ThreadLocalRandom.current().nextDouble(maximumAmount - minimumAmount) + minimumAmount;
+        }
+        return Double.parseDouble(this.getCoinAmount());
+    }
+
 }

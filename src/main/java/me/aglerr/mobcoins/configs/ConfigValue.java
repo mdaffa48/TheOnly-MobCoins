@@ -19,6 +19,9 @@ public class ConfigValue {
 
     public static double STARTING_BALANCE;
 
+    public static boolean PHYSICAL_MOBCOIN;
+    public static boolean DISABLE_MOBCOIN_FROM_SPAWNER;
+
     public static String MESSAGES_NO_PERMISSION;
     public static String MESSAGES_BALANCE;
     public static String MESSAGES_BALANCE_OTHERS;
@@ -39,6 +42,7 @@ public class ConfigValue {
 
     public static List<String> MESSAGES_HELP;
     public static List<String> MESSAGES_HELP_ADMIN;
+    public static List<String> DISABLED_WORLDS;
 
     public static String USER_ID = "%%__USER__%%";
 
@@ -47,6 +51,12 @@ public class ConfigValue {
     public static String MOBCOINS_ITEM_NAME;
     public static boolean MOBCOINS_ITEM_GLOW;
     public static List<String> MOBCOINS_ITEM_LORE;
+
+    // Salary Mode
+    public static boolean SALARY_MODE_ENABLED;
+    public static int SALARY_MODE_ANNOUNCE_EVERY;
+    public static boolean SALARY_MODE_RECEIVE_AFTER_MESSAGE;
+    public static List<String> SALARY_MODE_MESSAGES;
 
     public static void initializeValue(FileConfiguration config){
         PREFIX = config.getString("messages.prefix");
@@ -79,13 +89,22 @@ public class ConfigValue {
 
         MESSAGES_HELP = config.getStringList("messages.help");
         MESSAGES_HELP_ADMIN = config.getStringList("messages.helpAdmin");
+        DISABLED_WORLDS = config.getStringList("disabledWorlds");
 
         STARTING_BALANCE = config.getDouble("starting-balance");
+
+        PHYSICAL_MOBCOIN = config.getBoolean("mobcoins.physicalMobCoin");
+        DISABLE_MOBCOIN_FROM_SPAWNER = config.getBoolean("mobcoins.disableMobCoinFromSpawner");
 
         MOBCOINS_ITEM_MATERIAL = config.getString("mobcoinsItem.material");
         MOBCOINS_ITEM_NAME = config.getString("mobcoinsItem.name");
         MOBCOINS_ITEM_GLOW = config.getBoolean("mobcoinsItem.glow");
         MOBCOINS_ITEM_LORE = config.getStringList("mobcoinsItem.lore");
+
+        SALARY_MODE_ENABLED = config.getBoolean("salaryMode.enabled");
+        SALARY_MODE_ANNOUNCE_EVERY = config.getInt("salaryMode.announceEvery");
+        SALARY_MODE_RECEIVE_AFTER_MESSAGE = config.getBoolean("salaryMode.receiveAfterMessage");
+        SALARY_MODE_MESSAGES = config.getStringList("salaryMode.messages");
 
     }
 

@@ -2,6 +2,8 @@ package me.aglerr.mobcoins.utils;
 
 import com.cryptomorin.xseries.XMaterial;
 import com.cryptomorin.xseries.XSound;
+import com.cryptomorin.xseries.messages.ActionBar;
+import com.cryptomorin.xseries.messages.Titles;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import fr.mrmicky.fastinv.ItemBuilder;
 import me.aglerr.mobcoins.MobCoins;
@@ -18,6 +20,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.DecimalFormat;
@@ -96,16 +99,6 @@ public class Common {
         }
     }
 
-    public static void playSound(@NotNull Player player, @NotNull String path, @NotNull FileConfiguration config){
-        boolean enabled = config.getBoolean(path + ".enabled");
-        if(!enabled) return;
-
-        Sound sound = XSound.matchXSound(config.getString(path + ".name")).get().parseSound();
-        float volume = (float) config.getDouble(path + ".volume");
-        float pitch = (float) config.getDouble(path + ".pitch");
-        player.playSound(player.getLocation(), sound, volume, pitch);
-    }
-
     public static boolean isInt(String s){
         try{
             Integer.parseInt(s);
@@ -130,6 +123,10 @@ public class Common {
 
     public static void runTaskAsynchronously(Runnable runnable){
         Bukkit.getScheduler().runTaskAsynchronously(MobCoins.getInstance(), runnable);
+    }
+
+    public static void runTaskTimerAsynchronously(int delay, int time, Runnable runnable){
+        Bukkit.getScheduler().runTaskTimerAsynchronously(MobCoins.getInstance(), runnable, delay, time);
     }
 
     private static String format(double d){
@@ -162,21 +159,21 @@ public class Common {
         return String.valueOf((long) d);
     }
 
-    public static ItemStack createMobCoinItem(String material, String name, List<String> lore, boolean glow, double amount){
+    public static ItemStack createMobCoinItem( double amount){
 
         ItemStack stack = null;
 
         List<String> parsedLore = new ArrayList<>();
-        lore.forEach(line -> parsedLore.add(line.replace("{amount}", String.valueOf(amount))));
+        ConfigValue.MOBCOINS_ITEM_LORE.forEach(line -> parsedLore.add(line.replace("{amount}", String.valueOf(amount))));
 
-        if(material.contains(";")){
-            String[] split = material.split(";");
+        if(ConfigValue.MOBCOINS_ITEM_MATERIAL.contains(";")){
+            String[] split = ConfigValue.MOBCOINS_ITEM_MATERIAL.split(";");
             if(split[0].equalsIgnoreCase("head")){
                 stack = XMaterial.PLAYER_HEAD.parseItem();
                 SkullMeta skullMeta = (SkullMeta) stack.getItemMeta();
-                skullMeta.setDisplayName(color(name));
+                skullMeta.setDisplayName(color(ConfigValue.MOBCOINS_ITEM_NAME));
                 skullMeta.setLore(color(parsedLore));
-                if(glow){
+                if(ConfigValue.MOBCOINS_ITEM_GLOW){
                     skullMeta.addEnchant(Enchantment.ARROW_INFINITE, 1, true);
                     skullMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
                 }
@@ -184,12 +181,12 @@ public class Common {
                 stack.setItemMeta(skullMeta);
             }
         } else {
-            ItemBuilder builder = new ItemBuilder(XMaterial.matchXMaterial(material).get().parseItem())
-                    .name(color(name))
+            ItemBuilder builder = new ItemBuilder(XMaterial.matchXMaterial(ConfigValue.MOBCOINS_ITEM_MATERIAL).get().parseItem())
+                    .name(color(ConfigValue.MOBCOINS_ITEM_NAME))
                     .lore(color(parsedLore))
                     .flags(ItemFlag.HIDE_ATTRIBUTES);
 
-            if(glow) builder.enchant(Enchantment.ARROW_INFINITE).flags(ItemFlag.HIDE_ENCHANTS);
+            if(ConfigValue.MOBCOINS_ITEM_GLOW) builder.enchant(Enchantment.ARROW_INFINITE).flags(ItemFlag.HIDE_ENCHANTS);
             stack = builder.build();
         }
         
@@ -204,4 +201,36 @@ public class Common {
         ) return false;
         return true;
     }
+
+    public static void playSound(@NotNull Player player, @NotNull String path, @NotNull FileConfiguration config){
+        boolean enabled = config.getBoolean(path + ".enabled");
+        if(!enabled) return;
+
+        Sound sound = XSound.matchXSound(config.getString(path + ".name")).get().parseSound();
+        float volume = (float) config.getDouble(path + ".volume");
+        float pitch = (float) config.getDouble(path + ".pitch");
+        player.playSound(player.getLocation(), sound, volume, pitch);
+    }
+
+    public static void sendTitle(@NotNull Player player, @NotNull String path, @NotNull FileConfiguration config, double coinPlaceholder){
+        boolean enabled = config.getBoolean(path + ".enabled");
+        if(!enabled) return;
+
+        String title = config.getString(path + ".title").replace("{amount}", String.valueOf(coinPlaceholder));
+        String subTitle = config.getString(path + ".subTitle").replace("{amount}", String.valueOf(coinPlaceholder));
+        int fadeIn = config.getInt(path + ".fadeIn");
+        int stay = config.getInt(path + ".stay");
+        int fadeOut = config.getInt(path + ".fadeOut");
+
+        Titles.sendTitle(player, fadeIn, stay, fadeOut, Common.color(title), Common.color(subTitle));
+    }
+
+    public static void sendActionBar(@NotNull Player player, @NotNull String path, @NotNull FileConfiguration config){
+        boolean enabled = config.getBoolean(path + ".enabled");
+        if(!enabled) return;
+
+        String message = config.getString(path + ".message");
+        ActionBar.sendActionBar(player, Common.color(message));
+    }
+
 }

@@ -3,6 +3,7 @@ package me.aglerr.mobcoins.database;
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.configs.ConfigValue;
 import me.aglerr.mobcoins.utils.Common;
+import org.bukkit.Bukkit;
 
 import java.io.File;
 import java.sql.Connection;
@@ -27,56 +28,45 @@ public class SQLDatabase {
         if(ConfigValue.IS_MYSQL){
             Common.log(true, "Database type is MySQL.");
             try{
-
                 host = ConfigValue.MYSQL_HOST;
                 database = ConfigValue.MYSQL_DATABASE;
                 username = ConfigValue.MYSQL_USERNAME;
                 password = ConfigValue.MYSQL_PASSWORD;
                 port = ConfigValue.MYSQL_PORT;
                 useSSL = ConfigValue.MYSQL_USESSL;
-
                 Class.forName("com.mysql.jdbc.Driver");
-                Connection connection = this.getConnection();
-
-                String command = "CREATE TABLE IF NOT EXISTS " + this.table + " (uuid Text, coins Text)";
-                PreparedStatement statement = connection.prepareStatement(command);
-                statement.execute();
-
+                try(Connection connection = this.getConnection()){
+                    String command = "CREATE TABLE IF NOT EXISTS " + this.table + " (uuid Text, coins Text)";
+                    try(PreparedStatement statement = connection.prepareStatement(command)){
+                        statement.execute();
+                    }
+                }
                 Common.success(true, "MySQL connected!");
-                statement.close();
-                connection.close();
-
             } catch (Exception e){
                 Common.error(true, "There is an error connecting with the database!");
                 e.printStackTrace();
             }
-
-        } else {
-            Common.log(true, "Database type is SQLite.");
-            try{
-
-                File databaseFile = new File(plugin.getDataFolder(), "database.db");
-                if(!databaseFile.exists()){
-                    databaseFile.createNewFile();
-                }
-
-                Class.forName("org.sqlite.JDBC");
-                Connection connection = this.getConnection();
-
-                String command = "CREATE TABLE IF NOT EXISTS " + this.table + " (uuid Text, coins Text)";
-                PreparedStatement statement = connection.prepareStatement(command);
-                statement.execute();
-
-                Common.success(true, "SQLite connected!");
-                statement.close();
-                connection.close();
-
-            } catch(Exception e){
-                Common.error(true, "There is an error connecting with the database!");
-                e.printStackTrace();
-            }
+            return;
         }
 
+        Common.log(true, "Database type is SQLite.");
+        try{
+            File databaseFile = new File(plugin.getDataFolder(), "database.db");
+            if(!databaseFile.exists()){
+                databaseFile.createNewFile();
+            }
+            Class.forName("org.sqlite.JDBC");
+            try(Connection connection = this.getConnection()){
+                String command = "CREATE TABLE IF NOT EXISTS " + this.table + " (uuid Text, coins Text)";
+                try(PreparedStatement statement = connection.prepareStatement(command)){
+                    statement.execute();
+                }
+            }
+            Common.success(true, "SQLite connected!");
+        } catch(Exception e){
+            Common.error(true, "There is an error connecting with the database!");
+            e.printStackTrace();
+        }
     }
 
     public String getTable(){

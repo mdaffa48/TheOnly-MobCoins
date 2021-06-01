@@ -8,6 +8,9 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Called when player redeemed physical mobcoin.
+ */
 public class MobCoinsRedeemEvent extends Event implements Cancellable {
 
     private boolean isCancelled;

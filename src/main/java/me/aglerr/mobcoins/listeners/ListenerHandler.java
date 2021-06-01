@@ -1,6 +1,7 @@
 package me.aglerr.mobcoins.listeners;
 
 import me.aglerr.mobcoins.MobCoins;
+import me.aglerr.mobcoins.listeners.listeners.EntityDeathListener;
 import me.aglerr.mobcoins.listeners.listeners.PlayerListeners;
 import me.aglerr.mobcoins.listeners.listeners.PlayerRedeemCoins;
 import org.bukkit.Bukkit;
@@ -19,6 +20,7 @@ public class ListenerHandler {
 
         this.listenerList.add(new PlayerListeners(plugin));
         this.listenerList.add(new PlayerRedeemCoins(plugin));
+        this.listenerList.add(new EntityDeathListener(plugin));
     }
 
     public void registerAllListeners(){
