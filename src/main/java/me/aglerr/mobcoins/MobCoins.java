@@ -25,7 +25,6 @@ public class MobCoins extends JavaPlugin {
      * TODO Limit purchase
      * TODO Stock system
      * TODO MythicMobs integration
-     * TODO Salary system
      */
 
     @Override
