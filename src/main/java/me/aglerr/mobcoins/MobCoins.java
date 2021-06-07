@@ -7,7 +7,6 @@ import me.aglerr.mobcoins.database.SQLDatabase;
 import me.aglerr.mobcoins.listeners.ListenerHandler;
 import me.aglerr.mobcoins.managers.ManagerHandler;
 import me.aglerr.mobcoins.utils.Common;
-import org.bukkit.NamespacedKey;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class MobCoins extends JavaPlugin {
@@ -19,39 +18,49 @@ public class MobCoins extends JavaPlugin {
 
     private SQLDatabase database;
 
-    /**
-     * TODO Add more commands
-     * TODO Shop (main menu, category shop, rotating shop)
-     * TODO Limit purchase
-     * TODO Stock system
-     * TODO MythicMobs integration
+    /*
+      TODO Add more commands
+      TODO Shop (main menu, category shop, rotating shop)
+      TODO Limit purchase
+      TODO Stock system
+      TODO MythicMobs integration
      */
 
+    /**
+     * Plugin startup logic
+     */
     @Override
     public void onEnable(){
+        // Initialize instance
         instance = this;
 
         Common.log(false, Common.getStartupLogo());
 
+        // Initialize all config
         Config.initialize();
+
+        // Initialize all config value
         ConfigValue.initializeValue(Config.CONFIG.getConfig());
 
+        // Initialize database
         database = new SQLDatabase(this);
 
+        // Calling load() method from all Managers
         this.managerHandler.loadAllManagers();
+
+        // Register all listeners
         this.listenerHandler.registerAllListeners();
-        this.registerCommands();
+
+        // Register main commands
+        new MainCommand(this).registerThisCommand();
     }
 
+    /**
+     * Plugin disable logic
+     */
     @Override
     public void onDisable(){
         this.managerHandler.saveAllManagers();
-    }
-
-    private void registerCommands(){
-        MainCommand mainCommand = new MainCommand(this);
-        this.getCommand("mobcoins").setExecutor(mainCommand);
-        this.getCommand("mobcoins").setTabCompleter(mainCommand);
     }
 
     /**

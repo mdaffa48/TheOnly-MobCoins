@@ -17,6 +17,7 @@ import java.util.*;
 public class MainCommand implements CommandExecutor, TabCompleter {
 
     private final Map<String, SubCommand> subCommandMap = new HashMap<>();
+    private final String COMMAND_NAME = "mobcoins";
 
     private final MobCoins plugin;
 
@@ -29,9 +30,16 @@ public class MainCommand implements CommandExecutor, TabCompleter {
         this.subCommandMap.put("balance", balanceCommand);
         this.subCommandMap.put("bal", balanceCommand);
 
-        this.subCommandMap.put("help", new HelpCommand());
-        this.subCommandMap.put("set", new SetCommand());
         this.subCommandMap.put("give", new GiveCommand());
+        this.subCommandMap.put("help", new HelpCommand());
+        this.subCommandMap.put("pay", new PayCommand());
+        this.subCommandMap.put("set", new SetCommand());
+        this.subCommandMap.put("take", new TakeCommand());
+    }
+
+    public void registerThisCommand(){
+        plugin.getCommand(COMMAND_NAME).setExecutor(this);
+        plugin.getCommand(COMMAND_NAME).setTabCompleter(this);
     }
 
     @Override

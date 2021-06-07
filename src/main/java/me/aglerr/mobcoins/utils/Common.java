@@ -32,6 +32,8 @@ import java.util.stream.Collectors;
 
 public class Common {
 
+    private static final DecimalFormat decimalFormat = new DecimalFormat("###,###,###,###,###.##");
+
     public static String color(String s){
         return ChatColor.translateAlternateColorCodes('&', s);
     }
@@ -118,7 +120,7 @@ public class Common {
     }
 
     public static DecimalFormat getDecimalFormat(){
-        return new DecimalFormat("###,###,###,###,###.##");
+        return decimalFormat;
     }
 
     public static void runTaskAsynchronously(Runnable runnable){

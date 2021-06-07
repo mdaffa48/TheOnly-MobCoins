@@ -34,8 +34,8 @@ public class CoinMobManager implements Manager {
 
         int totalMobs = 0;
         for(String key : mobs.getConfigurationSection("entities").getKeys(false)){
-            totalMobs++;
             this.coinMobList.add(new CoinMob(key, mobs.getString("entities." + key + ".amount"), mobs.getDouble("entities." + key + ".chance")));
+            totalMobs++;
         }
 
         Common.log(true, "Successfully loaded " + totalMobs + " mobs, enjoy!");

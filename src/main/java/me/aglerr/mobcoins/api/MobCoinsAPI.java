@@ -10,6 +10,12 @@ import org.jetbrains.annotations.Nullable;
 
 public class MobCoinsAPI {
 
+    /**
+     * Get PlayerData object to modify/get player mobcoins
+     *
+     * @param player player object
+     * @return {@link me.aglerr.mobcoins.PlayerData}
+     */
     @Nullable
     public static PlayerData getPlayerData(Player player){
         ManagerHandler managerHandler = MobCoins.getInstance().getManagerHandler();
@@ -18,8 +24,9 @@ public class MobCoinsAPI {
 
     /**
      * Get CoinMob object that loaded from mobs.yml by the mob type
-     * @param mobType the mob type string
-     * @return the CoinMob object that handle all value on mobs.yml
+     *
+     * @param mobType the mob type in string
+     * @return {@link me.aglerr.mobcoins.coinmob.CoinMob}
      */
     @Nullable
     public static CoinMob getCoinMob(String mobType){

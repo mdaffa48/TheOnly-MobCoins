@@ -39,6 +39,7 @@ public class ConfigValue {
     public static String MESSAGES_PAY;
     public static String MESSAGES_PAY_OTHERS;
     public static String MESSAGES_REDEEM;
+    public static String MESSAGES_COINS_RECEIVED;
 
     public static List<String> MESSAGES_HELP;
     public static List<String> MESSAGES_HELP_ADMIN;
@@ -86,6 +87,7 @@ public class ConfigValue {
         MESSAGES_PAY = config.getString("messages.pay");
         MESSAGES_PAY_OTHERS = config.getString("messages.payOthers");
         MESSAGES_REDEEM = config.getString("messages.redeem");
+        MESSAGES_COINS_RECEIVED = config.getString("messages.coinsReceived");
 
         MESSAGES_HELP = config.getStringList("messages.help");
         MESSAGES_HELP_ADMIN = config.getStringList("messages.helpAdmin");

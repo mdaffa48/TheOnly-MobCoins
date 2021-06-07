@@ -51,8 +51,11 @@ salaryMode:
     - '&fYou have earned &6{amount} coins &fin the past 5 minutes!'
     - ''
 
-
-
+# Configuration Information
+#   (enabled) should we enabled this sound?
+#   (name) the name of the sound (https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html)
+#   (volume) the volume of the sound
+#   (pitch) the pitch of the sound
 sounds:
   onCoinsRedeem:
     enabled: true

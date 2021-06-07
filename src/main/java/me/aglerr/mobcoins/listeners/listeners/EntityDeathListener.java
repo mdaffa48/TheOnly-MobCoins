@@ -4,18 +4,14 @@ import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.PlayerData;
 import me.aglerr.mobcoins.api.MobCoinsAPI;
 import me.aglerr.mobcoins.api.events.MobCoinsReceiveEvent;
-import me.aglerr.mobcoins.api.events.MobCoinsRedeemEvent;
 import me.aglerr.mobcoins.api.events.MobCoinsSpawnEvent;
 import me.aglerr.mobcoins.coinmob.CoinMob;
 import me.aglerr.mobcoins.configs.ConfigValue;
-import me.aglerr.mobcoins.managers.managers.CoinMobManager;
 import me.aglerr.mobcoins.managers.managers.SalaryManager;
 import me.aglerr.mobcoins.managers.managers.SpawnerSpawnManager;
 import me.aglerr.mobcoins.utils.Common;
 import org.bukkit.Bukkit;
-import org.bukkit.Sound;
 import org.bukkit.World;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -35,19 +31,27 @@ public class EntityDeathListener implements Listener {
         SpawnerSpawnManager spawnManager = plugin.getManagerHandler().getSpawnerSpawnManager();
         LivingEntity entity = event.getEntity();
 
-        // Check if the entity is spawned from spawner, and removing it
-        if(spawnManager.isSpawnFromSpawner(entity)){
-            spawnManager.removeEntity(entity);
-            return;
+        // Check if disable mobcoin from spawner is enabled
+        if(ConfigValue.DISABLE_MOBCOIN_FROM_SPAWNER) {
+            // Check if the entity is spawned from spawner, and storing it
+            if (spawnManager.isSpawnFromSpawner(entity)) {
+                spawnManager.removeEntity(entity);
+                return;
+            }
         }
 
         // Return if the entity is in disabled worlds
         if(ConfigValue.DISABLED_WORLDS.contains(entity.getWorld().getName())) return;
 
         String mobType = entity.getType().name();
+
+        // Trying to get CoinMob object from mob type name
         CoinMob coinMob = MobCoinsAPI.getCoinMob(mobType);
 
+        // Return if there is no CoinMob for that mob
         if(coinMob == null) return;
+
+        // Return if the mobcoin will not drop
         if(!coinMob.willDropCoins()) return;
 
         double amountDrop = coinMob.getAmountToDrop();
@@ -80,23 +84,27 @@ public class EntityDeathListener implements Listener {
             Bukkit.getPluginManager().callEvent(receiveEvent);
             if(receiveEvent.isCancelled()) return;
 
+            // Check if Salary Mode is enabled
             if(ConfigValue.SALARY_MODE_ENABLED){
                 SalaryManager salaryManager = plugin.getManagerHandler().getSalaryManager();
+                // Check if the player should not receive coins after salary message
                 if(!ConfigValue.SALARY_MODE_RECEIVE_AFTER_MESSAGE){
+                    // Adding coins directly to player data
                     playerData.addCoins(receiveEvent.getAmountReceived());
-                    Common.playSound(player, "sounds.onCoinsReceived", plugin.getConfig());
-                    Common.sendTitle(player, "titles.onCoinsReceived", plugin.getConfig(), receiveEvent.getAmountReceived());
-                    Common.sendActionBar(player, "actionBar.onCoinsReceived", plugin.getConfig());
-                    return;
                 }
+                // Add received mobcoins to the salary
                 salaryManager.putOrIncrementPlayerSalary(player, receiveEvent.getAmountReceived());
                 return;
             }
 
+            // Code logic if the salary mode is not enabled
             playerData.addCoins(receiveEvent.getAmountReceived());
             Common.playSound(player, "sounds.onCoinsReceived", plugin.getConfig());
             Common.sendTitle(player, "titles.onCoinsReceived", plugin.getConfig(), receiveEvent.getAmountReceived());
             Common.sendActionBar(player, "actionBar.onCoinsReceived", plugin.getConfig());
+            player.sendMessage(Common.color(ConfigValue.MESSAGES_COINS_RECEIVED
+                    .replace("{prefix}", ConfigValue.PREFIX)
+                    .replace("{amount}", String.valueOf(receiveEvent.getAmountReceived()))));
         }
 
     }

@@ -34,8 +34,11 @@ public class PlayerListeners implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCreatureSpawn(CreatureSpawnEvent event){
         SpawnerSpawnManager spawnManager = plugin.getManagerHandler().getSpawnerSpawnManager();
+        // Return if the entity spawn reason is not from SPAWNER
         if(event.getSpawnReason() != CreatureSpawnEvent.SpawnReason.SPAWNER) return;
+        // Check if disable mobcoin from spawner is enabled
         if(ConfigValue.DISABLE_MOBCOIN_FROM_SPAWNER){
+            // Store the entity
             spawnManager.addEntity(event.getEntity());
         }
     }

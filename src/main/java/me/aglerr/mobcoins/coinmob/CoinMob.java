@@ -14,14 +14,30 @@ public class CoinMob {
         this.chance = chance;
     }
 
+    /**
+     * Get the CoinMob's mob type
+     *
+     * @return mob type in string
+     */
     public String getType() {
         return type;
     }
 
+    /**
+     * Get the CoinMob's dropped coin amount
+     * (the amount on the mobs.yml)
+     * Mainly it will return a double, but check '-' for ranged drop amount
+     *
+     * @return the coin amount
+     */
     public String getCoinAmount() {
         return coinAmount;
     }
 
+    /**
+     *
+     * @return the drop chance
+     */
     public double getChance() {
         return chance;
     }
@@ -30,6 +46,11 @@ public class CoinMob {
         return ThreadLocalRandom.current().nextDouble(101) <= getChance();
     }
 
+    /**
+     * Get the amount of dropped coins from {@link CoinMob#getCoinAmount()}
+     *
+     * @return amount of dropped coins
+     */
     public double getAmountToDrop(){
         if(this.getCoinAmount().contains("-")){
             String[] split = this.getCoinAmount().split("-");

@@ -25,42 +25,95 @@ public class PlayerData implements Cloneable {
         this.coins = coins;
     }
 
+    /**
+     * Get Players UUID
+     *
+     * @return player's uuid
+     */
     public String getUUID() {
         return uuid;
     }
 
+    /**
+     * Get Players Name
+     *
+     * @return player's name
+     */
     public String getName() {
         return Bukkit.getOfflinePlayer(UUID.fromString(this.uuid)).getName();
     }
 
+    /**
+     * Get Players Mobcoins Amount
+     *
+     * @return player's mobcoins amount
+     */
     public double getCoins() {
         return coins;
     }
 
+    /**
+     * Get Players Formatted Mobcoins Amount
+     * e.x: 1,234.56
+     *
+     * @return player's formatted mobcoins amount
+     */
     public String getCoinsFormatted() {
         return Common.getDecimalFormat().format(this.coins);
     }
 
+    /**
+     * Get Players Rounded Mobcoins Amount
+     * e.x: 1,234.8 -> 1,235
+     *
+     * @return player's rounded mobcoins amount
+     */
     public double getCoinsRounded(){
         return Math.round(this.coins);
     }
 
+    /**
+     * Get Players Short Formatted Mobcoins Amount
+     * e.x: 1.5K, 5.75K, 25K, 100M
+     *
+     * @return player's short formatted mobcoins amount
+     */
     public String getCoinsShortFormat(){
         return Common.shortFormat(this.coins);
     }
 
+    /**
+     * Add coins to player data
+     *
+     * @param amount the amount coins that will be added
+     */
     public void addCoins(double amount){
         this.coins = (this.coins + amount);
     }
 
+    /**
+     * Reduce coins from player data
+     *
+     * @param amount the amount coins that will be reduced
+     */
     public void reduceCoins(double amount){
         this.coins = (this.coins - amount);
     }
 
+    /**
+     * Set amount of coins to player data
+     *
+     * @param amount the amount coins that will be set
+     */
     public void setCoins(double amount){
         this.coins = amount;
     }
 
+    /**
+     * Save player data to the database (call it async if needed)
+     *
+     * @param database {@link me.aglerr.mobcoins.database.SQLDatabase} instance
+     */
     public void save(SQLDatabase database) {
         String command = "SELECT * FROM {table} WHERE `uuid`=?"
                 .replace("{table}", database.getTable());
@@ -89,6 +142,13 @@ public class PlayerData implements Cloneable {
         }
     }
 
+    /**
+     * Clone the current PlayerData object
+     * Mainly this method used to compare the mobcoins amount on saving
+     * Take a look at {@link me.aglerr.mobcoins.managers.managers.PlayerDataManager}
+     *
+     * @return cloned PlayerData object
+     */
     @NotNull
     public PlayerData clone() {
         try {

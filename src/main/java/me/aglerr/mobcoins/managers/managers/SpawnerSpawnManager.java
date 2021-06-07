@@ -3,6 +3,8 @@ package me.aglerr.mobcoins.managers.managers;
 import me.aglerr.mobcoins.managers.Manager;
 import org.bukkit.entity.Entity;
 
+import java.lang.ref.WeakReference;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
