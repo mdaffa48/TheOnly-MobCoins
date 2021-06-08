@@ -1,10 +1,7 @@
 package me.aglerr.mobcoins.managers;
 
 import me.aglerr.mobcoins.MobCoins;
-import me.aglerr.mobcoins.managers.managers.CoinMobManager;
-import me.aglerr.mobcoins.managers.managers.PlayerDataManager;
-import me.aglerr.mobcoins.managers.managers.SalaryManager;
-import me.aglerr.mobcoins.managers.managers.SpawnerSpawnManager;
+import me.aglerr.mobcoins.managers.managers.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,6 +21,7 @@ public class ManagerHandler {
         this.managerList.put(ManagerType.PLAYER_DATA_MANAGER, new PlayerDataManager(plugin));
         this.managerList.put(ManagerType.SPAWNER_SPAWN_MANAGER, new SpawnerSpawnManager());
         this.managerList.put(ManagerType.SALARY_MANAGER, new SalaryManager(plugin.getConfig()));
+        this.managerList.put(ManagerType.DEPENDENCY_MANAGER, new DependencyManager());
     }
 
     public void loadAllManagers(){
@@ -54,11 +52,16 @@ public class ManagerHandler {
         return (SalaryManager) this.managerList.get(ManagerType.SALARY_MANAGER);
     }
 
+    public DependencyManager getDependencyManager(){
+        return (DependencyManager) this.managerList.get(ManagerType.DEPENDENCY_MANAGER);
+    }
+
     private enum ManagerType{
         COIN_MOB_MANAGER,
         PLAYER_DATA_MANAGER,
         SPAWNER_SPAWN_MANAGER,
-        SALARY_MANAGER
+        SALARY_MANAGER,
+        DEPENDENCY_MANAGER
     }
 
 }

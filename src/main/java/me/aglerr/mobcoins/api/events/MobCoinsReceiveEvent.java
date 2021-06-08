@@ -49,27 +49,35 @@ public class MobCoinsReceiveEvent extends Event implements Cancellable {
     }
 
     /**
-     * @return player that is involved in this event
+     * Get Player that is involved in this event
+     *
+     * @return player object
      */
     public Player getPlayer() {
         return player;
     }
 
     /**
-     * @return entity that is involved in this event
+     * Get entity that is involved in this event
+     *
+     * @return entity object
      */
     public LivingEntity getEntity() {
         return entity;
     }
 
     /**
-     * @return the amount of mobcoins that player received
+     * Get the amount that player receives
+     *
+     * @return the amount of mobcoins
      */
     public double getAmountReceived() {
         return amountReceived;
     }
 
     /**
+     * Set the received amount
+     *
      * @param amountReceived amount of mobcoins that player will receive
      */
     public void setAmountReceived(double amountReceived) {

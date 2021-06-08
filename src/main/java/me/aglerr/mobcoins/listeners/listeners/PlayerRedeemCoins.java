@@ -32,7 +32,7 @@ public class PlayerRedeemCoins implements Listener {
         // Check if server version is greater than 1.8 ( has offhand)
         if(Common.hasOffhand()){
             // Return if player not clicking on main hand
-            // Need to check this otherwise the event gonna fired 2 for both arms
+            // Need to check this otherwise the event gonna fired 2 times for both arms
             if(event.getHand() != EquipmentSlot.HAND) return;
         }
 

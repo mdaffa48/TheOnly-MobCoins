@@ -51,20 +51,26 @@ public class MobCoinsRedeemEvent extends Event implements Cancellable {
     }
 
     /**
-     * @return player that redeemed mobcoins item
+     * Get player that redeemed the mobcoins
+     *
+     * @return player object
      */
     public Player getPlayer() {
         return player;
     }
 
     /**
-     * @return player data
+     * Get PlayerData object of {@link MobCoinsRedeemEvent#getPlayer()}
+     *
+     * @return {@link me.aglerr.mobcoins.PlayerData}
      */
     public PlayerData getPlayerData() {
         return playerData;
     }
 
     /**
+     * Get the ItemStack that player redeemed
+     *
      * @return ItemStack that is involved in this event
      */
     public ItemStack getItemStack() {
@@ -72,6 +78,8 @@ public class MobCoinsRedeemEvent extends Event implements Cancellable {
     }
 
     /**
+     * Get the amount of mobcoins that player redeemed
+     *
      * @return the amount mobcoins that player received
      */
     public double getAmount() {
@@ -79,8 +87,9 @@ public class MobCoinsRedeemEvent extends Event implements Cancellable {
     }
 
     /**
-     * Set the amount mobcoins that player receives
-     * @param amount the amount mobcoins that player will receives
+     * Set the amount of mobcoins that player will receive
+     *
+     * @param amount the amount mobcoins that player will receive
      */
     public void setAmount(double amount) {
         this.amount = amount;

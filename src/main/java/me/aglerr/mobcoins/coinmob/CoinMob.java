@@ -35,6 +35,7 @@ public class CoinMob {
     }
 
     /**
+     * Get the CoinMob drop chance
      *
      * @return the drop chance
      */

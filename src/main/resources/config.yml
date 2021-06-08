@@ -12,9 +12,15 @@ mysql:
 # How many mobcoins should player start with
 starting-balance: 0
 
+# Configuration Information:
+#   (physicalMobCoin) should we use physical mobcoins instead virtual mobcoins?
+#   (disableMobCoinFromSpawner) should we prevent mob that spawn from spawner to drop mobcoins?
 mobcoins:
   physicalMobCoin: false
   disableMobCoinFromSpawner: true
+
+hooks:
+  wildStacker: true
 
 # What world should we disable player from receiving mobcoin?
 disabledWorlds:

@@ -19,11 +19,13 @@ public class MobCoinsSpawnEvent extends Event implements Cancellable {
     private final LivingEntity entity;
     private final CoinMob coinMob;
     private double amountToDrop;
+    private ItemStack itemStack;
 
     public MobCoinsSpawnEvent(LivingEntity entity, CoinMob coinMob, double amountToDrop){
         this.entity = entity;
         this.coinMob = coinMob;
         this.amountToDrop = amountToDrop;
+        this.itemStack = Common.createMobCoinItem(amountToDrop);
 
         this.isCancelled = false;
     }
@@ -51,6 +53,8 @@ public class MobCoinsSpawnEvent extends Event implements Cancellable {
     }
 
     /**
+     * Get entity that is involved in this event
+     *
      * @return entity that is involved in this event
      */
     public LivingEntity getEntity() {
@@ -58,31 +62,40 @@ public class MobCoinsSpawnEvent extends Event implements Cancellable {
     }
 
     /**
-     * @return get CoinMob object that store chance, drop amount, and chance
+     * Get the CoinMob object from this event
+     *
+     * @return {@link me.aglerr.mobcoins.coinmob.CoinMob}
      */
     public CoinMob getCoinMob() {
         return coinMob;
     }
 
     /**
-     * @return amount of mobcoins that is dropped
+     * Get the amount of mobcoins that will drop
+     *
+     * @return amount of mobcoins that will drop
      */
     public double getAmountToDrop() {
         return amountToDrop;
     }
 
     /**
-     * @param amount set the amount mobcoins that will dropped
+     * Set amount of mobcoins that will drop
+     *
+     * @param amount the amount mobcoins that will drop
      */
     public void setAmountToDrop(double amount){
         this.amountToDrop = amount;
+        this.itemStack = Common.createMobCoinItem(amount);
     }
 
     /**
-     * @return the itemstack that player will receive
+     * Get the itemstack that will be dropped
+     *
+     * @return the itemstack that will be dropped
      */
     public ItemStack getItemStack(){
-        return Common.createMobCoinItem(getAmountToDrop());
+        return itemStack;
     }
 
 }

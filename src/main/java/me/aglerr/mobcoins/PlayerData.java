@@ -110,7 +110,7 @@ public class PlayerData implements Cloneable {
     }
 
     /**
-     * Save player data to the database (call it async if needed)
+     * Save player data to the database (call it async if can)
      *
      * @param database {@link me.aglerr.mobcoins.database.SQLDatabase} instance
      */
