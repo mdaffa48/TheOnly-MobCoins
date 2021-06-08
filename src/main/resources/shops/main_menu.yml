@@ -1,0 +1,38 @@
+title: '&8Select Category'
+size: 27
+
+items:
+  categoryShop:
+    type: OPEN_CATEGORY_SHOP
+    material: BOOKSHELF
+    name: '&eCategory Shop &7(Click to open)'
+    glow: false
+    slots: [11]
+    amount: 1
+    lore: []
+  rotatingShop:
+    type: OPEN_ROTATING_SHOP
+    material: CLOCK
+    name: '&eRotating Shop &7(Click to open)'
+    glow: false
+    slots: [15]
+    amount: 1
+    lore: []
+  informationItem:
+    type: DUMMY
+    material: head;%player_name%
+    name: '&eYour Information'
+    glow: false
+    slots: [13]
+    amount: 1
+    lore:
+      - '&7Ping: &e%player_ping%ms'
+      - '&7Mobcoins: &e%mobcoins_balance_formatted% coins'
+  dummyItems:
+    type: DUMMY
+    material: BLACK_STAINED_GLASS_PANE
+    name: '&f'
+    glow: false
+    slots: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 14, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26]
+    amount: 1
+    lore: []

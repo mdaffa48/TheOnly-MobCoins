@@ -17,11 +17,12 @@ public class ManagerHandler {
     public ManagerHandler(MobCoins plugin){
         this.plugin = plugin;
 
+        this.managerList.put(ManagerType.DEPENDENCY_MANAGER, new DependencyManager(plugin));
         this.managerList.put(ManagerType.COIN_MOB_MANAGER, new CoinMobManager());
         this.managerList.put(ManagerType.PLAYER_DATA_MANAGER, new PlayerDataManager(plugin));
         this.managerList.put(ManagerType.SPAWNER_SPAWN_MANAGER, new SpawnerSpawnManager());
         this.managerList.put(ManagerType.SALARY_MANAGER, new SalaryManager(plugin.getConfig()));
-        this.managerList.put(ManagerType.DEPENDENCY_MANAGER, new DependencyManager());
+        this.managerList.put(ManagerType.SHOP_MANAGER, new ShopManager(plugin));
     }
 
     public void loadAllManagers(){
@@ -56,12 +57,17 @@ public class ManagerHandler {
         return (DependencyManager) this.managerList.get(ManagerType.DEPENDENCY_MANAGER);
     }
 
+    public ShopManager getShopManager(){
+        return (ShopManager) this.managerList.get(ManagerType.SHOP_MANAGER);
+    }
+
     private enum ManagerType{
         COIN_MOB_MANAGER,
         PLAYER_DATA_MANAGER,
         SPAWNER_SPAWN_MANAGER,
         SALARY_MANAGER,
-        DEPENDENCY_MANAGER
+        DEPENDENCY_MANAGER,
+        SHOP_MANAGER
     }
 
 }

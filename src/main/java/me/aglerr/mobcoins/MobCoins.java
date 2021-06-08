@@ -23,7 +23,6 @@ public class MobCoins extends JavaPlugin {
       TODO Shop (main menu, category shop, rotating shop)
       TODO Limit purchase
       TODO Stock system
-      TODO MythicMobs integration
      */
 
     /**

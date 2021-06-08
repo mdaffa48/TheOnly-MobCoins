@@ -59,6 +59,11 @@ public class ConfigValue {
     public static boolean SALARY_MODE_RECEIVE_AFTER_MESSAGE;
     public static List<String> SALARY_MODE_MESSAGES;
 
+    // Shops
+    public static String SHOP_BEHAVIOUR;
+    public static boolean AUTO_UPDATE_ENABLED;
+    public static int AUTO_UPDATE_UPDATE_EVERY;
+
     public static void initializeValue(FileConfiguration config){
         PREFIX = config.getString("messages.prefix");
 
@@ -107,6 +112,10 @@ public class ConfigValue {
         SALARY_MODE_ANNOUNCE_EVERY = config.getInt("salaryMode.announceEvery");
         SALARY_MODE_RECEIVE_AFTER_MESSAGE = config.getBoolean("salaryMode.receiveAfterMessage");
         SALARY_MODE_MESSAGES = config.getStringList("salaryMode.messages");
+
+        SHOP_BEHAVIOUR = config.getString("shops.shopBehaviour");
+        AUTO_UPDATE_ENABLED = config.getBoolean("shops.autoUpdate.enabled");
+        AUTO_UPDATE_UPDATE_EVERY = config.getInt("shops.autoUpdate.updateEvery");
 
     }
 

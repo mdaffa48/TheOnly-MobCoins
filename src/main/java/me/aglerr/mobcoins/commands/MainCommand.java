@@ -34,6 +34,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
         this.subCommandMap.put("help", new HelpCommand());
         this.subCommandMap.put("pay", new PayCommand());
         this.subCommandMap.put("set", new SetCommand());
+        this.subCommandMap.put("shop", new ShopCommand());
         this.subCommandMap.put("take", new TakeCommand());
     }
 

@@ -1,5 +1,6 @@
 package me.aglerr.mobcoins.utils;
 
+import com.cryptomorin.xseries.SkullUtils;
 import com.cryptomorin.xseries.XMaterial;
 import com.cryptomorin.xseries.XSound;
 import com.cryptomorin.xseries.messages.ActionBar;
@@ -8,6 +9,8 @@ import de.tr7zw.changeme.nbtapi.NBTItem;
 import fr.mrmicky.fastinv.ItemBuilder;
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.configs.ConfigValue;
+import me.aglerr.mobcoins.shops.items.TypeItem;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -17,6 +20,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.DecimalFormat;
@@ -117,6 +121,14 @@ public class Common {
 
     public static DecimalFormat getDecimalFormat(){
         return decimalFormat;
+    }
+
+    public static BukkitTask runTask(Runnable runnable){
+        return Bukkit.getScheduler().runTask(MobCoins.getInstance(), runnable);
+    }
+
+    public static BukkitTask runTaskTimer(int delay, int time, Runnable runnable){
+        return Bukkit.getScheduler().runTaskTimer(MobCoins.getInstance(), runnable, delay, time);
     }
 
     public static void runTaskAsynchronously(Runnable runnable){
@@ -229,6 +241,39 @@ public class Common {
 
         String message = config.getString(path + ".message");
         ActionBar.sendActionBar(player, Common.color(message));
+    }
+
+    public static ItemStack createItemStackWithHeadTextures(Player player, TypeItem item){
+        ItemStack stack;
+
+        if(item.getMaterial().contains(";")){
+            String[] split = item.getMaterial().split(";");
+            if(split[0].equalsIgnoreCase("head")){
+                stack = XMaterial.PLAYER_HEAD.parseItem();
+                SkullMeta skullMeta = (SkullMeta) stack.getItemMeta();
+                skullMeta.setDisplayName(PlaceholderAPI.setPlaceholders(player, item.getName()));
+                skullMeta.setLore(PlaceholderAPI.setPlaceholders(player, item.getLore()));
+                skullMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+                SkullUtils.applySkin(skullMeta, PlaceholderAPI.setPlaceholders(player, split[1]));
+                if(item.isGlow()){
+                    skullMeta.addEnchant(Enchantment.ARROW_INFINITE, 1, true);
+                    skullMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+                }
+                stack.setItemMeta(skullMeta);
+                stack.setAmount(item.getAmount());
+                return stack;
+            }
+        }
+
+        ItemBuilder builder = new ItemBuilder(XMaterial.matchXMaterial(item.getMaterial()).get().parseItem())
+                .name(PlaceholderAPI.setPlaceholders(player, item.getName()))
+                .lore(PlaceholderAPI.setPlaceholders(player, item.getLore()))
+                .flags(ItemFlag.HIDE_ATTRIBUTES)
+                .amount(item.getAmount());
+
+        if(item.isGlow()) builder.enchant(Enchantment.ARROW_INFINITE).flags(ItemFlag.HIDE_ENCHANTS);
+        stack = builder.build();
+        return stack;
     }
 
 }

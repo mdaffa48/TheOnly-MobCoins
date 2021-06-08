@@ -22,6 +22,17 @@ mobcoins:
 hooks:
   wildStacker: true
 
+# Configuration Information:
+#   (shopBehaviour) Available behaviour: MAIN_MENU, ROTATING_SHOP, CATEGORY_SHOP
+#   (autoUpdate)
+#     (enabled) should we always update inventory items info?
+#     (updateEvery) how often should we update the items (in ticks, 20 ticks = 1 second)?
+shops:
+  shopBehaviour: MAIN_MENU
+  autoUpdate:
+    enabled: true
+    updateEvery: 20
+
 # What world should we disable player from receiving mobcoin?
 disabledWorlds:
   - 'exampleWorld'
