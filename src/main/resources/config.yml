@@ -32,6 +32,7 @@ hooks:
 #     (updateEvery) how often should we update the items (in ticks, 20 ticks = 1 second)?
 shops:
   shopBehaviour: MAIN_MENU
+  closeAfterPurchase: true
   autoUpdate:
     enabled: true
     updateEvery: 20
@@ -135,6 +136,8 @@ messages:
   payOthers: "{prefix} &aYou have received &e{amount} &acoins from &e{player}"
   redeem: "{prefix} &aYou have redeemed &e{amount} &acoins."
   coinsReceived: "{prefix} &aYou have received &e{amount} &acoins."
+  itemOutOfStock: "{prefix} &cItem is out of stock!"
+  purchaseLimitReached: "{prefix} &cYou can not purchase this item anymore!"
   help:
     - "Current Help"
     - "/mobcoins help"

@@ -2,6 +2,7 @@ package me.aglerr.mobcoins.api;
 
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.PlayerData;
+import me.aglerr.mobcoins.managers.managers.RotatingShopManager;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -95,6 +96,7 @@ public class MobCoinsExpansion extends PlaceholderExpansion {
         }
 
         PlayerData playerData = MobCoinsAPI.getPlayerData(player);
+        RotatingShopManager rotatingShopManager = plugin.getManagerHandler().getRotatingShopManager();
 
         // %mobcoins_balance%
         if(identifier.equalsIgnoreCase("balance")){
@@ -114,6 +116,16 @@ public class MobCoinsExpansion extends PlaceholderExpansion {
         // %mobcoins_balance_shortformat%
         if(identifier.equalsIgnoreCase("balance_shortformat")){
             return playerData == null ? "0" : playerData.getCoinsShortFormat();
+        }
+
+        // %mobcoins_normaltime%
+        if(identifier.equalsIgnoreCase("normaltime")){
+            return rotatingShopManager.getFormattedNormalTime();
+        }
+
+        // %mobcoins_specialtime%
+        if(identifier.equalsIgnoreCase("specialtime")){
+            return rotatingShopManager.getFormattedSpecialTime();
         }
 
         // We return null if an invalid placeholder (f.e. %someplugin_placeholder3%)

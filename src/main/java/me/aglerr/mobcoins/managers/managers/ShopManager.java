@@ -15,17 +15,17 @@ import org.bukkit.entity.Player;
 
 public class ShopManager implements Manager {
 
-    private final ItemsLoader itemsLoader;
+    private final ItemsLoader itemsLoader = new ItemsLoader();
 
     private final MobCoins plugin;
     public ShopManager(MobCoins plugin){
         this.plugin = plugin;
-        this.itemsLoader = new ItemsLoader(plugin);
     }
 
     public void loadItems(){
         this.itemsLoader.loadMainMenuItems();
         this.itemsLoader.loadAdditionalRotatingItems();
+        this.itemsLoader.loadRotatingItems();
     }
 
     public void openInventory(Player player, InventoryType inventoryType){
@@ -52,7 +52,7 @@ public class ShopManager implements Manager {
             String title = config.getString("title");
             int size = config.getInt("size");
 
-            FastInv inventory = new RotatingShopInventory(plugin, player, size,title);
+            FastInv inventory = new RotatingShopInventory(plugin, player, size, title);
             inventory.open(player);
             return;
 

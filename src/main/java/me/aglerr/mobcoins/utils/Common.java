@@ -243,50 +243,53 @@ public class Common {
         ActionBar.sendActionBar(player, Common.color(message));
     }
 
-    public static ItemStack createItemStackWithHeadTextures(Player player, TypeItem item){
-        ItemStack stack;
-
-        if(item.getMaterial().contains(";")){
-            String[] split = item.getMaterial().split(";");
-            if(split[0].equalsIgnoreCase("head")){
-                stack = XMaterial.PLAYER_HEAD.parseItem();
-                SkullMeta skullMeta = (SkullMeta) stack.getItemMeta();
-                skullMeta.setDisplayName(PlaceholderAPI.setPlaceholders(player, item.getName()));
-                skullMeta.setLore(PlaceholderAPI.setPlaceholders(player, item.getLore()));
-                skullMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                SkullUtils.applySkin(skullMeta, PlaceholderAPI.setPlaceholders(player, split[1]));
-                if(item.isGlow()){
-                    skullMeta.addEnchant(Enchantment.ARROW_INFINITE, 1, true);
-                    skullMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-                }
-                stack.setItemMeta(skullMeta);
-                stack.setAmount(item.getAmount());
-                return stack;
+    public static String getFormattedTime(int seconds) {
+        if (seconds < 60) {
+            return seconds + "s";
+        }
+        int minutes = seconds / 60;
+        int s = 60 * minutes;
+        int secondsLeft = seconds - s;
+        if (minutes < 60) {
+            if (secondsLeft > 0) {
+                return minutes + "m " + secondsLeft + "s";
+            }
+            return minutes + "m";
+        }
+        if (minutes < 1440) {
+            String time;
+            int hours = minutes / 60;
+            time = hours + "h";
+            int inMins = 60 * hours;
+            int leftOver = minutes - inMins;
+            if (leftOver >= 1) {
+                time = time + " " + leftOver + "m";
+            }
+            if (secondsLeft > 0) {
+                time = time + " " + secondsLeft + "s";
+            }
+            return time;
+        }
+        String time = "";
+        int days = minutes / 1440;
+        time = days + "d";
+        int inMins = 1440 * days;
+        int leftOver = minutes - inMins;
+        if (leftOver >= 1) {
+            if (leftOver < 60) {
+                time = time + " " + leftOver + "m";
+            } else {
+                int hours = leftOver / 60;
+                time = time + " " + hours + "h";
+                int hoursInMins = 60 * hours;
+                int minsLeft = leftOver - hoursInMins;
+                time = time + " " + minsLeft + "m";
             }
         }
-
-        ItemStack optionalStack;
-        Optional<XMaterial> optionalMaterial = XMaterial.matchXMaterial(item.getMaterial());
-        if(optionalMaterial.isPresent()){
-            optionalStack = optionalMaterial.get().parseItem();
-        } else {
-            optionalStack = new ItemStack(Material.BARREL);
-            ItemMeta im = optionalStack.getItemMeta();
-            im.setDisplayName(Common.color("&c&lERROR!"));
-            im.setLore(Common.color(Collections.singletonList("&7Please check the configuration!")));
-            optionalStack.setItemMeta(im);
-            return optionalStack;
+        if (secondsLeft > 0) {
+            time = time + " " + secondsLeft + "s";
         }
-
-        ItemBuilder builder = new ItemBuilder(optionalStack)
-                .name(PlaceholderAPI.setPlaceholders(player, item.getName()))
-                .lore(PlaceholderAPI.setPlaceholders(player, item.getLore()))
-                .flags(ItemFlag.HIDE_ATTRIBUTES)
-                .amount(item.getAmount());
-
-        if(item.isGlow()) builder.enchant(Enchantment.ARROW_INFINITE).flags(ItemFlag.HIDE_ENCHANTS);
-        stack = builder.build();
-        return stack;
+        return time;
     }
 
 }

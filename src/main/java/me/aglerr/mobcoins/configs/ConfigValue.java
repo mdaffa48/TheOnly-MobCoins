@@ -21,6 +21,7 @@ public class ConfigValue {
 
     public static boolean PHYSICAL_MOBCOIN;
     public static boolean DISABLE_MOBCOIN_FROM_SPAWNER;
+    public static boolean CLOSE_AFTER_PURCHASE;
 
     public static String MESSAGES_NO_PERMISSION;
     public static String MESSAGES_BALANCE;
@@ -40,6 +41,8 @@ public class ConfigValue {
     public static String MESSAGES_PAY_OTHERS;
     public static String MESSAGES_REDEEM;
     public static String MESSAGES_COINS_RECEIVED;
+    public static String MESSAGES_ITEM_OUT_OF_STOCK;
+    public static String MESSAGES_PURCHASE_LIMIT_REACHED;
 
     public static List<String> MESSAGES_HELP;
     public static List<String> MESSAGES_HELP_ADMIN;
@@ -68,7 +71,35 @@ public class ConfigValue {
     public static String PLACEHOLDER_UNLIMITED_STOCK;
     public static String PLACEHOLDER_OUT_OF_STOCK;
 
-    public static void initializeValue(FileConfiguration config){
+    // Rotating Shop
+    public static int DEFAULT_NORMAL_TIME_RESET;
+    public static int DEFAULT_SPECIAL_TIME_RESET;
+
+    // Normal Items Refresh Actions
+
+    // Broadcast Message
+    public static boolean NORMAL_IS_BROADCAST_MESSAGE;
+    public static List<String> NORMAL_BROADCAST_MESSAGE_MESSAGES;
+
+    // Executes Commands
+    public static boolean NORMAL_IS_COMMAND;
+    public static List<String> NORMAL_COMMAND_COMMANDS;
+
+    // Special Items Refresh Actions
+
+    // Broadcast Message
+    public static boolean SPECIAL_IS_BROADCAST_MESSAGE;
+    public static List<String> SPECIAL_BROADCAST_MESSAGE_MESSAGES;
+
+    // Executes Commands
+    public static boolean SPECIAL_IS_COMMAND;
+    public static List<String> SPECIAL_COMMAND_COMMANDS;
+
+
+    public static void initializeValue(){
+        FileConfiguration config = Config.CONFIG.getConfig();
+        FileConfiguration rotatingShop = Config.ROTATING_SHOP_CONFIG.getConfig();
+
         PREFIX = config.getString("messages.prefix");
 
         IS_MYSQL = config.getBoolean("mysql.enabled");
@@ -97,6 +128,8 @@ public class ConfigValue {
         MESSAGES_PAY_OTHERS = config.getString("messages.payOthers");
         MESSAGES_REDEEM = config.getString("messages.redeem");
         MESSAGES_COINS_RECEIVED = config.getString("messages.coinsReceived");
+        MESSAGES_ITEM_OUT_OF_STOCK = config.getString("messages.itemOutOfStock");
+        MESSAGES_PURCHASE_LIMIT_REACHED = config.getString("messages.purchaseLimitReached");
 
         MESSAGES_HELP = config.getStringList("messages.help");
         MESSAGES_HELP_ADMIN = config.getStringList("messages.helpAdmin");
@@ -106,6 +139,7 @@ public class ConfigValue {
 
         PHYSICAL_MOBCOIN = config.getBoolean("mobcoins.physicalMobCoin");
         DISABLE_MOBCOIN_FROM_SPAWNER = config.getBoolean("mobcoins.disableMobCoinFromSpawner");
+        CLOSE_AFTER_PURCHASE = config.getBoolean("shops.closeAfterPurchase");
 
         MOBCOINS_ITEM_MATERIAL = config.getString("mobcoinsItem.material");
         MOBCOINS_ITEM_NAME = config.getString("mobcoinsItem.name");
@@ -123,6 +157,21 @@ public class ConfigValue {
 
         PLACEHOLDER_UNLIMITED_STOCK = config.getString("placeholders.unlimitedStock");
         PLACEHOLDER_OUT_OF_STOCK = config.getString("placeholders.outOfStock");
+
+        DEFAULT_NORMAL_TIME_RESET = rotatingShop.getInt("rotatingShop.normalTimeReset");
+        DEFAULT_SPECIAL_TIME_RESET = rotatingShop.getInt("rotatingShop.specialTimeReset");
+
+        NORMAL_IS_BROADCAST_MESSAGE = rotatingShop.getBoolean("rotatingShop.refreshActions.normalItems.broadcastMessage.enabled");
+        NORMAL_BROADCAST_MESSAGE_MESSAGES = rotatingShop.getStringList("rotatingShop.refreshActions.normalItems.broadcastMessage.messages");
+
+        NORMAL_IS_COMMAND = rotatingShop.getBoolean("rotatingShop.refreshActions.normalItems.commands.enabled");
+        NORMAL_COMMAND_COMMANDS = rotatingShop.getStringList("rotatingShop.refreshActions.normalItems.commands.commands");
+
+        SPECIAL_IS_BROADCAST_MESSAGE = rotatingShop.getBoolean("rotatingShop.refreshActions.specialItems.broadcastMessage.enabled");
+        SPECIAL_BROADCAST_MESSAGE_MESSAGES = rotatingShop.getStringList("rotatingShop.refreshActions.specialItems.broadcastMessage.messages");
+
+        SPECIAL_IS_COMMAND = rotatingShop.getBoolean("rotatingShop.refreshActions.specialItems.commands.enabled");
+        SPECIAL_COMMAND_COMMANDS = rotatingShop.getStringList("rotatingShop.refreshActions.specialItems.commands.commands");
 
     }
 

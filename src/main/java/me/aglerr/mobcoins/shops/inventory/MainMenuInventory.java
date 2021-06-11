@@ -7,6 +7,7 @@ import me.aglerr.mobcoins.configs.ConfigValue;
 import me.aglerr.mobcoins.managers.managers.ShopManager;
 import me.aglerr.mobcoins.shops.items.TypeItem;
 import me.aglerr.mobcoins.utils.Common;
+import me.aglerr.mobcoins.utils.ItemManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -36,7 +37,7 @@ public class MainMenuInventory extends FastInv {
         for(TypeItem item : shopManager.getItemsLoader().getMainMenuItems()){
 
             // Create the item
-            ItemStack stack = Common.createItemStackWithHeadTextures(player, item);
+            ItemStack stack = ItemManager.createItemStackWithHeadTextures(player, item);
 
             // Put the item on the inventory
             setItems(Ints.toArray(item.getSlots()), stack, event -> {

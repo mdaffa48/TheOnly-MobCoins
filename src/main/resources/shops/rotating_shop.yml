@@ -98,31 +98,317 @@ rotatingShop:
 
 items:
   fillGlass:
+    type: DUMMY
     material: STAINED_GLASS_PANE
     name: '&f'
-    slots: [0, 1, 3, 4, 5, 7, 8, 9, 13, 14, 16, 17, 18, 22, 23, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34]
+    slots: [0, 1, 3, 4, 5, 7, 8, 9, 13, 14, 16, 17, 18, 22, 23, 25, 26, 28, 29, 30, 31, 32, 33, 34]
+    amount: 1
+    glow: false
+    lore: []
   normalClock:
+    type: DUMMY
     material: CLOCK
     name: '&e&lNORMAL ITEMS'
     slots: [2]
+    glow: false
+    amount: 1
     lore:
       - ""
       - "&6&l* &eTime Remaining: &7%mobcoins_normaltime%"
       - "&7&o((The normal items will changed every 24 hours))"
   specialClock:
+    type: DUMMY
     material: CLOCK
     name: '&e&lSPECIAL ITEMS'
     slots: [6]
+    glow: false
+    amount: 1
     lore:
       - ""
       - "&6&l* &eTime Remaining: &7%mobcoins_specialtime%"
       - "&7&o((The special items will changed every 3 days))"
   informationBook:
+    type: DUMMY
     material: BOOK
     name: '&eInformation'
     slots: [35]
+    glow: true
+    amount: 1
     lore:
       - "&6Tips: &7You can obtain mobcoins by killing"
       - "&7mobs or trade with other players"
       - ""
-      - "&7You have &6%mobcoins_balance_formatted%"
+      - "&7You have &6%mobcoins_balance_formatted% &7mobcoins"
+  backItem:
+    type: BACK
+    material: head;eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODY1MmUyYjkzNmNhODAyNmJkMjg2NTFkN2M5ZjI4MTlkMmU5MjM2OTc3MzRkMThkZmRiMTM1NTBmOGZkYWQ1ZiJ9fX0=
+    name: '&cBack'
+    slots: [27]
+    glow: false
+    amount: 1
+    lore: []
+
+# Configuration Information:
+#
+# shops
+#   (configKey) You can set to whatever config key, but it must be unique!
+#     (material) The material of the displayed item
+#     (name) The item display name
+#     (amount) The displayed item amount
+#     (glowing) Should the item have glowing (enchanted) effect?
+#     (price) The price for this item
+#     (special) Is the item a special item?
+#     (purchaseLimit) How many times per player can purchase this item? (Set '-1' to disable)
+#     (stock) The stock for this item (Set '-1' to disabled)
+#     (lore) The lore of the displayed item
+#     (commands) List of commands that will be executed after player bought the item
+#
+# Available Placeholders for (lore)
+# - {price} - return the item price
+# - {player_limit} - return the purchase limit amount that player has on that item
+# - {item_limit} - return the purchase limit of the item
+# - {stock} - get the item current stock
+# - All of PlaceholderAPI placeholders
+#
+# Available Placeholders for (commands)
+# - {player} - return the player's name that bought the item
+#
+shops:
+  'tnt':
+    material: TNT
+    name: '&c32x TNT'
+    amount: 32
+    glowing: false
+    price: 10.25
+    special: false
+    purchaseLimit: 3
+    stock: 5
+    lore:
+      - '&7Buy 16 TNT blocks!'
+      - ''
+      - '&7Price: &6{price} coins'
+      - '&7Purchase Limit: &6{player_limit} / {item_limit}'
+      - '&7Stock: &6{stock}'
+      - ''
+      - '&a&lCLICK TO PURCHASE!'
+    commands:
+      - 'give {player} TNT 16'
+      - 'broadcast &c&l{player} just purchased 32x TNT'
+  'diamondSword':
+    material: DIAMOND_SWORD
+    name: '&b1x Diamond Sword'
+    amount: 1
+    glowing: false
+    price: 9.15
+    special: false
+    purchaseLimit: 3
+    stock: 10
+    lore:
+      - '&7Buy 1x Diamond Sword!'
+      - ''
+      - '&7Price: &6{price} coins'
+      - '&7Purchase Limit: &6{player_limit} / {item_limit}'
+      - '&7Stock: &6{stock}'
+      - ''
+      - '&a&lCLICK TO PURCHASE!'
+    commands:
+      - 'give {player} DIAMOND_SWORD 1'
+      - 'broadcast &b&l{player} just purchased 1x Diamond Sword'
+  'diamondHelmet':
+    material: DIAMOND_HELMET
+    name: '&b1x Diamond Helmet'
+    amount: 1
+    glowing: false
+    price: 8.95
+    special: false
+    purchaseLimit: 3
+    stock: 10
+    lore:
+      - '&7Buy 1x Diamond Helmet!'
+      - ''
+      - '&7Price: &6{price} coins'
+      - '&7Purchase Limit: &6{player_limit} / {item_limit}'
+      - '&7Stock: &6{stock}'
+      - ''
+      - '&a&lCLICK TO PURCHASE!'
+    commands:
+      - 'give {player} DIAMOND_HELMET 1'
+      - 'broadcast &b&l{player} just purchased 1x Diamond Helmet'
+  'diamondChestplate':
+    material: DIAMOND_CHESTPLATE
+    name: '&b1x Diamond Chestplate'
+    amount: 1
+    glowing: false
+    price: 12.15
+    special: false
+    purchaseLimit: 3
+    stock: 10
+    lore:
+      - '&7Buy 1x Diamond Chestplate!'
+      - ''
+      - '&7Price: &6{price} coins'
+      - '&7Purchase Limit: &6{player_limit} / {item_limit}'
+      - '&7Stock: &6{stock}'
+      - ''
+      - '&a&lCLICK TO PURCHASE!'
+    commands:
+      - 'give {player} DIAMOND_CHESTPLATE 1'
+      - 'broadcast &b&l{player} just purchased 1x Diamond Chestplate'
+  'diamondLeggings':
+    material: DIAMOND_LEGGINGS
+    name: '&b1x Diamond Leggings'
+    amount: 1
+    glowing: false
+    price: 10.50
+    special: false
+    purchaseLimit: 3
+    stock: 10
+    lore:
+      - '&7Buy 1x Diamond Leggings!'
+      - ''
+      - '&7Price: &6{price} coins'
+      - '&7Purchase Limit: &6{player_limit} / {item_limit}'
+      - '&7Stock: &6{stock}'
+      - ''
+      - '&a&lCLICK TO PURCHASE!'
+    commands:
+      - 'give {player} DIAMOND_LEGGINGS 1'
+      - 'broadcast &b&l{player} just purchased 1x Diamond Leggings'
+  'diamondBoots':
+    material: DIAMOND_BOOTS
+    name: '&b1x Diamond Boots'
+    amount: 1
+    glowing: false
+    price: 7.45
+    special: false
+    purchaseLimit: 3
+    stock: 10
+    lore:
+      - '&7Buy 1x Diamond Boots!'
+      - ''
+      - '&7Price: &6{price} coins'
+      - '&7Purchase Limit: &6{player_limit} / {item_limit}'
+      - '&7Stock: &6{stock}'
+      - ''
+      - '&a&lCLICK TO PURCHASE!'
+    commands:
+      - 'give {player} DIAMOND_BOOTS 1'
+      - 'broadcast &b&l{player} just purchased 1x Diamond Boots'
+  'hoppers':
+    material: HOPPER
+    name: '&eHopper'
+    amount: 1
+    glowing: false
+    price: 5.45
+    special: false
+    purchaseLimit: -1
+    stock: 100
+    lore:
+      - '&7Buy 1x Hopper'
+      - ''
+      - '&7Price: &6{price} coins'
+      - '&7Stock: &6{stock}'
+      - ''
+      - '&a&lCLICK TO PURCHASE'
+    commands:
+      - 'give {player} HOPPER 1'
+      - 'broadcast &e&l{player} just purchased 1x Hopper'
+  'glass':
+    material: GLASS
+    name: '&eGlass'
+    amount: 1
+    glowing: false
+    price: 1
+    special: false
+    purchaseLimit: 5
+    stock: -1
+    lore:
+      - '&7Buy 1x Glass'
+      - ''
+      - '&7Price: &6{price} coins'
+      - '&7Stock: &6{stock}'
+      - ''
+      - '&a&lCLICK TO PURCHASE'
+    commands:
+      - 'give {player} GLASS 1'
+      - 'broadcast &e&l{player} just purchased 1x Glass'
+  'ironBlock':
+    material: IRON_BLOCK
+    name: '&f32x Iron Block'
+    amount: 32
+    glowing: false
+    price: 12.30
+    special: true
+    purchaseLimit: 5
+    stock: 100
+    lore:
+      - '&7Buy 32x Iron Block'
+      - ''
+      - '&7Price: &6{price} coins'
+      - '&7Purchase Limit: &6{player_limit} / {item_limit}'
+      - '&7Stock: &6{stock}'
+      - ''
+      - '&a&lCLICK TO PURCHASE'
+    commands:
+      - 'give {player} IRON_BLOCK 32'
+      - 'broadcast &f&l{player} just purchased 32x Iron Block'
+  'goldBlock':
+    material: GOLD_BLOCK
+    name: '&e32x Gold Block'
+    amount: 32
+    glowing: false
+    price: 15.25
+    special: true
+    purchaseLimit: 4
+    stock: 100
+    lore:
+      - '&7Buy 32x Gold Block'
+      - ''
+      - '&7Price: &6{price} coins'
+      - '&7Purchase Limit: &6{player_limit} / {item_limit}'
+      - '&7Stock: &6{stock}'
+      - ''
+      - '&a&lCLICK TO PURCHASE'
+    commands:
+      - 'give {player} GOLD_BLOCK 32'
+      - 'broadcast &e&l{player} just purchased 32x Gold Block'
+  'diamondBlock':
+    material: IRON_BLOCK
+    name: '&b32x Diamond Block'
+    amount: 32
+    glowing: false
+    price: 19.55
+    special: true
+    purchaseLimit: 3
+    stock: 100
+    lore:
+      - '&7Buy 32x Diamond Block'
+      - ''
+      - '&7Price: &6{price} coins'
+      - '&7Purchase Limit: &6{player_limit} / {item_limit}'
+      - '&7Stock: &6{stock}'
+      - ''
+      - '&a&lCLICK TO PURCHASE'
+    commands:
+      - 'give {player} DIAMOND_BLOCK 32'
+      - 'broadcast &b&l{player} just purchased 32x Diamond Block'
+  'emeraldBlock':
+    material: EMERALD_BLOCK
+    name: '&a32x Emerald Block'
+    amount: 32
+    glowing: false
+    price: 22.45
+    special: true
+    purchaseLimit: 2
+    stock: 100
+    lore:
+      - '&7Buy 32x Emerald Block'
+      - ''
+      - '&7Price: &6{price} coins'
+      - '&7Purchase Limit: &6{player_limit} / {item_limit}'
+      - '&7Stock: &6{stock}'
+      - ''
+      - '&a&lCLICK TO PURCHASE'
+    commands:
+      - 'give {player} EMERALD_BLOCK 32'
+      - 'broadcast &a&l{player} just purchased 32x Emerald Block'

@@ -46,6 +46,10 @@ public class StockManager implements Manager {
 
     // This method are used when someone bought an item on the shop
     public void putOrDecrease(TypeItem item){
+
+        // Return if the stock is disabled for the item
+        if(item.getStock() < 0) return;
+
         // Put the item with decreased stock by 1
         if(!this.stock.containsKey(item.getConfigKey())){
             int decreasedStock = item.getStock() - 1;
@@ -61,6 +65,10 @@ public class StockManager implements Manager {
         // If the item exist on the data, decrease the stock by 1
         int currentStock = this.stock.get(item.getConfigKey());
         int decreasedStock = currentStock - 1;
+
+        if(decreasedStock < 0)
+            decreasedStock = 0;
+
         this.stock.put(item.getConfigKey(), decreasedStock);
 
         Common.debug(true, "Decreasing item stock data (item: {item}, before: {before}, after: {after})"

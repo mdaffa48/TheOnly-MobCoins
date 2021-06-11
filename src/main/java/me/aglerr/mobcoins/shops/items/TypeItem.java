@@ -18,8 +18,9 @@ public class TypeItem {
     private final List<String> lore;
     private final List<String> commands;
     private final boolean rotatingShop;
+    private final boolean isSpecial;
 
-    public TypeItem(String configKey, String type, String category, String material, String name, boolean glow, List<Integer> slots, int amount, double price, int purchaseLimit, int stock, List<String> lore, List<String> commands, boolean rotatingShop) {
+    public TypeItem(String configKey, String type, String category, String material, String name, boolean glow, List<Integer> slots, int amount, double price, int purchaseLimit, int stock, List<String> lore, List<String> commands, boolean rotatingShop, boolean isSpecial) {
         this.configKey = configKey;
         this.type = type;
         this.category = category;
@@ -34,6 +35,7 @@ public class TypeItem {
         this.lore = lore;
         this.commands = commands;
         this.rotatingShop = rotatingShop;
+        this.isSpecial = isSpecial;
     }
 
     public String getConfigKey(){
@@ -90,5 +92,9 @@ public class TypeItem {
 
     public boolean isRotatingShop() {
         return rotatingShop;
+    }
+
+    public boolean isSpecial() {
+        return isSpecial;
     }
 }

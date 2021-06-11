@@ -40,7 +40,7 @@ public class MobCoins extends JavaPlugin {
         Config.initialize();
 
         // Initialize all config value
-        ConfigValue.initializeValue(Config.CONFIG.getConfig());
+        ConfigValue.initializeValue();
 
         // Initialize database
         database = new SQLDatabase(this);

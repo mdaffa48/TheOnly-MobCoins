@@ -25,6 +25,7 @@ public class ManagerHandler {
         this.managerList.put(ManagerType.SHOP_MANAGER, new ShopManager(plugin));
         this.managerList.put(ManagerType.STOCK_MANAGER, new StockManager());
         this.managerList.put(ManagerType.PURCHASE_LIMIT_MANAGER, new PurchaseLimitManager());
+        this.managerList.put(ManagerType.ROTATING_SHOP_MANAGER, new RotatingShopManager());
     }
 
     public void loadAllManagers(){
@@ -71,6 +72,10 @@ public class ManagerHandler {
         return (PurchaseLimitManager) this.managerList.get(ManagerType.PURCHASE_LIMIT_MANAGER);
     }
 
+    public RotatingShopManager getRotatingShopManager(){
+        return (RotatingShopManager) this.managerList.get(ManagerType.ROTATING_SHOP_MANAGER);
+    }
+
     private enum ManagerType{
         COIN_MOB_MANAGER,
         PLAYER_DATA_MANAGER,
@@ -79,7 +84,8 @@ public class ManagerHandler {
         DEPENDENCY_MANAGER,
         SHOP_MANAGER,
         STOCK_MANAGER,
-        PURCHASE_LIMIT_MANAGER
+        PURCHASE_LIMIT_MANAGER,
+        ROTATING_SHOP_MANAGER
     }
 
 }

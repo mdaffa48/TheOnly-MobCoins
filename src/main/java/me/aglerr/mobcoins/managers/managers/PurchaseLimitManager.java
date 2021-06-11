@@ -8,6 +8,7 @@ import me.aglerr.mobcoins.managers.Manager;
 import me.aglerr.mobcoins.shops.items.TypeItem;
 import me.aglerr.mobcoins.utils.Common;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
@@ -15,7 +16,9 @@ public class PurchaseLimitManager implements Manager {
 
     private final Table<UUID, String, Integer> purchaseTable = HashBasedTable.create();
 
-    public int getPlayerPurchaseLimit(UUID uuid, TypeItem item){
+    public int getPlayerPurchaseLimit(Player player, TypeItem item){
+        UUID uuid = player.getUniqueId();
+
         // Check if player have a purchase limit data for this item
         if(this.purchaseTable.contains(uuid, item.getConfigKey())){
             // Return the purchase limit amount from the data
@@ -25,7 +28,12 @@ public class PurchaseLimitManager implements Manager {
         return 0;
     }
 
-    public void putOrIncreasePlayerPurchaseLimit(UUID uuid, TypeItem item){
+    public void putOrIncreasePlayerPurchaseLimit(Player player, TypeItem item){
+        UUID uuid = player.getUniqueId();
+
+        // Return if purchase limit is disabled for the item
+        if(item.getPurchaseLimit() < 0) return;
+
         // Check if player have a purchase limit data for this item
         if(this.purchaseTable.contains(uuid, item.getConfigKey())){
             // Getting the current purchase limit for the player
