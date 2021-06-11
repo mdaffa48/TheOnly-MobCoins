@@ -59,6 +59,7 @@ public class MythicMobsDeathListener implements Listener {
             World world = entity.getWorld();
             // Drop the item in entity location
             world.dropItemNaturally(entity.getLocation(), stack);
+            Common.debug(true, "Successfully spawned physical mobcoin (coins: " + spawnEvent.getAmountToDrop() + ", mythicmobs: true)");
             return;
         }
 
@@ -77,6 +78,8 @@ public class MythicMobsDeathListener implements Listener {
             MobCoinsReceiveEvent receiveEvent = new MobCoinsReceiveEvent(player, (LivingEntity) entity, amountDrop, true, event.getMobType());
             Bukkit.getPluginManager().callEvent(receiveEvent);
             if (receiveEvent.isCancelled()) return;
+
+            Common.debug(true, player.getName() + " received virtual mobcoins! (coins: " + receiveEvent.getAmountReceived() + ", reason: entity death, mythicmobs: true)");
 
             // Check if Salary Mode is enabled
             if (ConfigValue.SALARY_MODE_ENABLED) {

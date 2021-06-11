@@ -79,7 +79,14 @@ public class MainCommand implements CommandExecutor, TabCompleter {
 
             suggestions.add("help");
 
-            if(sender.hasPermission("mobcoins.balance")){ suggestions.add("balance"); }
+            if(sender.hasPermission("mobcoins.balance"))
+                suggestions.add("balance");
+
+            if(sender.hasPermission("mobcoins.shop"))
+                suggestions.add("shop");
+
+            if(sender.hasPermission("mobcoins.pay"))
+                suggestions.add("pay");
 
             if(sender.hasPermission("mobcoins.admin")){
                 suggestions.add("set");

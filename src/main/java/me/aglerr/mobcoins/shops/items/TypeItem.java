@@ -13,12 +13,13 @@ public class TypeItem {
     private final List<Integer> slots;
     private final int amount;
     private final double price;
-    private final int buyLimit;
+    private final int purchaseLimit;
     private final int stock;
     private final List<String> lore;
     private final List<String> commands;
+    private final boolean rotatingShop;
 
-    public TypeItem(String configKey, String type, String category, String material, String name, boolean glow, List<Integer> slots, int amount, double price, int buyLimit, int stock, List<String> lore, List<String> commands) {
+    public TypeItem(String configKey, String type, String category, String material, String name, boolean glow, List<Integer> slots, int amount, double price, int purchaseLimit, int stock, List<String> lore, List<String> commands, boolean rotatingShop) {
         this.configKey = configKey;
         this.type = type;
         this.category = category;
@@ -28,10 +29,11 @@ public class TypeItem {
         this.slots = slots;
         this.amount = amount;
         this.price = price;
-        this.buyLimit = buyLimit;
+        this.purchaseLimit = purchaseLimit;
         this.stock = stock;
         this.lore = lore;
         this.commands = commands;
+        this.rotatingShop = rotatingShop;
     }
 
     public String getConfigKey(){
@@ -70,8 +72,8 @@ public class TypeItem {
         return price;
     }
 
-    public int getBuyLimit() {
-        return buyLimit;
+    public int getPurchaseLimit(){
+        return purchaseLimit;
     }
 
     public int getStock() {
@@ -84,5 +86,9 @@ public class TypeItem {
 
     public List<String> getCommands() {
         return commands;
+    }
+
+    public boolean isRotatingShop() {
+        return rotatingShop;
     }
 }

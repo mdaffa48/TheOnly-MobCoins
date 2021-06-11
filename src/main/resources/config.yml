@@ -19,10 +19,13 @@ mobcoins:
   physicalMobCoin: false
   disableMobCoinFromSpawner: true
 
+# Hooks Information:
+#   (wildStacker) Multiply the amount of dropped mobcoins by how many mobs dies
 hooks:
   wildStacker: true
 
 # Configuration Information:
+#   (shopBehaviour) Basically tells the plugin what menu should opened up upon executing shop command
 #   (shopBehaviour) Available behaviour: MAIN_MENU, ROTATING_SHOP, CATEGORY_SHOP
 #   (autoUpdate)
 #     (enabled) should we always update inventory items info?
@@ -32,6 +35,11 @@ shops:
   autoUpdate:
     enabled: true
     updateEvery: 20
+
+# List of all placeholders that are being used
+placeholders:
+  unlimitedStock: "&aUnlimited"
+  outOfStock: "&c&lOUT OF STOCK"
 
 # What world should we disable player from receiving mobcoin?
 disabledWorlds:

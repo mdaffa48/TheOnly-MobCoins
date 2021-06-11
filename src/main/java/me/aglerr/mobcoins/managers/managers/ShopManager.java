@@ -7,13 +7,9 @@ import me.aglerr.mobcoins.configs.Config;
 import me.aglerr.mobcoins.managers.Manager;
 import me.aglerr.mobcoins.shops.inventory.MainMenuInventory;
 import me.aglerr.mobcoins.shops.items.ItemsLoader;
-import me.aglerr.mobcoins.utils.Common;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 
 public class ShopManager implements Manager {
 
@@ -33,7 +29,6 @@ public class ShopManager implements Manager {
 
         // Check if requested inventory is MAIN_MENU
         if(inventoryType == InventoryType.MAIN_MENU){
-
             FileConfiguration config = Config.MAIN_MENU_CONFIG.getConfig();
 
             // Create a new inventory instance and open it for player
@@ -43,6 +38,29 @@ public class ShopManager implements Manager {
             FastInv inventory = new MainMenuInventory(plugin, player, size, title);
             inventory.open(player);
             return;
+
+        }
+
+        if(inventoryType == InventoryType.ROTATING_SHOP){
+            FileConfiguration config = Config.ROTATING_SHOP_CONFIG.getConfig();
+
+            // Create a new inventory instance and open it for player
+            String title = config.getString("title");
+            int size = config.getInt("size");
+
+            Bukkit.broadcastMessage("Opening rotating inventory...");
+            return;
+
+        }
+
+        if(inventoryType == InventoryType.CATEGORY_SHOP){
+            FileConfiguration config = Config.CATEGORY_SHOP_CONFIG.getConfig();
+
+            // Create a new inventory instance and open it for player
+            String title = config.getString("title");
+            int size = config.getInt("size");
+
+            Bukkit.broadcastMessage("Opening category inventory...");
 
         }
 

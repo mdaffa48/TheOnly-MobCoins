@@ -23,6 +23,8 @@ public class ManagerHandler {
         this.managerList.put(ManagerType.SPAWNER_SPAWN_MANAGER, new SpawnerSpawnManager());
         this.managerList.put(ManagerType.SALARY_MANAGER, new SalaryManager(plugin.getConfig()));
         this.managerList.put(ManagerType.SHOP_MANAGER, new ShopManager(plugin));
+        this.managerList.put(ManagerType.STOCK_MANAGER, new StockManager());
+        this.managerList.put(ManagerType.PURCHASE_LIMIT_MANAGER, new PurchaseLimitManager());
     }
 
     public void loadAllManagers(){
@@ -61,13 +63,23 @@ public class ManagerHandler {
         return (ShopManager) this.managerList.get(ManagerType.SHOP_MANAGER);
     }
 
+    public StockManager getStockManager(){
+        return (StockManager) this.managerList.get(ManagerType.STOCK_MANAGER);
+    }
+
+    public PurchaseLimitManager getPurchaseLimitManager(){
+        return (PurchaseLimitManager) this.managerList.get(ManagerType.PURCHASE_LIMIT_MANAGER);
+    }
+
     private enum ManagerType{
         COIN_MOB_MANAGER,
         PLAYER_DATA_MANAGER,
         SPAWNER_SPAWN_MANAGER,
         SALARY_MANAGER,
         DEPENDENCY_MANAGER,
-        SHOP_MANAGER
+        SHOP_MANAGER,
+        STOCK_MANAGER,
+        PURCHASE_LIMIT_MANAGER
     }
 
 }

@@ -13,50 +13,52 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
 
 public class MainMenuInventory extends FastInv {
+
     public MainMenuInventory(MobCoins plugin, Player player, int size, String title) {
         super(size, Common.color(title));
 
-        ShopManager shopManager = plugin.getManagerHandler().getShopManager();
+        // Placing all loaded main menu items
+        this.setAllItems(plugin, player);
 
+        if(ConfigValue.AUTO_UPDATE_ENABLED){
+            // Start the updating task when player open the inventory
+            BukkitTask task = Common.runTaskTimer(0,
+                    ConfigValue.AUTO_UPDATE_UPDATE_EVERY,
+                    () -> this.setAllItems(plugin, player));
+
+            // Stopping task when player close the inventory
+            this.addCloseHandler(event -> task.cancel());
+        }
+    }
+
+    private void setAllItems(MobCoins plugin, Player player){
+        ShopManager shopManager = plugin.getManagerHandler().getShopManager();
+        // Loop through all loaded main menu items
         for(TypeItem item : shopManager.getItemsLoader().getMainMenuItems()){
 
+            // Create the item
             ItemStack stack = Common.createItemStackWithHeadTextures(player, item);
+
+            // Put the item on the inventory
             setItems(Ints.toArray(item.getSlots()), stack, event -> {
 
+                // Inventory Click Event //
+
+                // Cancelling the event so player can not move items on the inventory
                 event.setCancelled(true);
 
+                // Opening category shop If the item type is OPEN_CATEGORY_SHOP
                 if(item.getType().equalsIgnoreCase("OPEN_CATEGORY_SHOP")){
                     Bukkit.broadcastMessage("Opening category shop!");
                 }
 
+                // Opening rotating shop If the item type is OPEN_ROTATING_SHOP
                 if(item.getType().equalsIgnoreCase("OPEN_ROTATING_SHOP")){
                     Bukkit.broadcastMessage("Opening rotating shop!");
                 }
+
             });
         }
-
-        if(ConfigValue.AUTO_UPDATE_ENABLED){
-            BukkitTask task = Common.runTaskTimer(0, ConfigValue.AUTO_UPDATE_UPDATE_EVERY, () -> {
-                for(TypeItem item : shopManager.getItemsLoader().getMainMenuItems()){
-
-                    ItemStack stack = Common.createItemStackWithHeadTextures(player, item);
-                    setItems(Ints.toArray(item.getSlots()), stack, event -> {
-
-                        event.setCancelled(true);
-
-                        if(item.getType().equalsIgnoreCase("OPEN_CATEGORY_SHOP")){
-                            Bukkit.broadcastMessage("Opening category shop!");
-                        }
-
-                        if(item.getType().equalsIgnoreCase("OPEN_ROTATING_SHOP")){
-                            Bukkit.broadcastMessage("Opening rotating shop!");
-                        }
-                    });
-                }
-            });
-
-            this.addCloseHandler(event -> task.cancel());
-        }
-
     }
+
 }

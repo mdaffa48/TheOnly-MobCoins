@@ -58,15 +58,14 @@ public class EntityDeathListener implements Listener {
 
         // Physical Mobcoin
         if(ConfigValue.PHYSICAL_MOBCOIN){
-            if(entity.getKiller() == null){
-                MobCoinsSpawnEvent spawnEvent = new MobCoinsSpawnEvent(entity, coinMob, amountDrop);
-                Bukkit.getPluginManager().callEvent(spawnEvent);
-                if(spawnEvent.isCancelled()) return;
+            MobCoinsSpawnEvent spawnEvent = new MobCoinsSpawnEvent(entity, coinMob, amountDrop);
+            Bukkit.getPluginManager().callEvent(spawnEvent);
+            if(spawnEvent.isCancelled()) return;
 
-                ItemStack stack = spawnEvent.getItemStack();
-                World world = entity.getWorld();
-                world.dropItemNaturally(entity.getLocation(), stack);
-            }
+            ItemStack stack = spawnEvent.getItemStack();
+            World world = entity.getWorld();
+            world.dropItemNaturally(entity.getLocation(), stack);
+            Common.debug(true, "Successfully spawned physical mobcoin (coins: " + spawnEvent.getAmountToDrop() + ", mythicmobs: false)");
             return;
         }
 
@@ -85,6 +84,8 @@ public class EntityDeathListener implements Listener {
             MobCoinsReceiveEvent receiveEvent = new MobCoinsReceiveEvent(player, entity, amountDrop, false, null);
             Bukkit.getPluginManager().callEvent(receiveEvent);
             if(receiveEvent.isCancelled()) return;
+
+            Common.debug(true, player.getName() + " received virtual mobcoins! (coins: " + receiveEvent.getAmountReceived() + ", reason: entity death, mythicmobs: false)");
 
             // Check if Salary Mode is enabled
             if(ConfigValue.SALARY_MODE_ENABLED){

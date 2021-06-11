@@ -38,7 +38,7 @@ public class ItemsLoader {
             List<String> commands = config.getStringList(path + "commands");
 
             TypeItem typeItem = new TypeItem(key, type, category, material, name, glow, slots,
-                    amount, price, buyLimit, stock, lore, commands);
+                    amount, price, buyLimit, stock, lore, commands, false);
             this.mainMenuItems.add(typeItem);
 
         }

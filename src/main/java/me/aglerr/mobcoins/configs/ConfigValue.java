@@ -64,6 +64,10 @@ public class ConfigValue {
     public static boolean AUTO_UPDATE_ENABLED;
     public static int AUTO_UPDATE_UPDATE_EVERY;
 
+    // Placeholders
+    public static String PLACEHOLDER_UNLIMITED_STOCK;
+    public static String PLACEHOLDER_OUT_OF_STOCK;
+
     public static void initializeValue(FileConfiguration config){
         PREFIX = config.getString("messages.prefix");
 
@@ -116,6 +120,9 @@ public class ConfigValue {
         SHOP_BEHAVIOUR = config.getString("shops.shopBehaviour");
         AUTO_UPDATE_ENABLED = config.getBoolean("shops.autoUpdate.enabled");
         AUTO_UPDATE_UPDATE_EVERY = config.getInt("shops.autoUpdate.updateEvery");
+
+        PLACEHOLDER_UNLIMITED_STOCK = config.getString("placeholders.unlimitedStock");
+        PLACEHOLDER_OUT_OF_STOCK = config.getString("placeholders.outOfStock");
 
     }
 
