@@ -6,7 +6,9 @@ import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.configs.Config;
 import me.aglerr.mobcoins.managers.Manager;
 import me.aglerr.mobcoins.shops.inventory.MainMenuInventory;
+import me.aglerr.mobcoins.shops.inventory.RotatingShopInventory;
 import me.aglerr.mobcoins.shops.items.ItemsLoader;
+import me.aglerr.mobcoins.utils.Common;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -23,6 +25,7 @@ public class ShopManager implements Manager {
 
     public void loadItems(){
         this.itemsLoader.loadMainMenuItems();
+        this.itemsLoader.loadAdditionalRotatingItems();
     }
 
     public void openInventory(Player player, InventoryType inventoryType){
@@ -41,6 +44,7 @@ public class ShopManager implements Manager {
 
         }
 
+        // Check if requested inventory is ROTATING_SHOP
         if(inventoryType == InventoryType.ROTATING_SHOP){
             FileConfiguration config = Config.ROTATING_SHOP_CONFIG.getConfig();
 
@@ -48,11 +52,13 @@ public class ShopManager implements Manager {
             String title = config.getString("title");
             int size = config.getInt("size");
 
-            Bukkit.broadcastMessage("Opening rotating inventory...");
+            FastInv inventory = new RotatingShopInventory(plugin, player, size,title);
+            inventory.open(player);
             return;
 
         }
 
+        // Check if requested inventory is CATEGORY_SHOP
         if(inventoryType == InventoryType.CATEGORY_SHOP){
             FileConfiguration config = Config.CATEGORY_SHOP_CONFIG.getConfig();
 
@@ -72,8 +78,8 @@ public class ShopManager implements Manager {
 
     @Override
     public void load() {
-        FastInvManager.register(plugin);
         loadItems();
+        FastInvManager.register(plugin);
     }
 
     @Override

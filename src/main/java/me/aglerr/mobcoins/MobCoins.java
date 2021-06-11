@@ -1,5 +1,6 @@
 package me.aglerr.mobcoins;
 
+import fr.mrmicky.fastinv.FastInvManager;
 import me.aglerr.mobcoins.commands.MainCommand;
 import me.aglerr.mobcoins.configs.Config;
 import me.aglerr.mobcoins.configs.ConfigValue;

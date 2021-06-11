@@ -77,6 +77,7 @@ public class StockManager implements Manager {
     @Override
     public void load() {
         Common.log(true, "Trying to load all item stock data");
+
         FileConfiguration config = Config.TEMP_DATA.getConfig();
 
         if(!config.isConfigurationSection("stock")) {
@@ -88,12 +89,14 @@ public class StockManager implements Manager {
             int stockRemaining = config.getInt("stock." + key);
             this.stock.put(key, stockRemaining);
         }
+
         Common.success(true, "Successfully loaded all item stock data");
     }
 
     @Override
     public void save() {
         Common.log(true, "Trying to save item stock data");
+
         CustomConfig tempData = Config.TEMP_DATA;
         FileConfiguration config = tempData.getConfig();
 
@@ -102,6 +105,7 @@ public class StockManager implements Manager {
         }
 
         tempData.saveConfig();
+
         Common.success(true, "Successfully saved item stock data");
     }
 }

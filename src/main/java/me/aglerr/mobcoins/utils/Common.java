@@ -13,21 +13,21 @@ import me.aglerr.mobcoins.shops.items.TypeItem;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Common {
@@ -265,7 +265,20 @@ public class Common {
             }
         }
 
-        ItemBuilder builder = new ItemBuilder(XMaterial.matchXMaterial(item.getMaterial()).get().parseItem())
+        ItemStack optionalStack;
+        Optional<XMaterial> optionalMaterial = XMaterial.matchXMaterial(item.getMaterial());
+        if(optionalMaterial.isPresent()){
+            optionalStack = optionalMaterial.get().parseItem();
+        } else {
+            optionalStack = new ItemStack(Material.BARREL);
+            ItemMeta im = optionalStack.getItemMeta();
+            im.setDisplayName(Common.color("&c&lERROR!"));
+            im.setLore(Common.color(Collections.singletonList("&7Please check the configuration!")));
+            optionalStack.setItemMeta(im);
+            return optionalStack;
+        }
+
+        ItemBuilder builder = new ItemBuilder(optionalStack)
                 .name(PlaceholderAPI.setPlaceholders(player, item.getName()))
                 .lore(PlaceholderAPI.setPlaceholders(player, item.getLore()))
                 .flags(ItemFlag.HIDE_ATTRIBUTES)
