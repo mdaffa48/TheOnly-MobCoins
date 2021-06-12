@@ -23,6 +23,7 @@ public class ConfigValue {
     public static boolean DISABLE_MOBCOIN_FROM_SPAWNER;
     public static boolean CLOSE_AFTER_PURCHASE;
     public static boolean IS_CONFIRMATION_MENU;
+    public static boolean IS_ENABLE_RECEIVE_MOBCOINS_MESSAGE;
 
     public static String MESSAGES_NO_PERMISSION;
     public static String MESSAGES_BALANCE;
@@ -44,6 +45,7 @@ public class ConfigValue {
     public static String MESSAGES_COINS_RECEIVED;
     public static String MESSAGES_ITEM_OUT_OF_STOCK;
     public static String MESSAGES_PURCHASE_LIMIT_REACHED;
+    public static String MESSAGES_MINIMUM_AMOUNT;
 
     public static List<String> MESSAGES_HELP;
     public static List<String> MESSAGES_HELP_ADMIN;
@@ -131,6 +133,7 @@ public class ConfigValue {
         MESSAGES_COINS_RECEIVED = config.getString("messages.coinsReceived");
         MESSAGES_ITEM_OUT_OF_STOCK = config.getString("messages.itemOutOfStock");
         MESSAGES_PURCHASE_LIMIT_REACHED = config.getString("messages.purchaseLimitReached");
+        MESSAGES_MINIMUM_AMOUNT = config.getString("messages.minimumAmount");
 
         MESSAGES_HELP = config.getStringList("messages.help");
         MESSAGES_HELP_ADMIN = config.getStringList("messages.helpAdmin");
@@ -142,6 +145,7 @@ public class ConfigValue {
         DISABLE_MOBCOIN_FROM_SPAWNER = config.getBoolean("mobcoins.disableMobCoinFromSpawner");
         CLOSE_AFTER_PURCHASE = config.getBoolean("shops.closeAfterPurchase");
         IS_CONFIRMATION_MENU = config.getBoolean("shops.confirmationMenu");
+        IS_ENABLE_RECEIVE_MOBCOINS_MESSAGE = config.getBoolean("mobcoins.disableMobCoinsReceiveMessage");
 
         MOBCOINS_ITEM_MATERIAL = config.getString("mobcoinsItem.material");
         MOBCOINS_ITEM_NAME = config.getString("mobcoinsItem.name");

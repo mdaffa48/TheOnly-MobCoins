@@ -8,4 +8,3 @@ depend: [PlaceholderAPI]
 
 commands:
   mobcoins:
-    aliases: [mc, mobcoin]

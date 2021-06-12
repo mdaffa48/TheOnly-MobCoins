@@ -44,8 +44,6 @@ rotatingShop:
   shopSlot:
     normalItems: [10, 11, 12, 19, 20, 21]
     specialItems: [15, 24]
-  resetBehaviour:
-    resetOnlyForRotatingShop: true
   refreshActions:
     normalItems:
       broadcastMessage:
@@ -140,7 +138,7 @@ items:
       - ""
       - "&7You have &6%mobcoins_balance_formatted% &7mobcoins"
   backItem:
-    type: BACK
+    type: OPEN_MAIN_MENU
     material: head;eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODY1MmUyYjkzNmNhODAyNmJkMjg2NTFkN2M5ZjI4MTlkMmU5MjM2OTc3MzRkMThkZmRiMTM1NTBmOGZkYWQ1ZiJ9fX0=
     name: '&cBack'
     slots: [27]

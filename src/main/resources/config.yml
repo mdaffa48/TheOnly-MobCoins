@@ -12,17 +12,19 @@ mysql:
 # How many mobcoins should player start with
 starting-balance: 0
 
+# This is the command aliases
+aliases:
+  - "mc"
+  - "mobcoin"
+  - "aliascoin"
+
 # Configuration Information:
 #   (physicalMobCoin) should we use physical mobcoins instead virtual mobcoins?
 #   (disableMobCoinFromSpawner) should we prevent mob that spawn from spawner to drop mobcoins?
 mobcoins:
   physicalMobCoin: false
   disableMobCoinFromSpawner: true
-
-# Hooks Information:
-#   (wildStacker) Multiply the amount of dropped mobcoins by how many mobs dies
-hooks:
-  wildStacker: true
+  enableMobCoinsReceiveMessage: true
 
 # Configuration Information:
 #   (shopBehaviour) Basically tells the plugin what menu should opened up upon executing shop command
@@ -141,6 +143,7 @@ messages:
   coinsReceived: "{prefix} &aYou have received &e{amount} &acoins."
   itemOutOfStock: "{prefix} &cItem is out of stock!"
   purchaseLimitReached: "{prefix} &cYou can not purchase this item anymore!"
+  minimumAmount: "{prefix} &cThe minimum amount is 1"
   help:
     - "Current Help"
     - "/mobcoins help"

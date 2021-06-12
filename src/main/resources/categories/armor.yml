@@ -1,0 +1,79 @@
+title: '&8Armor Shop'
+size: 27
+
+items:
+  diamondHelmet:
+    type: BUYABLE_ITEM
+    material: DIAMOND_HELMET
+    name: '&b1x Diamond Helmet'
+    price: 12.75
+    purchaseLimit: 3
+    stock: 50
+    slots: [0]
+    lore:
+      - '&7Buy 1x Diamond Helmet'
+      - ''
+      - '&7Price: &6{price} coins'
+      - '&7Purchase Limit: &6{player_limit} / {item_limit}'
+      - '&7Stock: &6{stock}'
+      - ''
+      - '&a&lCLICK TO PURCHASE'
+  diamondChestplate:
+    type: BUYABLE_ITEM
+    material: DIAMOND_CHESTPLATE
+    name: '&b1x Diamond Chestplate'
+    price: 15.80
+    purchaseLimit: 3
+    stock: 50
+    slots: [1]
+    lore:
+      - '&7Buy 1x Diamond Chestplate'
+      - ''
+      - '&7Price: &6{price} coins'
+      - '&7Purchase Limit: &6{player_limit} / {item_limit}'
+      - '&7Stock: &6{stock}'
+      - ''
+      - '&a&lCLICK TO PURCHASE'
+  diamondLeggings:
+    type: BUYABLE_ITEM
+    material: DIAMOND_LEGGINGS
+    name: '&b1x Diamond Leggings'
+    price: 14.75
+    purchaseLimit: 3
+    stock: 50
+    slots: [1]
+    lore:
+      - '&7Buy 1x Diamond Leggings'
+      - ''
+      - '&7Price: &6{price} coins'
+      - '&7Purchase Limit: &6{player_limit} / {item_limit}'
+      - '&7Stock: &6{stock}'
+      - ''
+      - '&a&lCLICK TO PURCHASE'
+  diamondBoots:
+    type: BUYABLE_ITEM
+    material: DIAMOND_BOOTS
+    name: '&b1x Diamond Boots'
+    price: 13
+    purchaseLimit: 3
+    stock: 50
+    slots: [1]
+    lore:
+      - '&7Buy 1x Diamond Boots'
+      - ''
+      - '&7Price: &6{price} coins'
+      - '&7Purchase Limit: &6{player_limit} / {item_limit}'
+      - '&7Stock: &6{stock}'
+      - ''
+      - '&a&lCLICK TO PURCHASE'
+  backButton:
+    type: OPEN_CATEGORY_SHOP
+    material: head;eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODY1MmUyYjkzNmNhODAyNmJkMjg2NTFkN2M5ZjI4MTlkMmU5MjM2OTc3MzRkMThkZmRiMTM1NTBmOGZkYWQ1ZiJ9fX0=
+    name: '&cBack'
+    lore: []
+  fillItems:
+    type: DUMMY
+    material: BLACK_STAINED_GLASS_PANE
+    name: '&f'
+    slots: [19, 20, 21, 22, 23, 24, 25, 26]
+    lore: []

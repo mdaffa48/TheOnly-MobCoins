@@ -36,9 +36,9 @@ public class DependencyManager implements Manager {
     @Override
     public void load() {
         PluginManager pm = Bukkit.getPluginManager();
-        WILD_STACKER = pm.getPlugin("WildStacker") == null ? false : true;
-        MYTHIC_MOBS = pm.getPlugin("MythicMobs") == null ? false : true;
-        PLACEHOLDER_API = pm.getPlugin("PlaceholderAPI") == null ? false : true;
+        WILD_STACKER = pm.getPlugin("WildStacker") != null;
+        MYTHIC_MOBS = pm.getPlugin("MythicMobs") != null;
+        PLACEHOLDER_API = pm.getPlugin("PlaceholderAPI") != null;
 
         notificationMessage();
     }

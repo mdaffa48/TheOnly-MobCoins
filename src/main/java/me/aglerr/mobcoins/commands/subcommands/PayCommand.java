@@ -95,6 +95,12 @@ public class PayCommand extends SubCommand {
 
         double amount = Double.parseDouble(args[2]);
 
+        if(amount <= 0){
+            player.sendMessage(Common.color(ConfigValue.MESSAGES_MINIMUM_AMOUNT
+                    .replace("{prefix}", ConfigValue.PREFIX)));
+            return;
+        }
+
         if(playerData.getCoins() < amount){
             player.sendMessage(Common.color(ConfigValue.MESSAGES_NOT_ENOUGH_COINS
                     .replace("{prefix}", ConfigValue.PREFIX)));

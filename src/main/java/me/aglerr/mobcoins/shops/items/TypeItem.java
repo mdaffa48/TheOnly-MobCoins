@@ -19,8 +19,9 @@ public class TypeItem {
     private final List<String> commands;
     private final boolean rotatingShop;
     private final boolean isSpecial;
+    private final String fileName;
 
-    public TypeItem(String configKey, String type, String category, String material, String name, boolean glow, List<Integer> slots, int amount, double price, int purchaseLimit, int stock, List<String> lore, List<String> commands, boolean rotatingShop, boolean isSpecial) {
+    public TypeItem(String configKey, String type, String category, String material, String name, boolean glow, List<Integer> slots, int amount, double price, int purchaseLimit, int stock, List<String> lore, List<String> commands, boolean rotatingShop, boolean isSpecial, String fileName) {
         this.configKey = configKey;
         this.type = type;
         this.category = category;
@@ -36,6 +37,7 @@ public class TypeItem {
         this.commands = commands;
         this.rotatingShop = rotatingShop;
         this.isSpecial = isSpecial;
+        this.fileName = fileName;
     }
 
     public String getConfigKey(){
@@ -96,5 +98,9 @@ public class TypeItem {
 
     public boolean isSpecial() {
         return isSpecial;
+    }
+
+    public String getFileName() {
+        return fileName;
     }
 }

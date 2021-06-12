@@ -1,6 +1,7 @@
 package me.aglerr.mobcoins.shops.inventory;
 
 import com.google.common.primitives.Ints;
+import com.sun.javaws.jnl.RContentDesc;
 import fr.mrmicky.fastinv.FastInv;
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.PlayerData;
@@ -22,19 +23,18 @@ import org.bukkit.scheduler.BukkitTask;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RotatingShopInventory extends FastInv {
+public class CategoryShopInventory extends FastInv {
 
-    public RotatingShopInventory(MobCoins plugin, Player player, int size, String title) {
+    public CategoryShopInventory(MobCoins plugin, Player player, String category, int size, String title) {
         super(size, Common.color(title));
 
-        // Placing all additional rotating shop items
-        this.setAllItems(plugin, player);
+        this.setAllItems(plugin, player, category);
 
         if(ConfigValue.AUTO_UPDATE_ENABLED){
             // Start the updating task when player open the inventory
             BukkitTask task = Common.runTaskTimer(0,
                     ConfigValue.AUTO_UPDATE_UPDATE_EVERY,
-                    () -> this.setAllItems(plugin, player));
+                    () -> this.setAllItems(plugin, player, category));
 
             // Stopping task when player close the inventory
             this.addCloseHandler(event -> task.cancel());
@@ -42,29 +42,62 @@ public class RotatingShopInventory extends FastInv {
 
     }
 
-    private void setAllItems(MobCoins plugin, Player player){
+    private void setAllItems(MobCoins plugin, Player player, String category){
         ShopManager shopManager = plugin.getManagerHandler().getShopManager();
-        // Loop through all loaded additional rotating items
-        for(TypeItem item : shopManager.getItemsLoader().getAdditionalRotatingItems()){
-            // Create the item
-            ItemStack stack = ItemManager.createItemStackWithHeadTextures(player, item);
-            // Put the item on the inventory
+        StockManager stockManager = plugin.getManagerHandler().getStockManager();
+        PurchaseLimitManager purchaseLimitManager = plugin.getManagerHandler().getPurchaseLimitManager();
+
+        // Loop through all category shop items
+        for(TypeItem item : shopManager.getItemsLoader().getCategoryShopItems()){
+
+            // Skip the item if the item is not from selected category
+            if(!item.getFileName().equalsIgnoreCase(category)) continue;
+
+            // Parse all internal placeholders
+            List<String> lore = new ArrayList<>();
+            item.getLore().forEach(line -> {
+                String parsedMessage = line
+                        .replace("{price}", item.getPrice() + "")
+                        .replace("{player_limit}", purchaseLimitManager.getPlayerPurchaseLimit(player, item) + "")
+                        .replace("{item_limit}", item.getPurchaseLimit() + "")
+                        .replace("{stock}", stockManager.getStockInString(item) + "");
+
+                lore.add(parsedMessage);
+            });
+
+            // Create the item stack with parsed lore
+            ItemStack stack = ItemManager.createItemStackWithHeadTextures(player, item, lore);
+
+            // Set the item to the inventory
             this.setItems(Ints.toArray(item.getSlots()), stack, event -> {
 
-                // Cancel the event so player cannot move items on the inventory
+                // Inventory Click Event //
+
+                // Cancel the event so player cannot move the item
                 event.setCancelled(true);
 
-                // Return if the item doesn't have any type
+                // Return if the type doesn't have any type
                 if(item.getType() == null) return;
 
-                // Open category shop, if the type of the item is OPEN_CATEGORY_SHOP
+                // Check if the item type is OPEN_CATEGORY_SHOP
                 if(item.getType().equalsIgnoreCase("OPEN_CATEGORY_SHOP")){
+                    // Open the category shop for player
                     shopManager.openInventory(player, ShopManager.InventoryType.CATEGORY_SHOP);
+                    return;
                 }
 
-                // Open main menu page, if the type of the item is OPEN_MAIN_MENU
+                // Check if the item type is OPEN_MAIN_MENU
                 if(item.getType().equalsIgnoreCase("OPEN_MAIN_MENU")){
+                    // Open the main menu inventory for player
                     shopManager.openInventory(player, ShopManager.InventoryType.MAIN_MENU);
+                    return;
+                }
+
+                // Check if the item type is OPEN_ROTATING_SHOP
+                if(item.getType().equalsIgnoreCase("OPEN_ROTATING_SHOP")){
+                    // Open the rotating shop inventory for player
+                    shopManager.openInventory(player, ShopManager.InventoryType.ROTATING_SHOP);
+                    return;
                 }
 
                 // Check if item type is equals to OPEN_CATEGORY
@@ -82,81 +115,11 @@ public class RotatingShopInventory extends FastInv {
                     return;
                 }
 
+                if(item.getType().equalsIgnoreCase("BUYABLE_ITEM")){
+                    this.handleShop(plugin, player, item, stack);
+                }
             });
         }
-
-        FileConfiguration rotating = Config.ROTATING_SHOP_CONFIG.getConfig();
-        StockManager stockManager = plugin.getManagerHandler().getStockManager();
-        PurchaseLimitManager purchaseLimitManager = plugin.getManagerHandler().getPurchaseLimitManager();
-
-        // Get the pre-configured slot for normal items.
-        List<Integer> normalSlots = rotating.getIntegerList("rotatingShop.shopSlot.normalItems");
-
-        // Get the pre-configured slot for special items.
-        List<Integer> specialSlots = rotating.getIntegerList("rotatingShop.shopSlot.specialItems");
-
-        // Counter for normal items and special items
-        int normalItemCount = 0;
-        int specialItemCount = 0;
-
-        for(TypeItem item : shopManager.getItemsLoader().getRotatingItems()){
-
-            // Skip the items if the item is a special item
-            if(item.isSpecial()) continue;
-
-            // Parse all internal placeholders
-            List<String> lore = new ArrayList<>();
-            item.getLore().forEach(line -> {
-                String parsedMessage = line
-                        .replace("{price}", item.getPrice() + "")
-                        .replace("{player_limit}", purchaseLimitManager.getPlayerPurchaseLimit(player, item) + "")
-                        .replace("{item_limit}", item.getPurchaseLimit() + "")
-                        .replace("{stock}", stockManager.getStockInString(item) + "");
-
-                lore.add(parsedMessage);
-            });
-
-            // Create the item stack
-            ItemStack stack = ItemManager.createItemStackWithHeadTextures(player, item, lore);
-
-            // Place the item on the inventory
-            this.setItem(normalSlots.get(normalItemCount), stack,
-                    event -> this.handleShop(plugin, player, item, event.getCurrentItem()));
-
-            normalItemCount++;
-            if(normalItemCount == normalSlots.size()) break;
-
-        }
-
-        for(TypeItem item : shopManager.getItemsLoader().getRotatingItems()){
-
-            // Skip the items if the item is a normal item
-            if(!item.isSpecial()) continue;
-
-            // Parse all internal placeholders
-            List<String> lore = new ArrayList<>();
-            item.getLore().forEach(line -> {
-                String parsedMessage = line
-                        .replace("{price}", item.getPrice() + "")
-                        .replace("{player_limit}", purchaseLimitManager.getPlayerPurchaseLimit(player, item) + "")
-                        .replace("{item_limit}", item.getPurchaseLimit() + "")
-                        .replace("{stock}", stockManager.getStockInString(item) + "");
-
-                lore.add(parsedMessage);
-            });
-
-            // Create the item stack
-            ItemStack stack = ItemManager.createItemStackWithHeadTextures(player, item, lore);
-
-            // Place the item on the inventory
-            this.setItem(specialSlots.get(specialItemCount), stack,
-                    event -> this.handleShop(plugin, player, item, event.getCurrentItem()));
-
-            specialItemCount++;
-            if(specialItemCount == specialSlots.size()) break;
-
-        }
-
     }
 
     private void handleShop(MobCoins plugin, Player player, TypeItem item, ItemStack stack){
@@ -204,7 +167,7 @@ public class RotatingShopInventory extends FastInv {
             String title = confirmation.getString("title");
             int size = confirmation.getInt("size");
 
-            FastInv inventory = new ConfirmationInventory(plugin, player, stack, ShopManager.InventoryType.ROTATING_SHOP, playerData, item, size, title);
+            FastInv inventory = new ConfirmationInventory(plugin, player, stack, ShopManager.InventoryType.CATEGORY_SHOP, playerData, item, size, title);
             inventory.open(player);
             return;
         }

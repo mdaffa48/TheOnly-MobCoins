@@ -8,7 +8,12 @@ import me.aglerr.mobcoins.database.SQLDatabase;
 import me.aglerr.mobcoins.listeners.ListenerHandler;
 import me.aglerr.mobcoins.managers.ManagerHandler;
 import me.aglerr.mobcoins.utils.Common;
+import me.aglerr.mobcoins.utils.ConfigUpdater;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class MobCoins extends JavaPlugin {
 
@@ -18,13 +23,6 @@ public class MobCoins extends JavaPlugin {
     private final ListenerHandler listenerHandler = new ListenerHandler(this);
 
     private SQLDatabase database;
-
-    /*
-      TODO Add more commands
-      TODO Shop (main menu, category shop, rotating shop)
-      TODO Limit purchase
-      TODO Stock system
-     */
 
     /**
      * Plugin startup logic
@@ -53,6 +51,9 @@ public class MobCoins extends JavaPlugin {
 
         // Register main commands
         new MainCommand(this).registerThisCommand();
+
+        // Update the config
+        this.updateConfig();
     }
 
     /**
@@ -61,6 +62,16 @@ public class MobCoins extends JavaPlugin {
     @Override
     public void onDisable(){
         this.managerHandler.saveAllManagers();
+    }
+
+    private void updateConfig(){
+        File configFile = new File(this.getDataFolder(), "config.yml");
+        try{
+            ConfigUpdater.update(this, "config.yml", configFile, new ArrayList<>());
+        } catch(IOException e){
+            Common.error(true, "Failed to update the config.yml");
+            e.printStackTrace();
+        }
     }
 
     /**

@@ -8,54 +8,46 @@ import me.aglerr.mobcoins.managers.managers.ShopManager;
 import me.aglerr.mobcoins.shops.items.TypeItem;
 import me.aglerr.mobcoins.utils.Common;
 import me.aglerr.mobcoins.utils.ItemManager;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
 
-public class MainMenuInventory extends FastInv {
+public class CategoryInventory extends FastInv {
 
-    public MainMenuInventory(MobCoins plugin, Player player, int size, String title) {
+    public CategoryInventory(MobCoins plugin, Player player, int size, String title) {
         super(size, Common.color(title));
 
-        // Placing all loaded main menu items
-        this.setAllItems(plugin.getManagerHandler().getShopManager(), player);
+        // Set all items to the inventory
+        this.setAllItems(plugin, player);
 
         if(ConfigValue.AUTO_UPDATE_ENABLED){
             // Start the updating task when player open the inventory
             BukkitTask task = Common.runTaskTimer(0,
                     ConfigValue.AUTO_UPDATE_UPDATE_EVERY,
-                    () -> this.setAllItems(plugin.getManagerHandler().getShopManager(), player));
+                    () -> this.setAllItems(plugin, player));
 
             // Stopping task when player close the inventory
             this.addCloseHandler(event -> task.cancel());
         }
+
     }
 
-    private void setAllItems(ShopManager shopManager, Player player){
-        // Loop through all loaded main menu items
-        for(TypeItem item : shopManager.getItemsLoader().getMainMenuItems()){
-
+    private void setAllItems(MobCoins plugin, Player player){
+        ShopManager shopManager = plugin.getManagerHandler().getShopManager();
+        // Loop through all loaded additional rotating items
+        for(TypeItem item : shopManager.getItemsLoader().getCategoryItems()){
             // Create the item
             ItemStack stack = ItemManager.createItemStackWithHeadTextures(player, item);
-
-            // Put the item on the inventory
-            setItems(Ints.toArray(item.getSlots()), stack, event -> {
+            // Put the item to the inventory
+            this.setItems(Ints.toArray(item.getSlots()), stack, event -> {
 
                 // Inventory Click Event //
 
-                // Cancelling the event so player can not move items on the inventory
+                // Cancel the event so player cannot move the item around
                 event.setCancelled(true);
 
-                // Opening category shop If the item type is OPEN_CATEGORY_SHOP
-                if(item.getType().equalsIgnoreCase("OPEN_CATEGORY_SHOP")){
-                    shopManager.openInventory(player, ShopManager.InventoryType.CATEGORY_SHOP);
-                }
-
-                // Opening rotating shop If the item type is OPEN_ROTATING_SHOP
-                if(item.getType().equalsIgnoreCase("OPEN_ROTATING_SHOP")){
-                    shopManager.openInventory(player, ShopManager.InventoryType.ROTATING_SHOP);
-                }
+                // Just return if the item doesn't have any type
+                if(item.getType() == null) return;
 
                 // Check if item type is equals to OPEN_CATEGORY
                 if(item.getType().equalsIgnoreCase("OPEN_CATEGORY")){
@@ -72,8 +64,16 @@ public class MainMenuInventory extends FastInv {
                     return;
                 }
 
+                // Check if item type is equals to OPEN_MAIN_MENU
+                if(item.getType().equalsIgnoreCase("OPEN_MAIN_MENU")){
+                    // Opening the main menu inventory for player
+                    shopManager.openInventory(player, ShopManager.InventoryType.MAIN_MENU);
+                }
+
             });
+
         }
+
     }
 
 }

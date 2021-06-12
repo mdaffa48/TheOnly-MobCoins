@@ -97,17 +97,31 @@ public class EntityDeathListener implements Listener {
                 }
                 // Add received mobcoins to the salary
                 salaryManager.putOrIncrementPlayerSalary(player, receiveEvent.getAmountReceived());
-                return;
             }
 
-            // Code logic if the salary mode is not enabled
-            playerData.addCoins(receiveEvent.getAmountReceived());
-            Common.playSound(player, "sounds.onCoinsReceived", plugin.getConfig());
-            Common.sendTitle(player, "titles.onCoinsReceived", plugin.getConfig(), receiveEvent.getAmountReceived());
-            Common.sendActionBar(player, "actionBar.onCoinsReceived", plugin.getConfig());
-            player.sendMessage(Common.color(ConfigValue.MESSAGES_COINS_RECEIVED
-                    .replace("{prefix}", ConfigValue.PREFIX)
-                    .replace("{amount}", String.valueOf(receiveEvent.getAmountReceived()))));
+            // Directly add mobcoins to the player if salary mode is disabled
+            if(!ConfigValue.SALARY_MODE_ENABLED){
+                playerData.addCoins(receiveEvent.getAmountReceived());
+            }
+
+            // Check if mobcoins receive message is enabled
+            if(ConfigValue.IS_ENABLE_RECEIVE_MOBCOINS_MESSAGE){
+
+                // Play sound to the player
+                Common.playSound(player, "sounds.onCoinsReceived", plugin.getConfig());
+
+                // Send title to the player
+                Common.sendTitle(player, "titles.onCoinsReceived", plugin.getConfig(), receiveEvent.getAmountReceived());
+
+                // Send action bar to the player
+                Common.sendActionBar(player, "actionBar.onCoinsReceived", plugin.getConfig());
+
+                // Send messages to the player
+                player.sendMessage(Common.color(ConfigValue.MESSAGES_COINS_RECEIVED
+                        .replace("{prefix}", ConfigValue.PREFIX)
+                        .replace("{amount}", String.valueOf(receiveEvent.getAmountReceived()))));
+            }
+
         }
 
     }

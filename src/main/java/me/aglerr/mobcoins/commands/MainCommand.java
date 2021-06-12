@@ -5,19 +5,19 @@ import me.aglerr.mobcoins.commands.abstraction.SubCommand;
 import me.aglerr.mobcoins.commands.subcommands.*;
 import me.aglerr.mobcoins.configs.ConfigValue;
 import me.aglerr.mobcoins.utils.Common;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
+import org.bukkit.Bukkit;
+import org.bukkit.command.*;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.reflect.Field;
 import java.util.*;
 
 public class MainCommand implements CommandExecutor, TabCompleter {
 
     private final Map<String, SubCommand> subCommandMap = new HashMap<>();
-    private final String COMMAND_NAME = "mobcoins";
+    private static final String COMMAND_NAME = "mobcoins";
 
     private final MobCoins plugin;
 
@@ -41,6 +41,25 @@ public class MainCommand implements CommandExecutor, TabCompleter {
     public void registerThisCommand(){
         plugin.getCommand(COMMAND_NAME).setExecutor(this);
         plugin.getCommand(COMMAND_NAME).setTabCompleter(this);
+
+        FileConfiguration config = plugin.getConfig();
+
+        // Get the aliases from config
+        List<String> aliases = config.getStringList("aliases");
+
+        // Set the command aliases
+        try{
+            final Field bukkitCommandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
+
+            bukkitCommandMap.setAccessible(true);
+            CommandMap commandMap = (CommandMap) bukkitCommandMap.get(Bukkit.getServer());
+
+            // What should I put here?
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            Common.error(true, "Failed registering commands");
+            e.printStackTrace();
+        }
+
     }
 
     @Override
