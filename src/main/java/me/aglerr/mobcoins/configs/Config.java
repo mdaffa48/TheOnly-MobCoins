@@ -11,6 +11,7 @@ public class Config {
     public static CustomConfig ROTATING_SHOP_CONFIG;
     public static CustomConfig MOBS;
     public static CustomConfig TEMP_DATA;
+    public static CustomConfig CONFIRMATION_MENU_CONFIG;
 
     public static void initialize(){
         CONFIG = new CustomConfig(MobCoins.getInstance(), "config.yml", null);
@@ -19,6 +20,7 @@ public class Config {
         ROTATING_SHOP_CONFIG = new CustomConfig(MobCoins.getInstance(), "rotating_shop.yml", "shops");
         MOBS = new CustomConfig(MobCoins.getInstance(), "mobs.yml", null);
         TEMP_DATA = new CustomConfig(MobCoins.getInstance(), "temp_data.yml", null);
+        CONFIRMATION_MENU_CONFIG = new CustomConfig(MobCoins.getInstance(), "confirmation_menu.yml", "shops");
     }
 
     public static void reloadAllConfigs(){
@@ -27,6 +29,7 @@ public class Config {
         CATEGORY_SHOP_CONFIG.reloadConfig();
         ROTATING_SHOP_CONFIG.reloadConfig();
         TEMP_DATA.reloadConfig();
+        CONFIRMATION_MENU_CONFIG.reloadConfig();
     }
 
 }

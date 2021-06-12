@@ -26,6 +26,7 @@ public class ShopManager implements Manager {
         this.itemsLoader.loadMainMenuItems();
         this.itemsLoader.loadAdditionalRotatingItems();
         this.itemsLoader.loadRotatingItems();
+        this.itemsLoader.loadConfirmationItems();
     }
 
     public void openInventory(Player player, InventoryType inventoryType){

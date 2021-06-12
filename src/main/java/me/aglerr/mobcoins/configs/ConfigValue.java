@@ -22,6 +22,7 @@ public class ConfigValue {
     public static boolean PHYSICAL_MOBCOIN;
     public static boolean DISABLE_MOBCOIN_FROM_SPAWNER;
     public static boolean CLOSE_AFTER_PURCHASE;
+    public static boolean IS_CONFIRMATION_MENU;
 
     public static String MESSAGES_NO_PERMISSION;
     public static String MESSAGES_BALANCE;
@@ -140,6 +141,7 @@ public class ConfigValue {
         PHYSICAL_MOBCOIN = config.getBoolean("mobcoins.physicalMobCoin");
         DISABLE_MOBCOIN_FROM_SPAWNER = config.getBoolean("mobcoins.disableMobCoinFromSpawner");
         CLOSE_AFTER_PURCHASE = config.getBoolean("shops.closeAfterPurchase");
+        IS_CONFIRMATION_MENU = config.getBoolean("shops.confirmationMenu");
 
         MOBCOINS_ITEM_MATERIAL = config.getString("mobcoinsItem.material");
         MOBCOINS_ITEM_NAME = config.getString("mobcoinsItem.name");

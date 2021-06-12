@@ -44,6 +44,10 @@ public class StockManager implements Manager {
         return item.getStock();
     }
 
+    public void clearStockForItem(TypeItem item){
+        this.stock.remove(item.getConfigKey());
+    }
+
     // This method are used when someone bought an item on the shop
     public void putOrDecrease(TypeItem item){
 

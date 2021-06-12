@@ -1,0 +1,22 @@
+title: '&8Confirmation Menu'
+size: 27
+
+items:
+  displayItem:
+    type: DISPLAY_ITEM
+    slots: [13]
+  acceptButton:
+    type: CONFIRM_BUY
+    material: LIME_WOOL
+    name: '&aConfirm'
+    slots: [0, 1, 2, 9, 10, 11, 18, 19, 20]
+  denyButton:
+    type: CANCEL_BUY
+    material: RED_WOOL
+    name: '&cCancel'
+    slots: [6, 7, 8, 15, 16, 17, 24, 25, 26]
+  fillItem:
+    type: DUMMY
+    material: BLACK_STAINED_GLASS_PANE
+    name: '&f'
+    slots: [3, 4, 5, 12, 14, 21, 22, 23]

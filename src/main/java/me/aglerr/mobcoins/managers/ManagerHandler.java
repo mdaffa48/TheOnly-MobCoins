@@ -25,7 +25,7 @@ public class ManagerHandler {
         this.managerList.put(ManagerType.SHOP_MANAGER, new ShopManager(plugin));
         this.managerList.put(ManagerType.STOCK_MANAGER, new StockManager());
         this.managerList.put(ManagerType.PURCHASE_LIMIT_MANAGER, new PurchaseLimitManager());
-        this.managerList.put(ManagerType.ROTATING_SHOP_MANAGER, new RotatingShopManager());
+        this.managerList.put(ManagerType.ROTATING_SHOP_MANAGER, new RotatingShopManager(plugin));
     }
 
     public void loadAllManagers(){

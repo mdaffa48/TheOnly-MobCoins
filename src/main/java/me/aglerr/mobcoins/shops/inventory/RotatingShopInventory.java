@@ -101,7 +101,7 @@ public class RotatingShopInventory extends FastInv {
 
             // Place the item on the inventory
             this.setItem(normalSlots.get(normalItemCount), stack,
-                    event -> this.handleShop(plugin, player, item));
+                    event -> this.handleShop(plugin, player, item, event.getCurrentItem()));
 
             normalItemCount++;
             if(normalItemCount == normalSlots.size()) break;
@@ -130,7 +130,7 @@ public class RotatingShopInventory extends FastInv {
 
             // Place the item on the inventory
             this.setItem(specialSlots.get(specialItemCount), stack,
-                    event -> this.handleShop(plugin, player, item));
+                    event -> this.handleShop(plugin, player, item, event.getCurrentItem()));
 
             specialItemCount++;
             if(specialItemCount == specialSlots.size()) break;
@@ -139,7 +139,7 @@ public class RotatingShopInventory extends FastInv {
 
     }
 
-    private void handleShop(MobCoins plugin, Player player, TypeItem item){
+    private void handleShop(MobCoins plugin, Player player, TypeItem item, ItemStack stack){
 
         StockManager stockManager = plugin.getManagerHandler().getStockManager();
         PurchaseLimitManager purchaseLimitManager = plugin.getManagerHandler().getPurchaseLimitManager();
@@ -153,7 +153,7 @@ public class RotatingShopInventory extends FastInv {
 
         // Return if the player's purchase limit is equal to the item purchase limit
         int purchaseLimit = purchaseLimitManager.getPlayerPurchaseLimit(player, item);
-        if(purchaseLimit >= item.getPurchaseLimit()){
+        if(purchaseLimit >= item.getPurchaseLimit() && item.getPurchaseLimit() >= 0){
             player.sendMessage(Common.color(ConfigValue.MESSAGES_PURCHASE_LIMIT_REACHED
                     .replace("{prefix}", ConfigValue.PREFIX)));
             return;
@@ -174,6 +174,18 @@ public class RotatingShopInventory extends FastInv {
         if(playerCoins < item.getPrice()){
             player.sendMessage(Common.color(ConfigValue.MESSAGES_NOT_ENOUGH_COINS
                     .replace("{prefix}", ConfigValue.PREFIX)));
+            return;
+        }
+
+        // Open confirmation menu if it's enabled
+        if(ConfigValue.IS_CONFIRMATION_MENU){
+            FileConfiguration confirmation = Config.CONFIRMATION_MENU_CONFIG.getConfig();
+
+            String title = confirmation.getString("title");
+            int size = confirmation.getInt("size");
+
+            FastInv inventory = new ConfirmationInventory(plugin, player, stack, ShopManager.InventoryType.ROTATING_SHOP, playerData, item, size, title);
+            inventory.open(player);
             return;
         }
 

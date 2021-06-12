@@ -27,12 +27,15 @@ hooks:
 # Configuration Information:
 #   (shopBehaviour) Basically tells the plugin what menu should opened up upon executing shop command
 #   (shopBehaviour) Available behaviour: MAIN_MENU, ROTATING_SHOP, CATEGORY_SHOP
+#   (closeAfterPurchase) Should we close the inventory after purchase?
+#   (confirmationMenu) Should we use confirmation menu when purchasing item?
 #   (autoUpdate)
 #     (enabled) should we always update inventory items info?
 #     (updateEvery) how often should we update the items (in ticks, 20 ticks = 1 second)?
 shops:
   shopBehaviour: MAIN_MENU
-  closeAfterPurchase: true
+  closeAfterPurchase: false
+  confirmationMenu: true
   autoUpdate:
     enabled: true
     updateEvery: 20

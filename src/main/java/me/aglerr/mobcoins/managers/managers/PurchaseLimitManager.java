@@ -10,6 +10,7 @@ import me.aglerr.mobcoins.utils.Common;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
+import java.util.Map;
 import java.util.UUID;
 
 public class PurchaseLimitManager implements Manager {
@@ -26,6 +27,16 @@ public class PurchaseLimitManager implements Manager {
         }
         // Return '0' because player doesn't have any data for this item
         return 0;
+    }
+
+    public void clearPurchaseLimitForItem(TypeItem item){
+        // Loop through all purchase limit data
+        for(UUID uuid : this.purchaseTable.rowKeySet()){
+            // Get the data for each player
+            Map<String, Integer> playerPurchase = this.purchaseTable.row(uuid);
+            // Remove the purchase limit data for the specific item
+            playerPurchase.remove(item.getConfigKey());
+        }
     }
 
     public void putOrIncreasePlayerPurchaseLimit(Player player, TypeItem item){
@@ -45,11 +56,12 @@ public class PurchaseLimitManager implements Manager {
             // Putting the data on the table
             this.purchaseTable.put(uuid, item.getConfigKey(), increasedLimit);
 
-            Common.debug(true, "Increasing Purchase Limit (uuid: {uuid}, item: {item}, current: {current}, increased: {increased})"
+            Common.debug(true, "Increasing Purchase Limit (uuid: {uuid}, item: {item}, current: {current}, increased: {increased}, max limit: {max_limit})"
                     .replace("{uuid}", uuid.toString())
                     .replace("{current}", String.valueOf(currentLimit))
                     .replace("{increased}", String.valueOf(increasedLimit))
-                    .replace("{item}", item.getConfigKey()));
+                    .replace("{item}", item.getConfigKey())
+                    .replace("{max_limit}", String.valueOf(item.getPurchaseLimit())));
             return;
         }
 

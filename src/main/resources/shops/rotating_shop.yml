@@ -326,6 +326,7 @@ shops:
       - '&7Buy 1x Glass'
       - ''
       - '&7Price: &6{price} coins'
+      - '&7Purchase Limit &6{player_limit} / {item_limit}'
       - '&7Stock: &6{stock}'
       - ''
       - '&a&lCLICK TO PURCHASE'

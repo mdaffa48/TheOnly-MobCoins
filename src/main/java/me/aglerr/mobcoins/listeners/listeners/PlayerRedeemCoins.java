@@ -49,7 +49,7 @@ public class PlayerRedeemCoins implements Listener {
         // Get NBTItem object of the item
         NBTItem nbtItem = new NBTItem(hand);
         // Return if item is not the mobcoin item by checking the tags
-        if(nbtItem.getDouble("mobCoinsAmount") == null) return;
+        if(!nbtItem.hasKey("mobCoinsAmount")) return;
         event.setCancelled(true);
 
         // Get PlayerData object from Player
