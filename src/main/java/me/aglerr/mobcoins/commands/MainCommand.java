@@ -46,15 +46,16 @@ public class MainCommand implements CommandExecutor, TabCompleter {
 
         // Get the aliases from config
         List<String> aliases = config.getStringList("aliases");
+        // Add all aliases to the command from the aliases list
+        plugin.getCommand(COMMAND_NAME).getAliases().addAll(aliases);
 
-        // Set the command aliases
         try{
             final Field bukkitCommandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
 
             bukkitCommandMap.setAccessible(true);
-            CommandMap commandMap = (CommandMap) bukkitCommandMap.get(Bukkit.getServer());
+            ((CommandMap) bukkitCommandMap.get(Bukkit.getServer())).register(COMMAND_NAME, plugin.getCommand(COMMAND_NAME));
 
-            // What should I put here?
+            bukkitCommandMap.setAccessible(false);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             Common.error(true, "Failed registering commands");
             e.printStackTrace();
@@ -65,25 +66,33 @@ public class MainCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, @NotNull String[] args) {
 
+        // Return if the args length is 0 and send help messages
         if(args.length == 0){
             sendHelpMessages(sender);
             return true;
         }
 
+        // Trying to get subcommand from 'args[0]'
         SubCommand subCommand = this.subCommandMap.get(args[0].toLowerCase());
+
+        // Return if there is no subcommand with 'args[0]' and send help messages
         if(subCommand == null) {
             sendHelpMessages(sender);
             return true;
         }
 
+        // Check if sub command has permission
         if(subCommand.getPermission() != null){
+            // Check if sender/player doesn't have permission for the subcommand
             if(!(sender.hasPermission(subCommand.getPermission()))){
+                // Return and send messages
                 sender.sendMessage(Common.color(ConfigValue.MESSAGES_NO_PERMISSION
                         .replace("{prefix}", ConfigValue.PREFIX)));
                 return true;
             }
         }
 
+        // Execute the sub command
         subCommand.execute(plugin, sender, args);
         return true;
 

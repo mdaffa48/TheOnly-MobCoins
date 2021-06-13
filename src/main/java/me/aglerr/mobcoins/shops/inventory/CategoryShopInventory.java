@@ -1,7 +1,6 @@
 package me.aglerr.mobcoins.shops.inventory;
 
 import com.google.common.primitives.Ints;
-import com.sun.javaws.jnl.RContentDesc;
 import fr.mrmicky.fastinv.FastInv;
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.PlayerData;

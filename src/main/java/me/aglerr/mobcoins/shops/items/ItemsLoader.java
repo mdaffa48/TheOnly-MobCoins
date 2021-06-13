@@ -2,6 +2,7 @@ package me.aglerr.mobcoins.shops.items;
 
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.configs.Config;
+import me.aglerr.mobcoins.configs.CustomConfig;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -180,13 +181,47 @@ public class ItemsLoader {
 
     public void loadCategoryShopItems(){
 
+        File directory = new File(plugin.getDataFolder() + File.separator + "categories");
+        if(!directory.exists()){
+            directory.mkdirs();
+        }
+
         // Get all files on the 'categories' folder
         File[] files = new File(plugin.getDataFolder() + File.separator + "categories").listFiles();
 
         // Return if 'categories' folder doesn't have any files
         // And create an example file
         if(files.length <= 0) {
-            return;
+
+            // We only want to create an example files once
+            // So we store boolean in the temporary data configuration
+
+            CustomConfig temp = Config.TEMP_DATA;
+            FileConfiguration config = temp.getConfig();
+
+            // Get the boolean from the config file
+            boolean exampleFile = config.getBoolean("createExampleFile");
+
+            // If return false, we create the example files
+            if(!exampleFile){
+
+                // Get the path to the categories folder
+                String path = plugin.getDataFolder() + File.separator + "categories" + File.separator;
+
+                // Create armor.yml example file
+                plugin.saveResource(path + "armor.yml", false);
+
+                // Create weaponsAndTools.yml example file
+                plugin.saveResource(path + "weaponsAndTools.yml", false);
+
+                // Set 'true' on the 'createExampleFile' so we know we have created the file
+                config.set("createExampleFile", true);
+
+                // Save the config
+                temp.saveConfig();
+
+            }
+
         }
 
         // Create a null FileConfiguration

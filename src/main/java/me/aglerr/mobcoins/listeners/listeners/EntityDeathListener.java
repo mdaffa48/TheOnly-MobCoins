@@ -1,5 +1,8 @@
 package me.aglerr.mobcoins.listeners.listeners;
 
+import io.lumine.xikage.mythicmobs.MythicMobs;
+import io.lumine.xikage.mythicmobs.api.bukkit.BukkitAPIHelper;
+import io.lumine.xikage.mythicmobs.mobs.MythicMob;
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.PlayerData;
 import me.aglerr.mobcoins.api.MobCoinsAPI;
@@ -7,6 +10,7 @@ import me.aglerr.mobcoins.api.events.MobCoinsReceiveEvent;
 import me.aglerr.mobcoins.api.events.MobCoinsSpawnEvent;
 import me.aglerr.mobcoins.coinmob.CoinMob;
 import me.aglerr.mobcoins.configs.ConfigValue;
+import me.aglerr.mobcoins.managers.managers.DependencyManager;
 import me.aglerr.mobcoins.managers.managers.SalaryManager;
 import me.aglerr.mobcoins.managers.managers.SpawnerSpawnManager;
 import me.aglerr.mobcoins.utils.Common;
@@ -30,6 +34,17 @@ public class EntityDeathListener implements Listener {
     public void onEntityDeath(EntityDeathEvent event){
         SpawnerSpawnManager spawnManager = plugin.getManagerHandler().getSpawnerSpawnManager();
         LivingEntity entity = event.getEntity();
+
+        // We want to return if the killed mob is a mythic mob
+        // Check if MythicMobs is enabled
+        if(DependencyManager.MYTHIC_MOBS){
+            // Get the API from MythicMobs
+            BukkitAPIHelper mythicMobsAPI = MythicMobs.inst().getAPIHelper();
+            // Return if the entity is a mythic mob
+            if(mythicMobsAPI.isMythicMob(entity)){
+                return;
+            }
+        }
 
         // Check if disable mobcoin from spawner is enabled
         if(ConfigValue.DISABLE_MOBCOIN_FROM_SPAWNER) {

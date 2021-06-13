@@ -1,17 +1,17 @@
-title: '&8Armor Shop'
+title: '&8Weapons And Tools Shop'
 size: 27
 
 items:
-  diamondHelmetItem:
+  diamondSwordItem:
     type: BUYABLE_ITEM
-    material: DIAMOND_HELMET
-    name: '&b1x Diamond Helmet'
-    price: 12.75
+    material: DIAMOND_SWORD
+    name: '&b1x Diamond Sword'
+    price: 13.75
     purchaseLimit: 3
     stock: 50
-    slots: [0]
+    slots: [ 0 ]
     lore:
-      - '&7Buy 1x Diamond Helmet'
+      - '&7Buy 1x Diamond Sword'
       - ''
       - '&7Price: &6{price} coins'
       - '&7Purchase Limit: &6{player_limit} / {item_limit}'
@@ -19,17 +19,17 @@ items:
       - ''
       - '&a&lCLICK TO PURCHASE'
     commands:
-      - 'give {player} DIAMOND_HELMET 1'
-  diamondChestplateItem:
+      - 'give {player} DIAMOND_SWORD 1'
+  diamondPickaxeItem:
     type: BUYABLE_ITEM
-    material: DIAMOND_CHESTPLATE
-    name: '&b1x Diamond Chestplate'
-    price: 15.80
+    material: DIAMOND_PICKAXE
+    name: '&b1x Diamond Pickaxe'
+    price: 15.25
     purchaseLimit: 3
     stock: 50
-    slots: [1]
+    slots: [ 1 ]
     lore:
-      - '&7Buy 1x Diamond Chestplate'
+      - '&7Buy 1x Diamond Pickaxe'
       - ''
       - '&7Price: &6{price} coins'
       - '&7Purchase Limit: &6{player_limit} / {item_limit}'
@@ -37,17 +37,17 @@ items:
       - ''
       - '&a&lCLICK TO PURCHASE'
     commands:
-      - 'give {player} DIAMOND_CHESTPLATE 1'
-  diamondLeggingsItem:
+      - 'give {player} DIAMOND_PICKAXE 1'
+  diamondAxeItem:
     type: BUYABLE_ITEM
-    material: DIAMOND_LEGGINGS
-    name: '&b1x Diamond Leggings'
-    price: 14.75
+    material: DIAMOND_AXE
+    name: '&b1x Diamond Axe'
+    price: 15.25
     purchaseLimit: 3
     stock: 50
-    slots: [2]
+    slots: [ 2 ]
     lore:
-      - '&7Buy 1x Diamond Leggings'
+      - '&7Buy 1x Diamond Axe'
       - ''
       - '&7Price: &6{price} coins'
       - '&7Purchase Limit: &6{player_limit} / {item_limit}'
@@ -55,17 +55,17 @@ items:
       - ''
       - '&a&lCLICK TO PURCHASE'
     commands:
-      - 'give {player} DIAMOND_LEGGINGS 1'
-  diamondBootsItem:
+      - 'give {player} DIAMOND_AXE 1'
+  diamondShovelItem:
     type: BUYABLE_ITEM
-    material: DIAMOND_BOOTS
-    name: '&b1x Diamond Boots'
-    price: 13
+    material: DIAMOND_SHOVEL
+    name: '&b1x Diamond Shovel'
+    price: 13.75
     purchaseLimit: 3
     stock: 50
-    slots: [3]
+    slots: [ 3 ]
     lore:
-      - '&7Buy 1x Diamond Boots'
+      - '&7Buy 1x Diamond Shovel'
       - ''
       - '&7Price: &6{price} coins'
       - '&7Purchase Limit: &6{player_limit} / {item_limit}'
@@ -73,17 +73,17 @@ items:
       - ''
       - '&a&lCLICK TO PURCHASE'
     commands:
-      - 'give {player} DIAMOND_BOOTS 1'
-  goldHelmetItem:
+      - 'give {player} DIAMOND_SHOVEL 1'
+  goldenSwordItem:
     type: BUYABLE_ITEM
-    material: GOLDEN_HELMET
-    name: '&e1x Golden Helmet'
-    price: 5.75
+    material: GOLDEN_SWORD
+    name: '&e1x Golden Sword'
+    price: 7
     purchaseLimit: 10
     stock: 100
-    slots: [9]
+    slots: [ 9 ]
     lore:
-      - '&7Buy 1x Golden Helmet'
+      - '&7Buy 1x Golden Sword'
       - ''
       - '&7Price: &6{price} coins'
       - '&7Purchase Limit: &6{player_limit} / {item_limit}'
@@ -91,17 +91,17 @@ items:
       - ''
       - '&a&lCLICK TO PURCHASE'
     commands:
-      - 'give {player} GOLDEN_HELMET 1'
-  goldChestplateItem:
+      - 'give {player} GOLDEN_SWORD 1'
+  goldenPickaxeItem:
     type: BUYABLE_ITEM
-    material: GOLDEN_CHESTPLATE
-    name: '&e1x Golden Chestplate'
-    price: 9
+    material: GOLDEN_PICKAXE
+    name: '&e1x Golden Pickaxe'
+    price: 8.25
     purchaseLimit: 10
     stock: 100
-    slots: [10]
+    slots: [ 10 ]
     lore:
-      - '&7Buy 1x Golden Chestplate'
+      - '&7Buy 1x Golden Pickaxe'
       - ''
       - '&7Price: &6{price} coins'
       - '&7Purchase Limit: &6{player_limit} / {item_limit}'
@@ -109,17 +109,17 @@ items:
       - ''
       - '&a&lCLICK TO PURCHASE'
     commands:
-      - 'give {player} GOLDEN_CHESTPLATE 1'
-  goldLeggingsItem:
+      - 'give {player} GOLDEN_PICKAXE 1'
+  goldenAxeItem:
     type: BUYABLE_ITEM
-    material: GOLDEN_LEGGINGS
-    name: '&e1x Golden Leggings'
-    price: 6.89
+    material: GOLDEN_AXE
+    name: '&e1x Golden Axe'
+    price: 8.25
     purchaseLimit: 10
     stock: 100
-    slots: [11]
+    slots: [ 11 ]
     lore:
-      - '&7Buy 1x Golden Leggings'
+      - '&7Buy 1x Golden Axe'
       - ''
       - '&7Price: &6{price} coins'
       - '&7Purchase Limit: &6{player_limit} / {item_limit}'
@@ -127,17 +127,17 @@ items:
       - ''
       - '&a&lCLICK TO PURCHASE'
     commands:
-      - 'give {player} GOLDEN_LEGGINGS 1'
-  goldBootsItem:
+      - 'give {player} GOLDEN_AXE 1'
+  goldenShovelItem:
     type: BUYABLE_ITEM
-    material: GOLDEN_BOOTS
-    name: '&e1x Golden Boots'
-    price: 6.25
+    material: GOLDEN_PICKAXE
+    name: '&e1x Golden Shovel'
+    price: 7.15
     purchaseLimit: 10
     stock: 100
-    slots: [12]
+    slots: [ 12 ]
     lore:
-      - '&7Buy 1x Golden Boots'
+      - '&7Buy 1x Golden Shovel'
       - ''
       - '&7Price: &6{price} coins'
       - '&7Purchase Limit: &6{player_limit} / {item_limit}'
@@ -145,143 +145,144 @@ items:
       - ''
       - '&a&lCLICK TO PURCHASE'
     commands:
-      - 'give {player} GOLDEN_BOOTS 1'
-  ironHelmetItem:
+      - 'give {player} GOLDEN_SHOVEL 1'
+  ironSwordItem:
     type: BUYABLE_ITEM
-    material: IRON_HELMET
-    name: '&f1x Iron Helmet'
-    price: 12
+    material: IRON_SWORD
+    name: '&e1x Iron Sword'
+    price: 5.12
     purchaseLimit: -1
     stock: 25
-    slots: [5]
+    slots: [ 5 ]
     lore:
-      - '&7Buy 1x Iron Helmet'
+      - '&7Buy 1x Iron Sword'
       - ''
       - '&7Price: &6{price} coins'
       - '&7Stock: &6{stock}'
       - ''
       - '&a&lCLICK TO PURCHASE'
     commands:
-      - 'give {player} IRON_HELMET 1'
-  ironChestplateItem:
+      - 'give {player} IRON_SWORD 1'
+  ironPickaxeItem:
     type: BUYABLE_ITEM
-    material: IRON_CHESTPLATE
-    name: '&f1x Iron Chestplate'
-    price: 14.15
+    material: IRON_PICKAXE
+    name: '&e1x Iron Pickaxe'
+    price: 6.75
     purchaseLimit: -1
     stock: 25
-    slots: [6]
+    slots: [ 6 ]
     lore:
-      - '&7Buy 1x Iron Chestplate'
+      - '&7Buy 1x Iron Pickaxe'
       - ''
       - '&7Price: &6{price} coins'
       - '&7Stock: &6{stock}'
       - ''
       - '&a&lCLICK TO PURCHASE'
     commands:
-      - 'give {player} IRON_CHESTPLATE 1'
-  ironLeggingsItem:
+      - 'give {player} IRON_PICKAXE 1'
+  ironAxeItem:
     type: BUYABLE_ITEM
-    material: IRON_LEGGINGS
-    name: '&f1x Iron Leggings'
-    price: 13
+    material: IRON_AXE
+    name: '&e1x Iron Axe'
+    price: 6.50
     purchaseLimit: -1
     stock: 25
-    slots: [7]
+    slots: [ 7 ]
     lore:
-      - '&7Buy 1x Iron Leggings'
+      - '&7Buy 1x Iron Axe'
       - ''
       - '&7Price: &6{price} coins'
       - '&7Stock: &6{stock}'
       - ''
       - '&a&lCLICK TO PURCHASE'
     commands:
-      - 'give {player} IRON_LEGGINGS 1'
-  ironBootsItem:
+      - 'give {player} IRON_AXE 1'
+  ironShovelItem:
     type: BUYABLE_ITEM
-    material: IRON_BOOTS
-    name: '&f1x Iron Boots'
-    price: 12.95
+    material: IRON_SHOVEL
+    name: '&e1x Iron Shovel'
+    price: 5.12
     purchaseLimit: -1
     stock: 25
-    slots: [8]
+    slots: [ 8 ]
     lore:
-      - '&7Buy 1x Iron Boots'
+      - '&7Buy 1x Iron Shovel'
       - ''
       - '&7Price: &6{price} coins'
+      - '&7Purchase Limit: &6{player_limit} / {item_limit}'
       - '&7Stock: &6{stock}'
       - ''
       - '&a&lCLICK TO PURCHASE'
     commands:
-      - 'give {player} IRON_BOOTS 1'
-  leatherHelmetItem:
+      - 'give {player} IRON_SHOVEL 1'
+  stoneSwordItem:
     type: BUYABLE_ITEM
-    material: LEATHER_HELMET
-    name: '&a1x Leather Helmet'
-    price: 2.5
+    material: STONE_SWORD
+    name: '&e1x Stone Sword'
+    price: 2.50
     purchaseLimit: -1
     stock: -1
-    slots: [14]
+    slots: [ 14 ]
     lore:
-      - '&7Buy 1x Leather Helmet'
+      - '&7Buy 1x Stone Sword'
       - ''
       - '&7Price: &6{price} coins'
       - '&7Stock: &6{stock}'
       - ''
       - '&a&lCLICK TO PURCHASE'
     commands:
-      - 'give {player} LEATHER_HELMET 1'
-  leatherChestplateItem:
+      - 'give {player} STONE_SWORD 1'
+  stonePickaxeItem:
     type: BUYABLE_ITEM
-    material: LEATHER_CHESTPLATE
-    name: '&a1x Leather Chestplate'
-    price: 3.75
-    purchaseLimit: -1
-    stock: -1
-    slots: [15]
-    lore:
-      - '&7Buy 1x Leather Chestplate'
-      - ''
-      - '&7Price: &6{price} coins'
-      - '&7Stock: &6{stock}'
-      - ''
-      - '&a&lCLICK TO PURCHASE'
-    commands:
-      - 'give {player} LEATHER_CHESTPLATE 1'
-  leatherLeggingsItem:
-    type: BUYABLE_ITEM
-    material: LEATHER_LEGGINGS
-    name: '&a1x Leather Leggings'
+    material: STONE_PICKAXE
+    name: '&e1x Stone Pickaxe'
     price: 3.25
     purchaseLimit: -1
     stock: -1
-    slots: [16]
+    slots: [ 15 ]
     lore:
-      - '&7Buy 1x Leather Leggings'
+      - '&7Buy 1x Stone Pickaxe'
       - ''
       - '&7Price: &6{price} coins'
       - '&7Stock: &6{stock}'
       - ''
       - '&a&lCLICK TO PURCHASE'
     commands:
-      - 'give {player} LEATHER_LEGGINGS 1'
-  leatherBootsItem:
+      - 'give {player} STONE_PICKAXE 1'
+  stoneAxeItem:
     type: BUYABLE_ITEM
-    material: LEATHER_BOOTS
-    name: '&a1x Leather Boots'
-    price: 2.75
+    material: STONE_AXE
+    name: '&e1x Stone Axe'
+    price: 3.15
     purchaseLimit: -1
     stock: -1
-    slots: [17]
+    slots: [ 16 ]
     lore:
-      - '&7Buy 1x Leather Boots'
+      - '&7Buy 1x Stone Axe'
       - ''
       - '&7Price: &6{price} coins'
       - '&7Stock: &6{stock}'
       - ''
       - '&a&lCLICK TO PURCHASE'
     commands:
-      - 'give {player} LEATHER_BOOTS 1'
+      - 'give {player} STONE_AXE 1'
+  stoneShovelItem:
+    type: BUYABLE_ITEM
+    material: STONE_SHOVEL
+    name: '&e1x Stone Shovel'
+    price: 2.25
+    purchaseLimit: -1
+    stock: -1
+    slots: [ 17 ]
+    lore:
+      - '&7Buy 1x Stone Shovel'
+      - ''
+      - '&7Price: &6{price} coins'
+      - '&7Stock: &6{stock}'
+      - ''
+      - '&a&lCLICK TO PURCHASE'
+    commands:
+      - 'give {player} STONE_SHOVEL 1'
   backButton:
     type: OPEN_CATEGORY_SHOP
     material: head;eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODY1MmUyYjkzNmNhODAyNmJkMjg2NTFkN2M5ZjI4MTlkMmU5MjM2OTc3MzRkMThkZmRiMTM1NTBmOGZkYWQ1ZiJ9fX0=
