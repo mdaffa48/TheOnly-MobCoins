@@ -2,10 +2,15 @@ package me.aglerr.mobcoins.api;
 
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.PlayerData;
+import me.aglerr.mobcoins.configs.ConfigValue;
+import me.aglerr.mobcoins.managers.managers.PlayerDataManager;
 import me.aglerr.mobcoins.managers.managers.RotatingShopManager;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MobCoinsExpansion extends PlaceholderExpansion {
 
@@ -95,26 +100,30 @@ public class MobCoinsExpansion extends PlaceholderExpansion {
             return "";
         }
 
-        PlayerData playerData = MobCoinsAPI.getPlayerData(player);
+        PlayerDataManager playerDataManager = plugin.getManagerHandler().getPlayerDataManager();
         RotatingShopManager rotatingShopManager = plugin.getManagerHandler().getRotatingShopManager();
 
         // %mobcoins_balance%
         if(identifier.equalsIgnoreCase("balance")){
+            PlayerData playerData = MobCoinsAPI.getPlayerData(player);
             return playerData == null ? "0" : String.valueOf(playerData.getCoins());
         }
 
         // %mobcoins_balance_formatted%
         if(identifier.equalsIgnoreCase("balance_formatted")){
+            PlayerData playerData = MobCoinsAPI.getPlayerData(player);
             return playerData == null ? "0" : playerData.getCoinsFormatted();
         }
 
         // %mobcoins_balance_rounded%
         if(identifier.equalsIgnoreCase("balance_rounded")){
+            PlayerData playerData = MobCoinsAPI.getPlayerData(player);
             return playerData == null ? "0" : String.valueOf(playerData.getCoinsRounded());
         }
 
         // %mobcoins_balance_shortformat%
         if(identifier.equalsIgnoreCase("balance_shortformat")){
+            PlayerData playerData = MobCoinsAPI.getPlayerData(player);
             return playerData == null ? "0" : playerData.getCoinsShortFormat();
         }
 
@@ -128,8 +137,148 @@ public class MobCoinsExpansion extends PlaceholderExpansion {
             return rotatingShopManager.getFormattedSpecialTime();
         }
 
+        // %mobcoins_top_name_<index>%
+        if(identifier.startsWith("top_name")){
+
+            // Get the mobcoins top in a list
+            List<PlayerData> topList = playerDataManager.getMobcoinsTop();
+
+            // Split the '_' from the identifier
+            String[] split = identifier.split("_");
+
+            // Get the index from the identifier
+            int index = Integer.parseInt(split[2]) - 1;
+
+            // Get the player data, using try catch for IndexOutOfBoundsException
+            try{
+                PlayerData playerData = topList.get(index);
+                // Return the desired value
+                return playerData.getName();
+            } catch (IndexOutOfBoundsException e){
+                // If there is no player from that index, return the empty value
+                return ConfigValue.TOP_NAME_IF_EMPTY;
+            }
+
+        }
+
+        // %mobcoins_top_balance_default_<index>%
+        if(identifier.startsWith("top_balance_default")){
+
+            // Get the mobcoins top in a list
+            List<PlayerData> topList = playerDataManager.getMobcoinsTop();
+
+            // Split the '_' from the identifier
+            String[] split = identifier.split("_");
+
+            // Get the index from the identifier
+            int index = Integer.parseInt(split[3]) - 1;
+
+            // Get the player data, using try catch for IndexOutOfBoundsException
+            try{
+                PlayerData playerData = topList.get(index);
+                // Return the desired value
+                return String.valueOf(playerData.getCoins());
+            } catch (IndexOutOfBoundsException e){
+                // If there is no player from that index, return the empty value
+                return ConfigValue.TOP_BALANCE_IF_EMPTY;
+            }
+        }
+
+        // %mobcoins_top_balance_rounded_<index>%
+        if(identifier.startsWith("top_balance_rounded")){
+
+            // Get the mobcoins top in a list
+            List<PlayerData> topList = playerDataManager.getMobcoinsTop();
+
+            // Split the '_' from the identifier
+            String[] split = identifier.split("_");
+
+            // Get the index from the identifier
+            int index = Integer.parseInt(split[3]) - 1;
+
+            // Get the player data, using try catch for IndexOutOfBoundsException
+            try{
+                PlayerData playerData = topList.get(index);
+                // Return the desired value
+                return String.valueOf(playerData.getCoinsRounded());
+            } catch (IndexOutOfBoundsException e){
+                // If there is no player from that index, return the empty value
+                return ConfigValue.TOP_BALANCE_IF_EMPTY;
+            }
+        }
+
+        // %mobcoins_top_balance_formatted_<index>%
+        if(identifier.startsWith("top_balance_formatted")){
+
+            // Get the mobcoins top in a list
+            List<PlayerData> topList = playerDataManager.getMobcoinsTop();
+
+            // Split the '_' from the identifier
+            String[] split = identifier.split("_");
+
+            // Get the index from the identifier
+            int index = Integer.parseInt(split[3]) - 1;
+
+            // Get the player data, using try catch for IndexOutOfBoundsException
+            try{
+                PlayerData playerData = topList.get(index);
+                // Return the desired value
+                return playerData.getCoinsFormatted();
+            } catch (IndexOutOfBoundsException e){
+                // If there is no player from that index, return the empty value
+                return ConfigValue.TOP_BALANCE_IF_EMPTY;
+            }
+        }
+
+        // %mobcoins_top_balance_shortformat_<index>%
+        if(identifier.startsWith("top_balance_shortformat")){
+
+            // Get the mobcoins top in a list
+            List<PlayerData> topList = playerDataManager.getMobcoinsTop();
+
+            // Split the '_' from the identifier
+            String[] split = identifier.split("_");
+
+            // Get the index from the identifier
+            int index = Integer.parseInt(split[3]) - 1;
+
+            // Get the player data, using try catch for IndexOutOfBoundsException
+            try{
+                PlayerData playerData = topList.get(index);
+                // Return the desired value
+                return playerData.getCoinsShortFormat();
+            } catch (IndexOutOfBoundsException e){
+                // If there is no player from that index, return the empty value
+                return ConfigValue.TOP_BALANCE_IF_EMPTY;
+            }
+        }
+
+        // %mobcoins_top_uuid_<index>%
+        if(identifier.startsWith("top_uuid")){
+
+            // Get the mobcoins top in a list
+            List<PlayerData> topList = playerDataManager.getMobcoinsTop();
+
+            // Split the '_' from the identifier
+            String[] split = identifier.split("_");
+
+            // Get the index from the identifier
+            int index = Integer.parseInt(split[2]) - 1;
+
+            // Get the player data, using try catch for IndexOutOfBoundsException
+            try{
+                PlayerData playerData = topList.get(index);
+                // Return the desired value
+                return playerData.getUUID();
+            } catch (IndexOutOfBoundsException e){
+                // If there is no player from that index, return the empty value
+                return ConfigValue.TOP_UUID_IF_EMPTY;
+            }
+        }
+
         // We return null if an invalid placeholder (f.e. %someplugin_placeholder3%)
         // was provided
         return null;
     }
+
 }

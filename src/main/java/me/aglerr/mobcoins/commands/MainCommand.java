@@ -36,6 +36,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
         this.subCommandMap.put("set", new SetCommand());
         this.subCommandMap.put("shop", new ShopCommand());
         this.subCommandMap.put("take", new TakeCommand());
+        this.subCommandMap.put("top", new TopCommand());
     }
 
     public void registerThisCommand(){

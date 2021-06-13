@@ -204,7 +204,7 @@ public class RotatingShopInventory extends FastInv {
             String title = confirmation.getString("title");
             int size = confirmation.getInt("size");
 
-            FastInv inventory = new ConfirmationInventory(plugin, player, stack, ShopManager.InventoryType.ROTATING_SHOP, playerData, item, size, title);
+            FastInv inventory = new ConfirmationInventory(plugin, player, stack, ShopManager.InventoryType.ROTATING_SHOP, playerData, item, null, size, title);
             inventory.open(player);
             return;
         }

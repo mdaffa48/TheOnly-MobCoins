@@ -15,20 +15,21 @@ import me.aglerr.mobcoins.utils.ItemManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This inventory used when player want to purchase something on the shop if the options is enabled
  */
 public class ConfirmationInventory extends FastInv {
 
-    public ConfirmationInventory(MobCoins plugin, Player player, ItemStack stack, ShopManager.InventoryType inventoryType, PlayerData playerData, TypeItem buyItem, int size, String title) {
+    public ConfirmationInventory(MobCoins plugin, Player player, ItemStack stack, ShopManager.InventoryType inventoryType, PlayerData playerData, TypeItem buyItem, @Nullable String category, int size, String title) {
         super(size, Common.color(title));
 
-        this.setAllItems(plugin, player, stack, inventoryType, playerData, buyItem);
+        this.setAllItems(plugin, player, stack, inventoryType, playerData, buyItem, category);
 
     }
 
-    private void setAllItems(MobCoins plugin, Player player, ItemStack stack, ShopManager.InventoryType inventoryType, PlayerData playerData, TypeItem buyItem){
+    private void setAllItems(MobCoins plugin, Player player, ItemStack stack, ShopManager.InventoryType inventoryType, PlayerData playerData, TypeItem buyItem, String category){
         ShopManager shopManager = plugin.getManagerHandler().getShopManager();
 
         // Loop through all loaded confirmation menu items
@@ -45,19 +46,28 @@ public class ConfirmationInventory extends FastInv {
 
                 // Logic when player confirming buying item
                 if(item.getType().equalsIgnoreCase("CONFIRM_BUY")){
-                    this.handleConfirming(plugin, player, buyItem, inventoryType, playerData);
+                    this.handleConfirming(plugin, player, buyItem, inventoryType, playerData, category);
                 }
 
                 // Cancel
                 if(item.getType().equalsIgnoreCase("CANCEL_BUY")){
-                    shopManager.openInventory(player, inventoryType);
+
+                    // First we need to check if confirmation menu is not from category shop
+                    if(category == null){
+                        // Open the latest menu
+                        shopManager.openInventory(player, inventoryType);
+                        return;
+                    }
+
+                    // If it is from category shop, we open the category shop back
+                    shopManager.openCategoryShop(category, player);
                 }
 
             });
         }
     }
 
-    private void handleConfirming(MobCoins plugin, Player player, TypeItem item, ShopManager.InventoryType inventoryType, PlayerData playerData){
+    private void handleConfirming(MobCoins plugin, Player player, TypeItem item, ShopManager.InventoryType inventoryType, PlayerData playerData, String category){
         // Get player data from MobCoinsAPI
         StockManager stockManager = plugin.getManagerHandler().getStockManager();
         PurchaseLimitManager purchaseLimitManager = plugin.getManagerHandler().getPurchaseLimitManager();
@@ -79,10 +89,24 @@ public class ConfirmationInventory extends FastInv {
 
         // If enabled, inventory will be closed or else the latest shop inventory will open
         if(ConfigValue.CLOSE_AFTER_PURCHASE){
+            // Close the inventory
             player.closeInventory();
-        } else {
-            shopManager.openInventory(player, inventoryType);
+            return;
         }
+
+        // What should we do If the close after purchase not enabled
+
+        // First, we check if the player not opening confirmation menu from category shop
+        if(category == null) {
+            // Open the inventory for player
+            shopManager.openInventory(player, inventoryType);
+            return;
+        }
+
+        // If the confirmation menu opened from category shop
+        // We open the category shop back
+        shopManager.openCategoryShop(category, player);
+
 
     }
 

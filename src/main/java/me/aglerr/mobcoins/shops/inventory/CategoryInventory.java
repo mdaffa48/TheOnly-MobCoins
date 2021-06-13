@@ -49,6 +49,16 @@ public class CategoryInventory extends FastInv {
                 // Just return if the item doesn't have any type
                 if(item.getType() == null) return;
 
+                // Check if item type is equals to OPEN_MAIN_MENU
+                if(item.getType().equalsIgnoreCase("OPEN_MAIN_MENU")){
+                    // Opening the main menu inventory for player
+                    shopManager.openInventory(player, ShopManager.InventoryType.MAIN_MENU);
+                }
+
+                if(item.getType().equalsIgnoreCase("OPEN_ROTATING_SHOP")){
+                    shopManager.openInventory(player, ShopManager.InventoryType.ROTATING_SHOP);
+                }
+
                 // Check if item type is equals to OPEN_CATEGORY
                 if(item.getType().equalsIgnoreCase("OPEN_CATEGORY")){
                     // Return if the item doesn't have any category set
@@ -61,13 +71,6 @@ public class CategoryInventory extends FastInv {
 
                     // Opening category
                     shopManager.openCategoryShop(item.getCategory(), player);
-                    return;
-                }
-
-                // Check if item type is equals to OPEN_MAIN_MENU
-                if(item.getType().equalsIgnoreCase("OPEN_MAIN_MENU")){
-                    // Opening the main menu inventory for player
-                    shopManager.openInventory(player, ShopManager.InventoryType.MAIN_MENU);
                 }
 
             });

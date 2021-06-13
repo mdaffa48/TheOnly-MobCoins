@@ -3,6 +3,7 @@ package me.aglerr.mobcoins.shops.items;
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.configs.Config;
 import me.aglerr.mobcoins.configs.CustomConfig;
+import me.aglerr.mobcoins.utils.Common;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -204,15 +205,28 @@ public class ItemsLoader {
 
             // If return false, we create the example files
             if(!exampleFile){
+                System.out.println("Starting to create the example files");
+                // Get the path in plugin jar to the categories folder
+                String path = "categories" + File.separator;
 
-                // Get the path to the categories folder
-                String path = plugin.getDataFolder() + File.separator + "categories" + File.separator;
+                // Get the path in plugin server folder to the categories folder
+                String pluginPath = plugin.getDataFolder() + File.separator + "categories";
+
+                // Get the armor.yml file
+                File armorFile = new File(pluginPath, "armor.yml");
+
+                // Get the weaponsAndTools.yml file
+                File weaponsAndToolsFile = new File(pluginPath, "weaponsAndTools.yml");
 
                 // Create armor.yml example file
-                plugin.saveResource(path + "armor.yml", false);
+                if(!armorFile.exists()){
+                    plugin.saveResource(path + "armor.yml", false);
+                }
 
                 // Create weaponsAndTools.yml example file
-                plugin.saveResource(path + "weaponsAndTools.yml", false);
+                if(!weaponsAndToolsFile.exists()){
+                    plugin.saveResource(path + "weaponsAndTools.yml", false);
+                }
 
                 // Set 'true' on the 'createExampleFile' so we know we have created the file
                 config.set("createExampleFile", true);
@@ -224,10 +238,13 @@ public class ItemsLoader {
 
         }
 
+        // Get the files after the example file is created
+        File[] finalFiles = new File(plugin.getDataFolder() + File.separator + "categories").listFiles();
+
         // Create a null FileConfiguration
         FileConfiguration config;
 
-        for(File file : files){
+        for(File file : finalFiles){
             // Instantiate the config
             config = YamlConfiguration.loadConfiguration(file);
             String fileName = file.getName();
@@ -257,9 +274,7 @@ public class ItemsLoader {
 
                 this.categoryShopItems.add(typeItem);
             }
-
         }
-
     }
 
     public List<TypeItem> getConfirmationItems() { return confirmationItems; }

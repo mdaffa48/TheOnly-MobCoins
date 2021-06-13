@@ -10,6 +10,7 @@ import me.aglerr.mobcoins.shops.inventory.CategoryShopInventory;
 import me.aglerr.mobcoins.shops.inventory.MainMenuInventory;
 import me.aglerr.mobcoins.shops.inventory.RotatingShopInventory;
 import me.aglerr.mobcoins.shops.items.ItemsLoader;
+import me.aglerr.mobcoins.utils.Common;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 

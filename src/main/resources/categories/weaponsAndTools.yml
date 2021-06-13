@@ -209,7 +209,6 @@ items:
       - '&7Buy 1x Iron Shovel'
       - ''
       - '&7Price: &6{price} coins'
-      - '&7Purchase Limit: &6{player_limit} / {item_limit}'
       - '&7Stock: &6{stock}'
       - ''
       - '&a&lCLICK TO PURCHASE'
@@ -288,6 +287,7 @@ items:
     material: head;eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODY1MmUyYjkzNmNhODAyNmJkMjg2NTFkN2M5ZjI4MTlkMmU5MjM2OTc3MzRkMThkZmRiMTM1NTBmOGZkYWQ1ZiJ9fX0=
     name: '&cBack'
     lore: []
+    slots: [18]
   fillItems:
     type: DUMMY
     material: BLACK_STAINED_GLASS_PANE

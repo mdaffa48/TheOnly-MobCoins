@@ -49,9 +49,13 @@ public class ConfigValue {
 
     public static List<String> MESSAGES_HELP;
     public static List<String> MESSAGES_HELP_ADMIN;
+    public static List<String> MESSAGES_TOP_LEADERBOARD;
     public static List<String> DISABLED_WORLDS;
 
-    public static String USER_ID = "%%__USER__%%";
+    // Mobcoins Top Leaderboard
+    public static String TOP_NAME_IF_EMPTY;
+    public static String TOP_BALANCE_IF_EMPTY;
+    public static String TOP_UUID_IF_EMPTY;
 
     // Mobcoins Item
     public static String MOBCOINS_ITEM_MATERIAL;
@@ -137,6 +141,7 @@ public class ConfigValue {
 
         MESSAGES_HELP = config.getStringList("messages.help");
         MESSAGES_HELP_ADMIN = config.getStringList("messages.helpAdmin");
+        MESSAGES_TOP_LEADERBOARD = config.getStringList("messages.topLeaderboard");
         DISABLED_WORLDS = config.getStringList("disabledWorlds");
 
         STARTING_BALANCE = config.getDouble("starting-balance");
@@ -178,6 +183,10 @@ public class ConfigValue {
 
         SPECIAL_IS_COMMAND = rotatingShop.getBoolean("rotatingShop.refreshActions.specialItems.commands.enabled");
         SPECIAL_COMMAND_COMMANDS = rotatingShop.getStringList("rotatingShop.refreshActions.specialItems.commands.commands");
+
+        TOP_NAME_IF_EMPTY = config.getString("placeholders.mobCoinsTop.nameIfEmpty");
+        TOP_BALANCE_IF_EMPTY = config.getString("placeholders.mobCoinsTop.balanceIfEmpty");
+        TOP_UUID_IF_EMPTY = config.getString("placeholders.mobCoinsTop.uuidIfEmpty");
 
     }
 

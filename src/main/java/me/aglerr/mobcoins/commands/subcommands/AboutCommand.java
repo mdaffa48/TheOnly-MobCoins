@@ -32,9 +32,6 @@ public class AboutCommand extends SubCommand {
                 "&e&lTheOnly &7(MobCoins edition)",
                 "&fPlugin Version: &e" + plugin.getDescription().getVersion(),
                 "&fAuthors: &e" + plugin.getDescription().getAuthors().toString(),
-                "&f",
-                "&cPlugin registered to:",
-                "&7https://www.spigotmc.org/members/" + ConfigValue.USER_ID + "/",
                 "&6&m---------------------------------"
         );
 

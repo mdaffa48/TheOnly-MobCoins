@@ -166,7 +166,7 @@ public class CategoryShopInventory extends FastInv {
             String title = confirmation.getString("title");
             int size = confirmation.getInt("size");
 
-            FastInv inventory = new ConfirmationInventory(plugin, player, stack, ShopManager.InventoryType.CATEGORY_SHOP, playerData, item, size, title);
+            FastInv inventory = new ConfirmationInventory(plugin, player, stack, ShopManager.InventoryType.CATEGORY_SHOP, playerData, item, item.getFileName(), size, title);
             inventory.open(player);
             return;
         }
