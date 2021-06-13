@@ -2,10 +2,12 @@ package me.aglerr.mobcoins.managers.managers;
 
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.PlayerData;
+import me.aglerr.mobcoins.configs.Config;
 import me.aglerr.mobcoins.configs.ConfigValue;
 import me.aglerr.mobcoins.database.SQLDatabase;
 import me.aglerr.mobcoins.managers.Manager;
 import me.aglerr.mobcoins.utils.Common;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
@@ -124,6 +126,66 @@ public class PlayerDataManager implements Manager {
 
     @Override
     public void load() {
+
+        // Auto save feature
+        FileConfiguration config = Config.CONFIG.getConfig();
+        boolean enabled = config.getBoolean("autoSave.enabled");
+        int interval = (20 * config.getInt("autoSave.interval"));
+
+        if(!enabled) return;
+
+        SQLDatabase database = plugin.getDatabase();
+
+        Common.runTaskTimerAsynchronously(0, interval, () -> {
+            int totalSaved = 0;
+
+            try(Connection connection = database.getConnection()){
+                for(String uuid : this.playerDataMap.keySet()){
+                    PlayerData playerData = this.playerDataMap.get(uuid);
+
+                    String rowCommand = "SELECT * FROM {table} WHERE uuid=?"
+                            .replace("{table}", database.getTable());
+
+                    try(PreparedStatement statement = connection.prepareStatement(rowCommand)){
+                        statement.setString(1, playerData.getUUID());
+                        try(ResultSet resultSet = statement.executeQuery()){
+                            if(resultSet.next()){
+
+                                String updateCommand = "UPDATE {table} SET coins=? WHERE uuid=?"
+                                        .replace("{table}", database.getTable());
+
+                                try(PreparedStatement updateStatement = connection.prepareStatement(updateCommand)){
+                                    updateStatement.setString(1, String.valueOf(playerData.getCoins()));
+                                    updateStatement.setString(2, playerData.getUUID());
+                                    updateStatement.executeUpdate();
+                                    Common.debug(true, "Updating " + playerData.getName() + " data (coins: " + playerData.getCoins() + ")");
+                                }
+
+                            } else {
+
+                                String insertCommand = "INSERT INTO {table} (uuid, coins) VALUES (?,?);"
+                                        .replace("{table}", database.getTable());
+
+                                try(PreparedStatement insertStatement = connection.prepareStatement(insertCommand)){
+                                    insertStatement.setString(1, playerData.getUUID());
+                                    insertStatement.setString(2, String.valueOf(playerData.getCoins()));
+                                    insertStatement.execute();
+                                    Common.debug(true, "Inserting " + playerData.getName() + " data (coins: " + playerData.getCoins() + ")");
+                                }
+                            }
+                        }
+                    }
+                    totalSaved++;
+                }
+
+            } catch (SQLException e){
+                Common.error(true, "Failed to save all players data (action: auto-save)");
+                e.printStackTrace();
+            }
+
+            Common.log(true, "Successfully saved " + totalSaved + " player data!");
+
+        });
 
     }
 

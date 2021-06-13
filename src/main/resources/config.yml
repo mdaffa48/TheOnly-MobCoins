@@ -9,6 +9,13 @@ mysql:
   port: 3306
   useSSL: false
 
+# Should we auto-save player data in an interval?
+# The interval is in seconds
+# Required restart If you want to change
+autoSave:
+  enabled: true
+  interval: 300
+
 # How many mobcoins should player start with
 starting-balance: 0
 
