@@ -19,6 +19,10 @@ public class ConfigValue {
 
     public static double STARTING_BALANCE;
 
+    public static boolean AUTO_SAVE_ENABLED;
+    public static int AUTO_SAVE_INTERVAL;
+    public static boolean AUTO_SAVE_SEND_MESSAGE;
+
     public static boolean PHYSICAL_MOBCOIN;
     public static boolean DISABLE_MOBCOIN_FROM_SPAWNER;
     public static boolean CLOSE_AFTER_PURCHASE;
@@ -46,6 +50,10 @@ public class ConfigValue {
     public static String MESSAGES_ITEM_OUT_OF_STOCK;
     public static String MESSAGES_PURCHASE_LIMIT_REACHED;
     public static String MESSAGES_MINIMUM_AMOUNT;
+    public static String MESSAGES_INVENTORY_FULL;
+    public static String MESSAGES_WITHDRAW;
+    public static String MESSAGES_CATEGORY_NOT_EXISTS;
+    public static String MESSAGES_RELOAD;
 
     public static List<String> MESSAGES_HELP;
     public static List<String> MESSAGES_HELP_ADMIN;
@@ -138,6 +146,10 @@ public class ConfigValue {
         MESSAGES_ITEM_OUT_OF_STOCK = config.getString("messages.itemOutOfStock");
         MESSAGES_PURCHASE_LIMIT_REACHED = config.getString("messages.purchaseLimitReached");
         MESSAGES_MINIMUM_AMOUNT = config.getString("messages.minimumAmount");
+        MESSAGES_INVENTORY_FULL = config.getString("messages.inventoryFull");
+        MESSAGES_WITHDRAW = config.getString("messages.withdraw");
+        MESSAGES_CATEGORY_NOT_EXISTS = config.getString("messages.categoryNotExists");
+        MESSAGES_RELOAD = config.getString("messages.reload");
 
         MESSAGES_HELP = config.getStringList("messages.help");
         MESSAGES_HELP_ADMIN = config.getStringList("messages.helpAdmin");
@@ -145,6 +157,10 @@ public class ConfigValue {
         DISABLED_WORLDS = config.getStringList("disabledWorlds");
 
         STARTING_BALANCE = config.getDouble("starting-balance");
+
+        AUTO_SAVE_ENABLED = config.getBoolean("autoSave.enabled");
+        AUTO_SAVE_INTERVAL = config.getInt("autoSave.interval");
+        AUTO_SAVE_SEND_MESSAGE = config.getBoolean("autoSave.sendMessage");
 
         PHYSICAL_MOBCOIN = config.getBoolean("mobcoins.physicalMobCoin");
         DISABLE_MOBCOIN_FROM_SPAWNER = config.getBoolean("mobcoins.disableMobCoinFromSpawner");

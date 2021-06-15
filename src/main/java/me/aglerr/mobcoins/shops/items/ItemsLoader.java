@@ -26,6 +26,17 @@ public class ItemsLoader {
 
     private final Map<String, FileConfiguration> categoryShopFiles = new HashMap<>();
 
+    public void clearAllItems(){
+        this.mainMenuItems.clear();
+        this.additionalRotatingItems.clear();
+        this.rotatingItems.clear();
+        this.confirmationItems.clear();
+        this.categoryItems.clear();
+        this.categoryShopItems.clear();
+
+        this.categoryShopFiles.clear();
+    }
+
     public void loadMainMenuItems(){
         FileConfiguration config = Config.MAIN_MENU_CONFIG.getConfig();
         for(String key : config.getConfigurationSection("items").getKeys(false)){

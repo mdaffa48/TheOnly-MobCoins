@@ -127,16 +127,11 @@ public class PlayerDataManager implements Manager {
     @Override
     public void load() {
 
-        // Auto save feature
-        FileConfiguration config = Config.CONFIG.getConfig();
-        boolean enabled = config.getBoolean("autoSave.enabled");
-        int interval = (20 * config.getInt("autoSave.interval"));
-
-        if(!enabled) return;
-
         SQLDatabase database = plugin.getDatabase();
 
-        Common.runTaskTimerAsynchronously(0, interval, () -> {
+        Common.runTaskTimerAsynchronously(0, (20 * ConfigValue.AUTO_SAVE_INTERVAL), () -> {
+            if(!ConfigValue.AUTO_SAVE_ENABLED) return;
+
             int totalSaved = 0;
 
             try(Connection connection = database.getConnection()){
@@ -183,7 +178,9 @@ public class PlayerDataManager implements Manager {
                 e.printStackTrace();
             }
 
-            Common.log(true, "Successfully saved " + totalSaved + " player data!");
+            if(ConfigValue.AUTO_SAVE_SEND_MESSAGE){
+                Common.log(true, "Successfully saved " + totalSaved + " player data!");
+            }
 
         });
 

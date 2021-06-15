@@ -4,7 +4,6 @@ import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.PlayerData;
 import me.aglerr.mobcoins.coinmob.CoinMob;
 import me.aglerr.mobcoins.managers.ManagerHandler;
-import me.aglerr.mobcoins.managers.managers.PlayerDataManager;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 

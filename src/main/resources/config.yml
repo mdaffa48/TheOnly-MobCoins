@@ -15,6 +15,10 @@ mysql:
 autoSave:
   enabled: true
   interval: 300
+  sendMessage: true
+
+# Should we notified you when there's an update?
+notifyUpdate: true
 
 # How many mobcoins should player start with
 starting-balance: 0
@@ -48,6 +52,23 @@ shops:
   autoUpdate:
     enabled: true
     updateEvery: 20
+
+# If you enabled this mode, player will receive notification
+# every x amount of seconds on how much that they receive
+# mobcoins in that time.
+# Configuration Information:
+#   (announceEvery) the time is in seconds, 300 seconds = 5 minute.
+#   (receiveAfterMessage) should player receive mobcoins after the notification?
+#
+salaryMode:
+  enabled: true
+  announceEvery: 300
+  receiveAfterMessage: false
+  messages:
+    - ''
+    - '&6&l[!] Mob &e&lCoins &7(Earning Summary)'
+    - '&fYou have earned &6{amount} coins &fin the past 5 minutes!'
+    - ''
 
 # List of all placeholders that are being used
 # Information:
@@ -84,23 +105,6 @@ mobcoinsItem:
     - '&6{amount} coins &7are stored in this item!'
     - ''
     - '&6Right click to redeem!'
-
-# If you enabled this mode, player will receive notification
-# every x amount of seconds on how much that they receive
-# mobcoins in that time.
-# Configuration Information:
-#   (announceEvery) the time is in seconds, 300 seconds = 5 minute.
-#   (receiveAfterMessage) should player receive mobcoins after the notification?
-#
-salaryMode:
-  enabled: true
-  announceEvery: 300
-  receiveAfterMessage: false
-  messages:
-    - ''
-    - '&6&l[!] Mob &e&lCoins &7(Earning Summary)'
-    - '&fYou have earned &6{amount} coins &fin the past 5 minutes!'
-    - ''
 
 # Configuration Information
 #   (enabled) should we enabled this sound?
@@ -144,6 +148,7 @@ actionBar:
 messages:
   prefix: "&e[MobCoins]"
   noPermission: "{prefix} &cYou don't have enough permission!"
+  reload: "{prefix} &aYou have reloaded the configuration &7(took {ms}ms)"
   balance: "{prefix} &fYour coins: &e{coins}"
   balanceOthers: "{prefix} &f{player}'s coins: &e{coins}"
   playerNotExists: "{prefix} &cThat player is not online!"
@@ -164,6 +169,9 @@ messages:
   itemOutOfStock: "{prefix} &cItem is out of stock!"
   purchaseLimitReached: "{prefix} &cYou can not purchase this item anymore!"
   minimumAmount: "{prefix} &cThe minimum amount is 1"
+  inventoryFull: "{prefix} &cYour inventory is full, Please make some space!"
+  withdraw: "{prefix} &aYou have withdrawed &6{amount} &acoins."
+  categoryNotExists: "{prefix} &cCategory '{category}' is doesn't exist!"
   topLeaderboard:
     - "&6--------------------------------------"
     - "  &7Mobcoins Leaderboard"

@@ -32,11 +32,14 @@ public class MainCommand implements CommandExecutor, TabCompleter {
 
         this.subCommandMap.put("give", new GiveCommand());
         this.subCommandMap.put("help", new HelpCommand());
+        this.subCommandMap.put("opencategory", new OpenCategoryCommand());
         this.subCommandMap.put("pay", new PayCommand());
+        this.subCommandMap.put("reload", new ReloadCommand());
         this.subCommandMap.put("set", new SetCommand());
         this.subCommandMap.put("shop", new ShopCommand());
         this.subCommandMap.put("take", new TakeCommand());
         this.subCommandMap.put("top", new TopCommand());
+        this.subCommandMap.put("withdraw", new WithdrawCommand());
     }
 
     public void registerThisCommand(){
@@ -108,20 +111,29 @@ public class MainCommand implements CommandExecutor, TabCompleter {
 
             suggestions.add("help");
 
-            if(sender.hasPermission("mobcoins.balance"))
+            if(sender.hasPermission("mobcoins.balance")){
                 suggestions.add("balance");
+            }
 
-            if(sender.hasPermission("mobcoins.shop"))
+            if(sender.hasPermission("mobcoins.shop")){
                 suggestions.add("shop");
+            }
 
-            if(sender.hasPermission("mobcoins.pay"))
+            if(sender.hasPermission("mobcoins.pay")){
                 suggestions.add("pay");
+            }
+
+            if(sender.hasPermission("mobcoins.top")){
+                suggestions.add("top");
+            }
 
             if(sender.hasPermission("mobcoins.admin")){
                 suggestions.add("set");
                 suggestions.add("give");
                 suggestions.add("take");
                 suggestions.add("about");
+                suggestions.add("opencategory");
+                suggestions.add("reload");
             }
 
             return suggestions;

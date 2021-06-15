@@ -7,9 +7,15 @@ import me.aglerr.mobcoins.configs.ConfigValue;
 import me.aglerr.mobcoins.database.SQLDatabase;
 import me.aglerr.mobcoins.listeners.ListenerHandler;
 import me.aglerr.mobcoins.managers.ManagerHandler;
+import me.aglerr.mobcoins.managers.managers.CoinMobManager;
+import me.aglerr.mobcoins.managers.managers.RotatingShopManager;
+import me.aglerr.mobcoins.managers.managers.ShopManager;
+import me.aglerr.mobcoins.shops.items.ItemsLoader;
 import me.aglerr.mobcoins.utils.Common;
 import me.aglerr.mobcoins.utils.ConfigUpdater;
+import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
@@ -72,6 +78,31 @@ public class MobCoins extends JavaPlugin {
             Common.error(true, "Failed to update the config.yml");
             e.printStackTrace();
         }
+    }
+
+    public void reloadEverything(){
+        ShopManager shopManager = this.managerHandler.getShopManager();
+        RotatingShopManager rotatingShopManager = this.managerHandler.getRotatingShopManager();
+        CoinMobManager coinMobManager = this.managerHandler.getCoinMobManager();
+        ItemsLoader itemsLoader = shopManager.getItemsLoader();
+
+        // Reload all configuration
+        Config.reloadAllConfigs();
+
+        // Re-initialize the config value
+        ConfigValue.initializeValue();
+
+        // Save the rotating items to the config
+        rotatingShopManager.save();
+
+        // Clear all items from the ItemsLoader and then load it back
+        itemsLoader.clearAllItems();
+        shopManager.loadItems();
+
+        // Clear all coin mobs and then load it back
+        coinMobManager.clearCoinMob();
+        coinMobManager.load();
+
     }
 
     /**

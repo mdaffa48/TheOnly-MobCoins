@@ -32,19 +32,15 @@ public class CoinMobManager implements Manager {
 
         if(!this.coinMobList.isEmpty()) this.coinMobList.clear();
 
-        int totalMobs = 0;
         for(String key : mobs.getConfigurationSection("entities").getKeys(false)){
             this.coinMobList.add(new CoinMob(key, mobs.getString("entities." + key + ".amount"), mobs.getDouble("entities." + key + ".chance")));
-            totalMobs++;
         }
-
-        Common.log(true, "Successfully loaded " + totalMobs + " mobs, enjoy!");
 
     }
 
     @Override
     public void save() {
-
+        this.clearCoinMob();
     }
 
 }

@@ -41,9 +41,9 @@ public class SalaryManager implements Manager {
     public void load() {
         Common.runTaskTimerAsynchronously(0, (20 * ConfigValue.SALARY_MODE_ANNOUNCE_EVERY), () -> {
             if(!ConfigValue.SALARY_MODE_ENABLED) return;
-            // Loop through all salary
-            for(UUID uuid : this.salaryMap.keySet()){
 
+            // Loop through all salaries
+            for(UUID uuid : this.salaryMap.keySet()){
                 // Get the player object from UUID that are stored
                 Player player = Bukkit.getPlayer(uuid);
                 if(player == null){

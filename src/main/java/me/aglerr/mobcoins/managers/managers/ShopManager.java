@@ -102,7 +102,7 @@ public class ShopManager implements Manager {
 
     @Override
     public void save() {
-
+        this.itemsLoader.clearAllItems();
     }
 
     public enum InventoryType{
