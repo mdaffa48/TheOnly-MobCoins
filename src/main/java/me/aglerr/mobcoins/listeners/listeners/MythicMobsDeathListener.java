@@ -107,12 +107,12 @@ public class MythicMobsDeathListener implements Listener {
                 Common.sendTitle(player, "titles.onCoinsReceived", plugin.getConfig(), receiveEvent.getAmountReceived());
 
                 // Send action bar to the player
-                Common.sendActionBar(player, "actionBar.onCoinsReceived", plugin.getConfig());
+                Common.sendActionBar(player, "actionBar.onCoinsReceived", plugin.getConfig(), receiveEvent.getAmountReceived());
 
                 // Send messages to the player
                 player.sendMessage(Common.color(ConfigValue.MESSAGES_COINS_RECEIVED
                         .replace("{prefix}", ConfigValue.PREFIX)
-                        .replace("{amount}", String.valueOf(receiveEvent.getAmountReceived()))));
+                        .replace("{amount}", Common.format(receiveEvent.getAmountReceived()))));
             }
         }
     }

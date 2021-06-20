@@ -2,6 +2,7 @@ package me.aglerr.mobcoins.managers.managers;
 
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.api.MobCoinsExpansion;
+import me.aglerr.mobcoins.listeners.listeners.MythicMobsDeathListener;
 import me.aglerr.mobcoins.managers.Manager;
 import me.aglerr.mobcoins.utils.Common;
 import org.bukkit.Bukkit;
@@ -19,6 +20,7 @@ public class DependencyManager implements Manager {
     public static boolean PLACEHOLDER_API;
 
     public void notificationMessage(){
+        Common.log(true, "Notification message!");
         if(WILD_STACKER){
             Common.log(true, "WildStacker found, enabling hooks!");
         }
