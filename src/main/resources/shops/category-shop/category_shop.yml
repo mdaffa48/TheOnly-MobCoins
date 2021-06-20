@@ -1,0 +1,95 @@
+# Configuration Information
+#
+# (categoryShop)
+# - (resetTime) How long till we reset purchase limit and stock in the category shop?
+# - (refreshActions) All options that are executed after normal/special items refreshed
+#     (broadcastMessage)
+#       (enabled) Should we enabled broadcasting message on normal item reset?
+#       (messages) A list of messages that will get send
+#     (titles)
+#       (enabled) Should we enabled sending titles to all players on normal item reset?
+#       (title) The title on the Title Bar
+#       (subTitle) The subtitle on the Title Bar
+#       (fadeIn) Fade in animation, time in ticks (20 ticks = 1 second)
+#       (stay) How long should the title stay, time in ticks (20 ticks = 1 second)
+#       (fadeOut) Fade out animation, time in ticks (20 ticks = 1 second)
+#     (sound)
+#       (enabled) Should we enabled playing sound to all players on normal item reset?
+#       (name) The name of the sound (https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html)
+#       (volume) The volume of the sound
+#       (pitch) The pitch of the sound
+#     (commands)
+#       (enabled) Should we enabled executes commands on normal item reset?
+#       (commands) The list of commands that will get executed
+#--------------------------------------------------------------------------------
+title: '&8Select a category'
+size: 27
+
+categoryShop:
+  resetTime: 86400
+  refreshActions:
+    broadcastMessage:
+      enabled: true
+      messages:
+        - ""
+        - " &e&lMOBCOINS CATEGORY SHOP HAS BEEN REFRESHED"
+        - " &7(( All purchase limit and stock has been reset ))"
+        - ""
+        - ""
+    titles:
+      enabled: true
+      title: "&e&lCATEGORY SHOP REFRESHED"
+      subTitle: "&fPurchase Limit and Stock has been reset"
+      fadeIn: 20
+      stay: 40
+      fadeOut: 20
+    sound:
+      enabled: true
+      name: ENTITY_PLAYER_LEVELUP
+      volume: 1.0
+      pitch: 1.0
+    commands:
+      enabled: true
+      commands:
+        - "broadcast &eCategory Shop purchase limit and stock has been refreshed"
+
+items:
+  armorShop:
+    type: OPEN_CATEGORY
+    category: armor.yml
+    material: DIAMOND_CHESTPLATE
+    name: '&eArmor Shop'
+    glowing: true
+    slots: [11]
+    lore:
+      - '&aClick to open the shop'
+  weaponsAndToolShop:
+    type: OPEN_CATEGORY
+    category: weaponsAndTools.yml
+    material: DIAMOND_PICKAXE
+    name: '&eWeapons & Tools Shop'
+    glowing: true
+    slots: [15]
+    lore:
+      - '&aClick to open the shop'
+  informationItem:
+    type: DUMMY
+    material: CLOCK
+    name: '&e&lCategory Shop Information'
+    slots: [13]
+    lore:
+      - ""
+      - "&6&l* &eTime Remaining: &7%mobcoins_categorytime%"
+      - "&7&o(( Stock and Purchase Limit will be resetted every 1 day ))"
+  backItem:
+    type: OPEN_MAIN_MENU
+    material: head;eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODY1MmUyYjkzNmNhODAyNmJkMjg2NTFkN2M5ZjI4MTlkMmU5MjM2OTc3MzRkMThkZmRiMTM1NTBmOGZkYWQ1ZiJ9fX0=
+    name: '&cBack'
+    slots: [18]
+    lore: []
+  fillItem:
+    type: DUMMY
+    material: BLACK_STAINED_GLASS_PANE
+    name: '&f'
+    slots: [0, 1, 2, 3, 4, 5, 6, 7, 8, 19, 20, 21, 22, 23, 24, 25, 26]
+    lore: []
