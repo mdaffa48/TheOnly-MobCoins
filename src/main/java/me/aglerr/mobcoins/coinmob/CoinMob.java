@@ -44,7 +44,10 @@ public class CoinMob {
     }
 
     public boolean willDropCoins(){
-        return ThreadLocalRandom.current().nextDouble(101) <= getChance();
+        double random = ThreadLocalRandom.current().nextDouble(101);
+        double chance = this.getChance();
+        System.out.println("Is " + random + " <= " + chance);
+        return random <= chance;
     }
 
     /**
