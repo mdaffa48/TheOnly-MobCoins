@@ -3,10 +3,7 @@ package me.aglerr.mobcoins.managers;
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.managers.managers.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ManagerHandler {
 
@@ -26,6 +23,7 @@ public class ManagerHandler {
         this.managerList.put(ManagerType.STOCK_MANAGER, new StockManager());
         this.managerList.put(ManagerType.PURCHASE_LIMIT_MANAGER, new PurchaseLimitManager());
         this.managerList.put(ManagerType.ROTATING_SHOP_MANAGER, new RotatingShopManager(plugin));
+        this.managerList.put(ManagerType.CATEGORY_SHOP_MANAGER, new CategoryShopManager(plugin));
     }
 
     public void loadAllManagers(){
@@ -76,6 +74,10 @@ public class ManagerHandler {
         return (RotatingShopManager) this.managerList.get(ManagerType.ROTATING_SHOP_MANAGER);
     }
 
+    public CategoryShopManager getCategoryShopManager(){
+        return (CategoryShopManager) this.managerList.get(ManagerType.CATEGORY_SHOP_MANAGER);
+    }
+
     private enum ManagerType{
         COIN_MOB_MANAGER,
         PLAYER_DATA_MANAGER,
@@ -85,7 +87,8 @@ public class ManagerHandler {
         SHOP_MANAGER,
         STOCK_MANAGER,
         PURCHASE_LIMIT_MANAGER,
-        ROTATING_SHOP_MANAGER
+        ROTATING_SHOP_MANAGER,
+        CATEGORY_SHOP_MANAGER
     }
 
 }
