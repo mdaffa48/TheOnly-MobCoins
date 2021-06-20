@@ -119,8 +119,8 @@ public class Common {
         }
     }
 
-    public static DecimalFormat getDecimalFormat(){
-        return decimalFormat;
+    public static String format(double amount){
+        return decimalFormat.format(amount);
     }
 
     public static BukkitTask runTask(Runnable runnable){
@@ -139,7 +139,7 @@ public class Common {
         Bukkit.getScheduler().runTaskTimerAsynchronously(MobCoins.getInstance(), runnable, delay, time);
     }
 
-    private static String format(double d){
+    private static String formatEnglish(double d){
         NumberFormat format = NumberFormat.getInstance(Locale.ENGLISH);
         format.setMaximumFractionDigits(2);
         format.setMinimumFractionDigits(0);
@@ -148,28 +148,28 @@ public class Common {
 
     public static String shortFormat(double d){
         if (d < 1000L) {
-            return format(d);
+            return formatEnglish(d);
         }
         if (d < 1000000L) {
-            return format(d / 1000L) + "K";
+            return formatEnglish(d / 1000L) + "K";
         }
         if (d < 1000000000L) {
-            return format(d / 1000000L) + "M";
+            return formatEnglish(d / 1000000L) + "M";
         }
         if (d < 1000000000000L) {
-            return format(d / 1000000000L) + "B";
+            return formatEnglish(d / 1000000000L) + "B";
         }
         if (d < 1000000000000000L) {
-            return format(d / 1000000000000L) + "T";
+            return formatEnglish(d / 1000000000000L) + "T";
         }
         if (d < 1000000000000000000L) {
-            return format(d / 1000000000000000L) + "Q";
+            return formatEnglish(d / 1000000000000000L) + "Q";
         }
 
         return String.valueOf((long) d);
     }
 
-    public static ItemStack createMobCoinItem( double amount){
+    public static ItemStack createMobCoinItem(double amount){
 
         ItemStack stack = null;
 
@@ -226,8 +226,8 @@ public class Common {
         boolean enabled = config.getBoolean(path + ".enabled");
         if(!enabled) return;
 
-        String title = config.getString(path + ".title").replace("{amount}", String.valueOf(coinPlaceholder));
-        String subTitle = config.getString(path + ".subTitle").replace("{amount}", String.valueOf(coinPlaceholder));
+        String title = config.getString(path + ".title").replace("{amount}", format(coinPlaceholder));
+        String subTitle = config.getString(path + ".subTitle").replace("{amount}", format(coinPlaceholder));
         int fadeIn = config.getInt(path + ".fadeIn");
         int stay = config.getInt(path + ".stay");
         int fadeOut = config.getInt(path + ".fadeOut");
@@ -235,12 +235,12 @@ public class Common {
         Titles.sendTitle(player, fadeIn, stay, fadeOut, Common.color(title), Common.color(subTitle));
     }
 
-    public static void sendActionBar(@NotNull Player player, @NotNull String path, @NotNull FileConfiguration config){
+    public static void sendActionBar(@NotNull Player player, @NotNull String path, @NotNull FileConfiguration config, double coinPlaceholder){
         boolean enabled = config.getBoolean(path + ".enabled");
         if(!enabled) return;
 
-        String message = config.getString(path + ".message");
-        ActionBar.sendActionBar(player, Common.color(message));
+        String message = config.getString(path + ".message").replace("{amount}", format(coinPlaceholder));
+        ActionBar.sendActionBar(MobCoins.getInstance(), player, Common.color(message), 60L);
     }
 
     public static String getFormattedTime(int seconds) {
