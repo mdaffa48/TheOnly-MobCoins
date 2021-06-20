@@ -16,8 +16,8 @@ public class Config {
     public static void initialize(){
         CONFIG = new CustomConfig(MobCoins.getInstance(), "config.yml", null);
         MAIN_MENU_CONFIG = new CustomConfig(MobCoins.getInstance(), "main_menu.yml", "shops");
-        CATEGORY_SHOP_CONFIG = new CustomConfig(MobCoins.getInstance(), "category_shop.yml", "shops");
-        ROTATING_SHOP_CONFIG = new CustomConfig(MobCoins.getInstance(), "rotating_shop.yml", "shops");
+        CATEGORY_SHOP_CONFIG = new CustomConfig(MobCoins.getInstance(), "category_shop.yml", "shops/category-shop");
+        ROTATING_SHOP_CONFIG = new CustomConfig(MobCoins.getInstance(), "rotating_shop.yml", "shops/rotating-shop");
         MOBS = new CustomConfig(MobCoins.getInstance(), "mobs.yml", null);
         TEMP_DATA = new CustomConfig(MobCoins.getInstance(), "temp_data.yml", null);
         CONFIRMATION_MENU_CONFIG = new CustomConfig(MobCoins.getInstance(), "confirmation_menu.yml", "shops");
