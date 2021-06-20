@@ -3,7 +3,6 @@ package me.aglerr.mobcoins.shops.items;
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.configs.Config;
 import me.aglerr.mobcoins.configs.CustomConfig;
-import me.aglerr.mobcoins.utils.Common;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -193,64 +192,37 @@ public class ItemsLoader {
 
     public void loadCategoryShopItems(){
 
-        File directory = new File(plugin.getDataFolder() + File.separator + "categories");
+        File directory = new File(plugin.getDataFolder() + File.separator + "shops/category-shop/categories");
         if(!directory.exists()){
             directory.mkdirs();
         }
 
         // Get all files on the 'categories' folder
-        File[] files = new File(plugin.getDataFolder() + File.separator + "categories").listFiles();
+        File[] files = new File(plugin.getDataFolder() + File.separator + "shops/category-shop/categories").listFiles();
 
         // Return if 'categories' folder doesn't have any files
         // And create an example file
         if(files.length <= 0) {
-
-            // We only want to create an example files once
-            // So we store boolean in the temporary data configuration
-
-            CustomConfig temp = Config.TEMP_DATA;
-            FileConfiguration config = temp.getConfig();
-
-            // Get the boolean from the config file
-            boolean exampleFile = config.getBoolean("createExampleFile");
-
-            // If return false, we create the example files
-            if(!exampleFile){
-                System.out.println("Starting to create the example files");
-                // Get the path in plugin jar to the categories folder
-                String path = "categories" + File.separator;
-
-                // Get the path in plugin server folder to the categories folder
-                String pluginPath = plugin.getDataFolder() + File.separator + "categories";
-
-                // Get the armor.yml file
-                File armorFile = new File(pluginPath, "armor.yml");
-
-                // Get the weaponsAndTools.yml file
-                File weaponsAndToolsFile = new File(pluginPath, "weaponsAndTools.yml");
-
-                // Create armor.yml example file
-                if(!armorFile.exists()){
-                    plugin.saveResource(path + "armor.yml", false);
-                }
-
-                // Create weaponsAndTools.yml example file
-                if(!weaponsAndToolsFile.exists()){
-                    plugin.saveResource(path + "weaponsAndTools.yml", false);
-                }
-
-                // Set 'true' on the 'createExampleFile' so we know we have created the file
-                config.set("createExampleFile", true);
-
-                // Save the config
-                temp.saveConfig();
-
+            // Get the path in plugin jar to the categories folder
+            String path = "shops/category-shop/categories" + File.separator;
+            // Get the path in plugin server folder to the categories folder
+            String pluginPath = plugin.getDataFolder() + File.separator + "shops/category-shop/categories";
+            // Get the armor.yml file
+            File armorFile = new File(pluginPath, "armor.yml");
+            // Get the weaponsAndTools.yml file
+            File weaponsAndToolsFile = new File(pluginPath, "weaponsAndTools.yml");
+            // Create armor.yml example file
+            if(!armorFile.exists()){
+                plugin.saveResource(path + "armor.yml", false);
             }
-
+            // Create weaponsAndTools.yml example file
+            if(!weaponsAndToolsFile.exists()){
+                plugin.saveResource(path + "weaponsAndTools.yml", false);
+            }
         }
 
         // Get the files after the example file is created
-        File[] finalFiles = new File(plugin.getDataFolder() + File.separator + "categories").listFiles();
+        File[] finalFiles = new File(plugin.getDataFolder() + File.separator + "shops/category-shop/categories").listFiles();
 
         // Create a null FileConfiguration
         FileConfiguration config;
