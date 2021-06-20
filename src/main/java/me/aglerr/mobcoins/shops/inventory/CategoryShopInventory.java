@@ -63,7 +63,6 @@ public class CategoryShopInventory extends FastInv {
 
                 lore.add(parsedMessage);
             });
-
             // Create the item stack with parsed lore
             ItemStack stack = ItemManager.createItemStackWithHeadTextures(player, item, lore);
 
