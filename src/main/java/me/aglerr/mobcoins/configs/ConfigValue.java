@@ -6,7 +6,7 @@ import java.util.List;
 
 public class ConfigValue {
 
-    public static boolean isDebug = true;
+    public static boolean isDebug = false;
     public static String PREFIX;
 
     public static boolean IS_MYSQL;
@@ -91,7 +91,6 @@ public class ConfigValue {
     public static int DEFAULT_SPECIAL_TIME_RESET;
 
     // Normal Items Refresh Actions
-
     // Broadcast Message
     public static boolean NORMAL_IS_BROADCAST_MESSAGE;
     public static List<String> NORMAL_BROADCAST_MESSAGE_MESSAGES;
@@ -101,7 +100,6 @@ public class ConfigValue {
     public static List<String> NORMAL_COMMAND_COMMANDS;
 
     // Special Items Refresh Actions
-
     // Broadcast Message
     public static boolean SPECIAL_IS_BROADCAST_MESSAGE;
     public static List<String> SPECIAL_BROADCAST_MESSAGE_MESSAGES;
@@ -110,10 +108,20 @@ public class ConfigValue {
     public static boolean SPECIAL_IS_COMMAND;
     public static List<String> SPECIAL_COMMAND_COMMANDS;
 
+    // Category Shop Refresh Actions
+    // Broadcast Message
+    public static boolean CATEGORY_BROADCAST_ENABLED;
+    public static List<String> CATEGORY_BROADCAST_MESSAGES;
+
+    // Executes Commands
+    public static boolean CATEGORY_COMMANDS_ENABLED;
+    public static List<String> CATEGORY_COMMANDS_COMMANDS;
+
 
     public static void initializeValue(){
         FileConfiguration config = Config.CONFIG.getConfig();
         FileConfiguration rotatingShop = Config.ROTATING_SHOP_CONFIG.getConfig();
+        FileConfiguration categoryShop = Config.CATEGORY_SHOP_CONFIG.getConfig();
 
         PREFIX = config.getString("messages.prefix");
 
@@ -166,7 +174,7 @@ public class ConfigValue {
         DISABLE_MOBCOIN_FROM_SPAWNER = config.getBoolean("mobcoins.disableMobCoinFromSpawner");
         CLOSE_AFTER_PURCHASE = config.getBoolean("shops.closeAfterPurchase");
         IS_CONFIRMATION_MENU = config.getBoolean("shops.confirmationMenu");
-        IS_ENABLE_RECEIVE_MOBCOINS_MESSAGE = config.getBoolean("mobcoins.disableMobCoinsReceiveMessage");
+        IS_ENABLE_RECEIVE_MOBCOINS_MESSAGE = config.getBoolean("mobcoins.enableMobCoinsReceiveMessage");
 
         MOBCOINS_ITEM_MATERIAL = config.getString("mobcoinsItem.material");
         MOBCOINS_ITEM_NAME = config.getString("mobcoinsItem.name");
@@ -203,6 +211,12 @@ public class ConfigValue {
         TOP_NAME_IF_EMPTY = config.getString("placeholders.mobCoinsTop.nameIfEmpty");
         TOP_BALANCE_IF_EMPTY = config.getString("placeholders.mobCoinsTop.balanceIfEmpty");
         TOP_UUID_IF_EMPTY = config.getString("placeholders.mobCoinsTop.uuidIfEmpty");
+
+        CATEGORY_BROADCAST_ENABLED = categoryShop.getBoolean("categoryShop.refreshActions.broadcastMessage.enabled");
+        CATEGORY_BROADCAST_MESSAGES = categoryShop.getStringList("categoryShop.refreshActions.broadcastMessage.messages");
+
+        CATEGORY_COMMANDS_ENABLED = categoryShop.getBoolean("categoryShop.refreshActions.commands.enabled");
+        CATEGORY_COMMANDS_COMMANDS = categoryShop.getStringList("categoryShop.refreshActions.commands.commands");
 
     }
 
