@@ -156,62 +156,48 @@ public class RotatingShopManager implements Manager {
         Common.runTaskTimerAsynchronously(0, 20, () -> {
 
             if(normalTime <= 0){
-
                 // Play bunch of events (send messages, titles, sound, commands)
                 Bukkit.getOnlinePlayers().forEach(player -> {
                     // Send Messages
                     if(ConfigValue.NORMAL_IS_BROADCAST_MESSAGE){
                         ConfigValue.NORMAL_BROADCAST_MESSAGE_MESSAGES.forEach(message -> player.sendMessage(Common.color(message)));
                     }
-
                     // Send Titles
                     Common.sendTitle(player, "rotatingShop.refreshActions.normalItems.titles", rotating, 0);
-
                     // Play Sound
                     Common.playSound(player, "rotatingShop.refreshActions.normalItems.sound", rotating);
-
-                    // Executes command
-                    if(ConfigValue.NORMAL_IS_COMMAND){
-                        ConfigValue.NORMAL_COMMAND_COMMANDS.forEach(message -> {
-                            Common.runTask(() -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), message
-                                    .replace("{player}", player.getName())));
-
-                        });
-                    }
-
-                    // Shuffle/Rotate the item and reset stock and purchase limit
-                    this.shuffleNormalItemsAndResetStockAndPurchaseLimit();
-
                 });
+                // Executes command
+                if(ConfigValue.NORMAL_IS_COMMAND){
+                    ConfigValue.NORMAL_COMMAND_COMMANDS.forEach(message ->
+                            Common.runTask(() ->
+                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), message)));
+                }
+                // Shuffle/Rotate the item and reset stock and purchase limit
+                this.shuffleNormalItemsAndResetStockAndPurchaseLimit();
+                return;
             }
 
             if(specialTime <= 0){
-
                 // Play bunch of events (send messages, titles, sound, commands)
                 Bukkit.getOnlinePlayers().forEach(player -> {
                     // Send Messages
                     if(ConfigValue.SPECIAL_IS_BROADCAST_MESSAGE){
                         ConfigValue.SPECIAL_BROADCAST_MESSAGE_MESSAGES.forEach(message -> player.sendMessage(Common.color(message)));
                     }
-
                     // Send Titles
                     Common.sendTitle(player, "rotatingShop.refreshActions.specialItems.titles", rotating, 0);
-
                     // Play Sound
                     Common.playSound(player, "rotatingShop.refreshActions.specialItems.sound", rotating);
-
-                    // Executes command
-                    if(ConfigValue.SPECIAL_IS_COMMAND){
-                        ConfigValue.SPECIAL_COMMAND_COMMANDS.forEach(message -> {
-                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), message.replace("{player}", player.getName()));
-                        });
-                    }
-
-                    // Shuffle/Rotate the item and reset stock and purchase limit
-                    this.shuffleSpecialItemsAndResetStockAndPurchaseLimit();
-
                 });
-
+                // Executes command
+                if(ConfigValue.SPECIAL_IS_COMMAND){
+                    ConfigValue.SPECIAL_COMMAND_COMMANDS.forEach(message -> Common.runTask(() ->
+                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), message)));
+                }
+                // Shuffle/Rotate the item and reset stock and purchase limit
+                this.shuffleSpecialItemsAndResetStockAndPurchaseLimit();
+                return;
             }
 
             normalTime--;

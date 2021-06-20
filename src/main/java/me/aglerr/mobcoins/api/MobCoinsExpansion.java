@@ -3,6 +3,7 @@ package me.aglerr.mobcoins.api;
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.PlayerData;
 import me.aglerr.mobcoins.configs.ConfigValue;
+import me.aglerr.mobcoins.managers.managers.CategoryShopManager;
 import me.aglerr.mobcoins.managers.managers.PlayerDataManager;
 import me.aglerr.mobcoins.managers.managers.RotatingShopManager;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
@@ -102,6 +103,7 @@ public class MobCoinsExpansion extends PlaceholderExpansion {
 
         PlayerDataManager playerDataManager = plugin.getManagerHandler().getPlayerDataManager();
         RotatingShopManager rotatingShopManager = plugin.getManagerHandler().getRotatingShopManager();
+        CategoryShopManager categoryShopManager = plugin.getManagerHandler().getCategoryShopManager();
 
         // %mobcoins_balance%
         if(identifier.equalsIgnoreCase("balance")){
@@ -124,7 +126,18 @@ public class MobCoinsExpansion extends PlaceholderExpansion {
         // %mobcoins_balance_shortformat%
         if(identifier.equalsIgnoreCase("balance_shortformat")){
             PlayerData playerData = MobCoinsAPI.getPlayerData(player);
-            return playerData == null ? "0" : playerData.getCoinsShortFormat();
+
+            // Return '0' if player doesn't have any data
+            if(playerData == null){
+                return "0";
+            }
+
+            // Return the rounded coins if player has less than 1k coins
+            if(playerData.getCoins() < 1000){
+                return String.valueOf(playerData.getCoinsRounded());
+            }
+
+            return playerData.getCoinsShortFormat();
         }
 
         // %mobcoins_normaltime%
@@ -135,6 +148,11 @@ public class MobCoinsExpansion extends PlaceholderExpansion {
         // %mobcoins_specialtime%
         if(identifier.equalsIgnoreCase("specialtime")){
             return rotatingShopManager.getFormattedSpecialTime();
+        }
+
+        // %mobcoins_categorytime%
+        if(identifier.equalsIgnoreCase("categorytime")){
+            return categoryShopManager.getFormattedResetTime();
         }
 
         // %mobcoins_top_name_<index>%
@@ -245,6 +263,10 @@ public class MobCoinsExpansion extends PlaceholderExpansion {
             // Get the player data, using try catch for IndexOutOfBoundsException
             try{
                 PlayerData playerData = topList.get(index);
+                // Return the rounded coins if player has less than 1k coins
+                if(playerData.getCoins() < 1000){
+                    return String.valueOf(playerData.getCoinsRounded());
+                }
                 // Return the desired value
                 return playerData.getCoinsShortFormat();
             } catch (IndexOutOfBoundsException e){

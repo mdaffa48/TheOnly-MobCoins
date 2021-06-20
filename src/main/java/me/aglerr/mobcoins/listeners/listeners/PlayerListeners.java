@@ -5,12 +5,18 @@ import me.aglerr.mobcoins.configs.ConfigValue;
 import me.aglerr.mobcoins.managers.managers.PlayerDataManager;
 import me.aglerr.mobcoins.managers.managers.SpawnerSpawnManager;
 import me.aglerr.mobcoins.utils.Common;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.util.EulerAngle;
 
 public class PlayerListeners implements Listener {
 

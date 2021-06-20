@@ -59,7 +59,7 @@ public class PlayerData implements Cloneable {
      * @return player's formatted mobcoins amount
      */
     public String getCoinsFormatted() {
-        return Common.getDecimalFormat().format(this.coins);
+        return Common.format(this.coins);
     }
 
     /**

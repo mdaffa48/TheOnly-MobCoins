@@ -16,21 +16,21 @@ public class StockManager implements Manager {
     private final Map<String, Integer> stock = new HashMap<>();
 
     public String getStockInString(TypeItem item){
-        // Return the current item stock data
-        if(this.stock.containsKey(item.getConfigKey())){
-            return String.valueOf(this.stock.get(item.getConfigKey()));
-        }
-
         // Return unlimited stock placeholder If the item doesn't use stock
         if(item.getStock() < 0){
             return ConfigValue.PLACEHOLDER_UNLIMITED_STOCK;
         }
-
-        // Return out of stock placeholder If the item stock is 0
-        if(item.getStock() == 0){
-            return ConfigValue.PLACEHOLDER_OUT_OF_STOCK;
+        // Return the current item stock data
+        if(this.stock.containsKey(item.getConfigKey())){
+            // Get the stock remaining
+            int stock = this.stock.get(item.getConfigKey());
+            // Return out of stock placeholder If the item stock is 0
+            if(stock == 0){
+                return ConfigValue.PLACEHOLDER_OUT_OF_STOCK;
+            }
+            // Return the stock remaining value
+            return String.valueOf(stock);
         }
-
         // Return the configured stock amount
         return String.valueOf(item.getStock());
     }
@@ -52,7 +52,7 @@ public class StockManager implements Manager {
     public void putOrDecrease(TypeItem item){
 
         // Return if the stock is disabled for the item
-        if(item.getStock() < 0) return;
+        if(item.getStock() <= 0) return;
 
         // Put the item with decreased stock by 1
         if(!this.stock.containsKey(item.getConfigKey())){

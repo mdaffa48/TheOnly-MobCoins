@@ -128,8 +128,8 @@ public class PlayerDataManager implements Manager {
     public void load() {
 
         SQLDatabase database = plugin.getDatabase();
-
-        Common.runTaskTimerAsynchronously(0, (20 * ConfigValue.AUTO_SAVE_INTERVAL), () -> {
+        int timeAndDelay = (20 * ConfigValue.AUTO_SAVE_INTERVAL);
+        Common.runTaskTimerAsynchronously(timeAndDelay, timeAndDelay, () -> {
             if(!ConfigValue.AUTO_SAVE_ENABLED) return;
 
             int totalSaved = 0;

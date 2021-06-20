@@ -39,7 +39,8 @@ public class SalaryManager implements Manager {
 
     @Override
     public void load() {
-        Common.runTaskTimerAsynchronously(0, (20 * ConfigValue.SALARY_MODE_ANNOUNCE_EVERY), () -> {
+        int timeAndDelay = (20 * ConfigValue.SALARY_MODE_ANNOUNCE_EVERY);
+        Common.runTaskTimerAsynchronously(timeAndDelay, timeAndDelay, () -> {
             if(!ConfigValue.SALARY_MODE_ENABLED) return;
 
             // Loop through all salaries
@@ -70,10 +71,10 @@ public class SalaryManager implements Manager {
                 }
 
                 // Send notification code (message, sound, title, actionbar)
-                ConfigValue.SALARY_MODE_MESSAGES.forEach(message -> player.sendMessage(Common.color(message.replace("{amount}", Common.getDecimalFormat().format(salaryAmount)))));
+                ConfigValue.SALARY_MODE_MESSAGES.forEach(message -> player.sendMessage(Common.color(message.replace("{amount}", Common.format(salaryAmount)))));
                 Common.playSound(player, "sounds.onCoinsReceived", config);
                 Common.sendTitle(player, "titles.onCoinsReceived", config, salaryAmount);
-                Common.sendActionBar(player, "actionBar.onCoinsReceived", config);
+                Common.sendActionBar(player, "actionBar.onCoinsReceived", config, salaryAmount);
 
                 Common.debug(true, "Salary for " + player.getName() + " (coins: " + salaryAmount + ")");
                 // Remove player salary from the map

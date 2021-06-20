@@ -31,6 +31,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
         this.subCommandMap.put("bal", balanceCommand);
 
         this.subCommandMap.put("give", new GiveCommand());
+        this.subCommandMap.put("giverandom", new GiveRandomCommand());
         this.subCommandMap.put("help", new HelpCommand());
         this.subCommandMap.put("opencategory", new OpenCategoryCommand());
         this.subCommandMap.put("pay", new PayCommand());
@@ -40,6 +41,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
         this.subCommandMap.put("take", new TakeCommand());
         this.subCommandMap.put("top", new TopCommand());
         this.subCommandMap.put("withdraw", new WithdrawCommand());
+        this.subCommandMap.put("debug", new DebugCommand());
     }
 
     public void registerThisCommand(){
@@ -134,6 +136,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 suggestions.add("about");
                 suggestions.add("opencategory");
                 suggestions.add("reload");
+                suggestions.add("giverandom");
             }
 
             return suggestions;
