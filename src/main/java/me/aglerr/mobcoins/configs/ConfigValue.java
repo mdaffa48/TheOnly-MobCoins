@@ -28,6 +28,7 @@ public class ConfigValue {
     public static boolean CLOSE_AFTER_PURCHASE;
     public static boolean IS_CONFIRMATION_MENU;
     public static boolean IS_ENABLE_RECEIVE_MOBCOINS_MESSAGE;
+    public static boolean NOTIFY_UPDATE;
 
     public static String MESSAGES_NO_PERMISSION;
     public static String MESSAGES_BALANCE;
@@ -175,6 +176,7 @@ public class ConfigValue {
         CLOSE_AFTER_PURCHASE = config.getBoolean("shops.closeAfterPurchase");
         IS_CONFIRMATION_MENU = config.getBoolean("shops.confirmationMenu");
         IS_ENABLE_RECEIVE_MOBCOINS_MESSAGE = config.getBoolean("mobcoins.enableMobCoinsReceiveMessage");
+        NOTIFY_UPDATE = config.getBoolean("notifyUpdate");
 
         MOBCOINS_ITEM_MATERIAL = config.getString("mobcoinsItem.material");
         MOBCOINS_ITEM_NAME = config.getString("mobcoinsItem.name");

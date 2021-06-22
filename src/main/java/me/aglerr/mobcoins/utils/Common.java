@@ -32,6 +32,8 @@ import java.util.stream.Collectors;
 
 public class Common {
 
+    public static final boolean IS_PREMIUM_VERSION = true;
+
     private static final DecimalFormat decimalFormat = new DecimalFormat("###,###,###,###,###.##");
 
     public static String color(String s){
@@ -59,12 +61,33 @@ public class Common {
         };
     }
 
+    public static List<String> getUpdateMessage(){
+        return Arrays.asList(
+                "  _    _ _____  _____       _______ ______  _____ ",
+                " | |  | |  __ \\|  __ \\   /\\|__   __|  ____|/ ____|",
+                " | |  | | |__) | |  | | /  \\  | |  | |__  | (___  ",
+                " | |  | |  ___/| |  | |/ /\\ \\ | |  |  __|  \\___ \\ ",
+                " | |__| | |    | |__| / ____ \\| |  | |____ ____) |",
+                "  \\____/|_|    |_____/_/    \\_\\_|  |______|_____/ "
+        );
+    }
+
+    public static void log(boolean withPrefix, List<String> list){
+        for(String message : list){
+            if(withPrefix){
+                Bukkit.getConsoleSender().sendMessage(Common.color("[TheOnly-Mobcoins] " + message));
+            } else {
+                Bukkit.getConsoleSender().sendMessage(Common.color(message));
+            }
+        }
+    }
+
     public static void log(boolean withPrefix, String... args){
         for(String message : args){
             if (withPrefix) {
-                System.out.println("[TheOnly-MobCoins] " + message);
+                Bukkit.getConsoleSender().sendMessage(Common.color("[TheOnly-Mobcoins] " + message));
             } else {
-                System.out.println(message);
+                Bukkit.getConsoleSender().sendMessage(Common.color(message));
             }
         }
     }
@@ -137,6 +160,10 @@ public class Common {
 
     public static void runTaskTimerAsynchronously(int delay, int time, Runnable runnable){
         Bukkit.getScheduler().runTaskTimerAsynchronously(MobCoins.getInstance(), runnable, delay, time);
+    }
+
+    public static void runTaskLaterAsynchronously(int delay, Runnable runnable){
+        Bukkit.getScheduler().runTaskLaterAsynchronously(MobCoins.getInstance(), runnable, delay);
     }
 
     private static String formatEnglish(double d){

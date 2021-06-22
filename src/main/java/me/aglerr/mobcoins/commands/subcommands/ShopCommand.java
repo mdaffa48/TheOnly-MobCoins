@@ -54,6 +54,11 @@ public class ShopCommand extends SubCommand {
         }
 
         if(args.length == 2){
+            if(!(sender.hasPermission("mobcoins.shop.others"))){
+                sender.sendMessage(Common.color(ConfigValue.MESSAGES_NO_PERMISSION));
+                return;
+            }
+
             Player player = Bukkit.getPlayer(args[1]);
             if(player == null){
                 sender.sendMessage(Common.color(ConfigValue.MESSAGES_PLAYER_NOT_EXISTS

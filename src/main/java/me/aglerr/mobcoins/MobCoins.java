@@ -14,6 +14,7 @@ import me.aglerr.mobcoins.metrics.Metrics;
 import me.aglerr.mobcoins.shops.items.ItemsLoader;
 import me.aglerr.mobcoins.utils.Common;
 import me.aglerr.mobcoins.utils.ConfigUpdater;
+import me.aglerr.mobcoins.utils.UpdateChecker;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
@@ -21,6 +22,8 @@ import org.jetbrains.annotations.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class MobCoins extends JavaPlugin {
 
@@ -30,6 +33,7 @@ public class MobCoins extends JavaPlugin {
     private final ListenerHandler listenerHandler = new ListenerHandler(this);
 
     private SQLDatabase database;
+    private UpdateChecker updateChecker = null;
 
     /**
      * Plugin startup logic
@@ -55,6 +59,8 @@ public class MobCoins extends JavaPlugin {
         this.updateConfig();
         // Enable metrics
         new Metrics(this, 11755);
+        // Check for the plugin updates
+        this.checkForUpdates();
     }
 
     /**
@@ -63,16 +69,6 @@ public class MobCoins extends JavaPlugin {
     @Override
     public void onDisable(){
         this.managerHandler.saveAllManagers();
-    }
-
-    private void updateConfig(){
-        File configFile = new File(this.getDataFolder(), "config.yml");
-        try{
-            ConfigUpdater.update(this, "config.yml", configFile, new ArrayList<>());
-        } catch(IOException e){
-            Common.error(true, "Failed to update the config.yml");
-            e.printStackTrace();
-        }
     }
 
     public void reloadEverything(){
@@ -94,6 +90,75 @@ public class MobCoins extends JavaPlugin {
         coinMobManager.load();
     }
 
+    private void updateConfig(){
+        File configFile = new File(this.getDataFolder(), "config.yml");
+        try{
+            ConfigUpdater.update(this, "config.yml", configFile, new ArrayList<>());
+        } catch(IOException e){
+            Common.error(true, "Failed to update the config.yml");
+            e.printStackTrace();
+        }
+    }
+
+    private void checkForUpdates(){
+        // Return if notify update is disabled
+        if(!ConfigValue.NOTIFY_UPDATE) return;
+        // Create a new instance of update checker
+        UpdateChecker updateChecker = UpdateChecker.init(this, 93470);
+        // Initialize the update checker
+        this.updateChecker = updateChecker;
+        // Check the version and then send the messages
+        updateChecker.requestUpdateCheck().whenComplete((result, error) -> {
+            // Messages if the plugin is not up to date
+            if(result.requiresUpdate()){
+                Common.log(true, "Checking for updates...");
+                // The messages
+                List<String> messages = new ArrayList<>(Common.getUpdateMessage());
+                messages.addAll(Arrays.asList(
+                        " ",
+                        " There is a new version of TheOnly-Mobcoins available!",
+                        " &aLatest Version: " + result.getNewestVersion(),
+                        " &cCurrent Version: " + this.getDescription().getVersion(),
+                        " Please update to the newest version. Download:",
+                        " &ehttps://www.spigotmc.org/resources/theonly-mobcoins.93470/"
+                ));
+                Common.runTaskLaterAsynchronously(20, () ->
+                        Common.log(false, messages));
+                return;
+            }
+
+            switch(result.getReason()) {
+                // Messages if the server using latest version
+                case UP_TO_DATE: {
+                    Common.log(true, "Checking for updates...");
+                    Common.runTaskLaterAsynchronously(20, () -> Common.log(true,
+                            "&aYou are using the latest available version."
+                    ));
+                    break;
+                }
+                // Messages if the server using unreleased version
+                case UNRELEASED_VERSION: {
+                    Common.log(true, "Checking for updates...");
+                    Common.runTaskLaterAsynchronously(20, () -> Common.log(true,
+                            "===============================================",
+                            "You are using unreleased version or development build!",
+                            "This version is may be unstable. The latest available version is " + result.getNewestVersion(),
+                            "Download them at &ehttps://www.spigotmc.org/resources/theonly-mobcoins.93470/",
+                            "==============================================="
+                    ));
+                    break;
+                }
+                // Message if the reason is not on the above
+                default: {
+                    Common.log(true, "Checking for updates...");
+                    Common.runTaskLaterAsynchronously(20, () -> Common.log(true,
+                            "Could not check for a new version of TheOnly-Mobcoins! (Reason: " + result.getReason() + ")"
+                    ));
+                }
+            }
+        });
+    }
+
     /**
      * Not for regular use.
      * @return this class instance
@@ -108,5 +173,10 @@ public class MobCoins extends JavaPlugin {
 
     public ManagerHandler getManagerHandler() {
         return managerHandler;
+    }
+
+    @Nullable
+    public UpdateChecker getUpdateChecker(){
+        return this.updateChecker;
     }
 }
