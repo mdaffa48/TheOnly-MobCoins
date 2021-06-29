@@ -4,20 +4,17 @@ import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.configs.ConfigValue;
 import me.aglerr.mobcoins.managers.managers.PlayerDataManager;
 import me.aglerr.mobcoins.managers.managers.SpawnerSpawnManager;
-import me.aglerr.mobcoins.utils.Common;
+import me.aglerr.mobcoins.utils.libs.Common;
 import me.aglerr.mobcoins.utils.UpdateChecker;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
+import me.aglerr.mobcoins.utils.libs.Executor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.util.EulerAngle;
 
 import java.util.Arrays;
 import java.util.List;
@@ -30,10 +27,13 @@ public class PlayerListeners implements Listener {
     }
 
     @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event){
-        PlayerDataManager manager = plugin.getManagerHandler().getPlayerDataManager();
-        Common.runTaskAsynchronously(() -> manager.forceLoadPlayerData(event.getPlayer()));
+    public void onPlayerPreLogin(AsyncPlayerPreLoginEvent event){
+        PlayerDataManager playerDataManager = plugin.getManagerHandler().getPlayerDataManager();
+        playerDataManager.handlePreLoginEvent(event);
+    }
 
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event){
         // Giving notify update notification
         // Return if notify update is disabled
         if(!ConfigValue.NOTIFY_UPDATE) return;
@@ -62,7 +62,7 @@ public class PlayerListeners implements Listener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event){
         PlayerDataManager manager = plugin.getManagerHandler().getPlayerDataManager();
-        Common.runTaskAsynchronously(() -> manager.forceSavePlayerData(event.getPlayer()));
+        Executor.async(() -> manager.forceSavePlayerData(event.getPlayer()));
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

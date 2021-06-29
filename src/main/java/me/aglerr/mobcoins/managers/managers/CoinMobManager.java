@@ -1,11 +1,9 @@
 package me.aglerr.mobcoins.managers.managers;
 
-import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.coinmob.CoinMob;
 import me.aglerr.mobcoins.configs.Config;
 import me.aglerr.mobcoins.configs.CustomConfig;
 import me.aglerr.mobcoins.managers.Manager;
-import me.aglerr.mobcoins.utils.Common;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.ArrayList;

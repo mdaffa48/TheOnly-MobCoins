@@ -3,10 +3,12 @@ package me.aglerr.mobcoins.commands.subcommands;
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.commands.abstraction.SubCommand;
 import me.aglerr.mobcoins.configs.ConfigValue;
-import me.aglerr.mobcoins.utils.Common;
+import me.aglerr.mobcoins.utils.libs.Common;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DebugCommand extends SubCommand {
@@ -17,10 +19,10 @@ public class DebugCommand extends SubCommand {
         return null;
     }
 
-    @Nullable
+    @NotNull
     @Override
     public List<String> parseTabCompletion(MobCoins plugin, CommandSender sender, String[] args) {
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
@@ -30,12 +32,12 @@ public class DebugCommand extends SubCommand {
             return;
         }
 
-        if(ConfigValue.isDebug){
-            ConfigValue.isDebug = false;
+        if(Common.DEBUG){
+            Common.DEBUG = false;
             sender.sendMessage(Common.color("{prefix} &cYou have disabled debug mode!"
                     .replace("{prefix}", ConfigValue.PREFIX)));
         } else {
-            ConfigValue.isDebug = true;
+            Common.DEBUG = true;
             sender.sendMessage(Common.color("{prefix} &aYou have enabled debug mode!"
                     .replace("{prefix}", ConfigValue.PREFIX)));
         }

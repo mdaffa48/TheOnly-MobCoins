@@ -2,20 +2,18 @@ package me.aglerr.mobcoins.managers.managers;
 
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.PlayerData;
-import me.aglerr.mobcoins.configs.Config;
 import me.aglerr.mobcoins.configs.ConfigValue;
 import me.aglerr.mobcoins.database.SQLDatabase;
 import me.aglerr.mobcoins.managers.Manager;
-import me.aglerr.mobcoins.utils.Common;
-import org.bukkit.configuration.file.FileConfiguration;
+import me.aglerr.mobcoins.utils.libs.Common;
+import me.aglerr.mobcoins.utils.libs.Executor;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class PlayerDataManager implements Manager {
 
@@ -33,16 +31,19 @@ public class PlayerDataManager implements Manager {
         return this.playerDataMap.get(player.getUniqueId().toString());
     }
 
-    public void forceLoadPlayerData(Player player) {
+    @Nullable
+    public PlayerData getPlayerData(String uuid){
+        return this.playerDataMap.get(uuid);
+    }
+
+    public void handlePreLoginEvent(AsyncPlayerPreLoginEvent event) {
         SQLDatabase database = plugin.getDatabase();
-        String uuid = player.getUniqueId().toString();
+        String uuid = event.getUniqueId().toString();
 
         String command = "SELECT * FROM `" + database.getTable() + "` " +
                          "WHERE `uuid`=?";
 
-        Common.debug(true,
-                "Loading " + player.getName() + " data"
-        );
+        Common.debug("Loading " + event.getName() + " data");
 
         try (Connection connection = database.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(command)) {
@@ -59,18 +60,14 @@ public class PlayerDataManager implements Manager {
 
                     this.playerDataMap.put(uuid, playerData);
                     this.valueModify.put(uuid, playerData.clone());
-
-                    Common.debug(true,
-                            "Successfully loaded " + player.getName() + " data. (Coins: " + playerData.getCoins() + ")"
-                    );
+                    event.allow();
+                    Common.debug("Successfully loaded " + event.getName() + " data. (Coins: " + playerData.getCoins() + ")");
                 }
             }
         } catch (SQLException e) {
-            Common.error(true, "Error while loading " + player.getName() + " data!");
+            Common.log(ChatColor.RED, "Error while loading " + event.getName() + " data!");
             e.printStackTrace();
         }
-
-
     }
 
     public void forceSavePlayerData(Player player) {
@@ -78,15 +75,15 @@ public class PlayerDataManager implements Manager {
         PlayerData playerData = this.playerDataMap.get(uuid);
         PlayerData valueModify = this.valueModify.get(uuid);
 
-        Common.debug(true, "Saving " + player.getName() + " data");
+        Common.debug("Saving " + player.getName() + " data");
 
         if (playerData == null) {
-            Common.debug(true, "Returned because Player Data is null");
+            Common.debug("Returned because Player Data is null");
             return;
         }
 
         if (valueModify == null) {
-            Common.debug(true, "Returned because Value Modify is null");
+            Common.debug("Returned because Value Modify is null");
             return;
         }
 
@@ -94,14 +91,14 @@ public class PlayerDataManager implements Manager {
         double coins2 = valueModify.getCoins();
 
         if(coins1 != coins2){
-            Common.debug(true, "Saving data to the database because value is not the same");
-            Common.runTaskAsynchronously(() -> playerData.save(plugin.getDatabase()));
+            Common.debug("Saving data to the database because value is not the same");
+            Executor.async(playerData::save);
         }
 
         this.playerDataMap.remove(uuid);
         this.valueModify.remove(uuid);
 
-        Common.debug(true, "Saving tasks is completed");
+        Common.debug("Saving tasks is completed");
 
     }
 
@@ -129,7 +126,7 @@ public class PlayerDataManager implements Manager {
 
         SQLDatabase database = plugin.getDatabase();
         int timeAndDelay = (20 * ConfigValue.AUTO_SAVE_INTERVAL);
-        Common.runTaskTimerAsynchronously(timeAndDelay, timeAndDelay, () -> {
+        Executor.asyncTimer(timeAndDelay, timeAndDelay, () -> {
             if(!ConfigValue.AUTO_SAVE_ENABLED) return;
 
             int totalSaved = 0;
@@ -153,7 +150,7 @@ public class PlayerDataManager implements Manager {
                                     updateStatement.setString(1, String.valueOf(playerData.getCoins()));
                                     updateStatement.setString(2, playerData.getUUID());
                                     updateStatement.executeUpdate();
-                                    Common.debug(true, "Updating " + playerData.getName() + " data (coins: " + playerData.getCoins() + ")");
+                                    Common.debug("Updating " + playerData.getName() + " data (coins: " + playerData.getCoins() + ")");
                                 }
 
                             } else {
@@ -165,7 +162,7 @@ public class PlayerDataManager implements Manager {
                                     insertStatement.setString(1, playerData.getUUID());
                                     insertStatement.setString(2, String.valueOf(playerData.getCoins()));
                                     insertStatement.execute();
-                                    Common.debug(true, "Inserting " + playerData.getName() + " data (coins: " + playerData.getCoins() + ")");
+                                    Common.debug("Inserting " + playerData.getName() + " data (coins: " + playerData.getCoins() + ")");
                                 }
                             }
                         }
@@ -174,12 +171,12 @@ public class PlayerDataManager implements Manager {
                 }
 
             } catch (SQLException e){
-                Common.error(true, "Failed to save all players data (action: auto-save)");
+                Common.log(ChatColor.RED, "Failed to save all players data (action: auto-save)");
                 e.printStackTrace();
             }
 
             if(ConfigValue.AUTO_SAVE_SEND_MESSAGE){
-                Common.log(true, "Successfully saved " + totalSaved + " player data!");
+                Common.log(ChatColor.WHITE, "Successfully saved " + totalSaved + " player data!");
             }
 
         });
@@ -189,20 +186,18 @@ public class PlayerDataManager implements Manager {
     @Override
     public void save() {
         SQLDatabase database = plugin.getDatabase();
-        Common.debug(true, "Trying to save all players data");
+        Common.debug("Trying to save all players data");
         try(Connection connection = database.getConnection()){
             for(String uuid : this.playerDataMap.keySet()){
                 PlayerData playerData = this.playerDataMap.get(uuid);
                 PlayerData valueModify = this.valueModify.get(uuid);
 
                 if(playerData.getCoins() == valueModify.getCoins()){
-                    Common.debug(true,
-                            "Not saving " + uuid + "data (Reason: coins amount the same)"
-                    );
+                    Common.debug("Not saving " + uuid + "data (Reason: coins amount the same)");
                     continue;
                 }
 
-                Common.debug(true, "Trying to save " + uuid + " data");
+                Common.debug("Trying to save " + uuid + " data");
 
                 String getRowCommand = "SELECT * FROM {table} WHERE uuid=?"
                         .replace("{table}", database.getTable());
@@ -219,7 +214,7 @@ public class PlayerDataManager implements Manager {
                                 updateStatement.setString(1, String.valueOf(playerData.getCoins()));
                                 updateStatement.setString(2, playerData.getUUID());
                                 updateStatement.executeUpdate();
-                                Common.debug(true, "Updating " + playerData.getUUID() + " data (coins: " + playerData.getCoins() + ")");
+                                Common.debug("Updating " + playerData.getUUID() + " data (coins: " + playerData.getCoins() + ")");
                             }
 
                         } else {
@@ -231,7 +226,7 @@ public class PlayerDataManager implements Manager {
                                 insertStatement.setString(1, playerData.getUUID());
                                 insertStatement.setString(2, String.valueOf(playerData.getCoins()));
                                 insertStatement.execute();
-                                Common.debug(true, "Inserting " + playerData.getUUID() + " data (coins: " + playerData.getCoins() + ")");
+                                Common.debug("Inserting " + playerData.getUUID() + " data (coins: " + playerData.getCoins() + ")");
                             }
 
                         }
@@ -239,11 +234,11 @@ public class PlayerDataManager implements Manager {
                 }
             }
         } catch (SQLException e) {
-            Common.error(true, "Error saving all players data!");
+            Common.log(ChatColor.RED, "Error saving all players data!");
             e.printStackTrace();
             return;
         }
-        Common.debug(true, "All players data are successfully saved");
+        Common.debug("All players data are successfully saved");
     }
 
 }

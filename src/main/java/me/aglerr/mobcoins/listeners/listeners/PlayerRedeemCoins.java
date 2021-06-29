@@ -7,7 +7,8 @@ import me.aglerr.mobcoins.PlayerData;
 import me.aglerr.mobcoins.api.MobCoinsAPI;
 import me.aglerr.mobcoins.api.events.MobCoinsRedeemEvent;
 import me.aglerr.mobcoins.configs.ConfigValue;
-import me.aglerr.mobcoins.utils.Common;
+import me.aglerr.mobcoins.utils.Utils;
+import me.aglerr.mobcoins.utils.libs.Common;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -56,7 +57,7 @@ public class PlayerRedeemCoins implements Listener {
         PlayerData playerData = MobCoinsAPI.getPlayerData(player);
         // Return if player doesn't have any data
         if(playerData == null){
-            Common.debug(true,
+            Common.debug(
                     "Event: MobCoins Redeem",
                     "No PlayerData found for " + player.getName()
             );
@@ -93,9 +94,9 @@ public class PlayerRedeemCoins implements Listener {
         player.sendMessage(Common.color(ConfigValue.MESSAGES_REDEEM
                 .replace("{prefix}", ConfigValue.PREFIX)
                 .replace("{amount}", String.valueOf(redeemEvent.getAmount()))));
-        Common.playSound(player, "sounds.onCoinsRedeem", plugin.getConfig());
+        Utils.playSound(player, "sounds.onCoinsRedeem", plugin.getConfig());
 
-        Common.debug(true, player.getName() + " redeemed " + redeemEvent.getAmount() + " coins");
+        Common.debug(player.getName() + " redeemed " + redeemEvent.getAmount() + " coins");
 
     }
 

@@ -4,13 +4,12 @@ import com.google.common.primitives.Ints;
 import fr.mrmicky.fastinv.FastInv;
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.PlayerData;
-import me.aglerr.mobcoins.api.MobCoinsAPI;
 import me.aglerr.mobcoins.configs.ConfigValue;
 import me.aglerr.mobcoins.managers.managers.PurchaseLimitManager;
 import me.aglerr.mobcoins.managers.managers.ShopManager;
 import me.aglerr.mobcoins.managers.managers.StockManager;
 import me.aglerr.mobcoins.shops.items.TypeItem;
-import me.aglerr.mobcoins.utils.Common;
+import me.aglerr.mobcoins.utils.libs.Common;
 import me.aglerr.mobcoins.utils.ItemManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -26,43 +25,31 @@ public class ConfirmationInventory extends FastInv {
         super(size, Common.color(title));
 
         this.setAllItems(plugin, player, stack, inventoryType, playerData, buyItem, category);
-
     }
 
     private void setAllItems(MobCoins plugin, Player player, ItemStack stack, ShopManager.InventoryType inventoryType, PlayerData playerData, TypeItem buyItem, String category){
         ShopManager shopManager = plugin.getManagerHandler().getShopManager();
-
         // Loop through all loaded confirmation menu items
         for(TypeItem item : shopManager.getItemsLoader().getConfirmationItems()){
-
-            ItemStack finalStack;
-            if(item.getType().equalsIgnoreCase("DISPLAY_ITEM")){
-                finalStack = stack;
-            } else {
-                finalStack = ItemManager.createItemStackWithHeadTextures(player, item);
-            }
-
+            // Create the item
+            ItemStack finalStack = item.getType().equalsIgnoreCase("DISPLAY_ITEM") ? stack : ItemManager.createItemStackWithHeadTextures(player, item, item.getLore());
+            // Put the item to the inventory
             this.setItems(Ints.toArray(item.getSlots()), finalStack, event -> {
-
                 // Logic when player confirming buying item
                 if(item.getType().equalsIgnoreCase("CONFIRM_BUY")){
                     this.handleConfirming(plugin, player, buyItem, inventoryType, playerData, category);
                 }
-
                 // Cancel
                 if(item.getType().equalsIgnoreCase("CANCEL_BUY")){
-
                     // First we need to check if confirmation menu is not from category shop
                     if(category == null){
                         // Open the latest menu
                         shopManager.openInventory(player, inventoryType);
                         return;
                     }
-
                     // If it is from category shop, we open the category shop back
                     shopManager.openCategoryShop(category, player);
                 }
-
             });
         }
     }

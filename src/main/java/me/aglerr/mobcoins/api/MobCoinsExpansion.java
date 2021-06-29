@@ -95,7 +95,7 @@ public class MobCoinsExpansion extends PlaceholderExpansion {
      * @return possibly-null String of the requested identifier.
      */
     @Override
-    public String onPlaceholderRequest(Player player, String identifier){
+    public String onPlaceholderRequest(Player player, @NotNull String identifier){
 
         if(player == null){
             return "";
@@ -181,16 +181,12 @@ public class MobCoinsExpansion extends PlaceholderExpansion {
 
         // %mobcoins_top_balance_default_<index>%
         if(identifier.startsWith("top_balance_default")){
-
             // Get the mobcoins top in a list
             List<PlayerData> topList = playerDataManager.getMobcoinsTop();
-
             // Split the '_' from the identifier
             String[] split = identifier.split("_");
-
             // Get the index from the identifier
             int index = Integer.parseInt(split[3]) - 1;
-
             // Get the player data, using try catch for IndexOutOfBoundsException
             try{
                 PlayerData playerData = topList.get(index);

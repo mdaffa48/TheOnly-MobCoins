@@ -6,7 +6,6 @@ import me.aglerr.mobcoins.listeners.listeners.MythicMobsDeathListener;
 import me.aglerr.mobcoins.listeners.listeners.PlayerListeners;
 import me.aglerr.mobcoins.listeners.listeners.PlayerRedeemCoins;
 import me.aglerr.mobcoins.managers.managers.DependencyManager;
-import me.aglerr.mobcoins.utils.Common;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 

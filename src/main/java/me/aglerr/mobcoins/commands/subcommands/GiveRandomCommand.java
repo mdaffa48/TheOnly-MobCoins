@@ -5,11 +5,13 @@ import me.aglerr.mobcoins.PlayerData;
 import me.aglerr.mobcoins.api.MobCoinsAPI;
 import me.aglerr.mobcoins.commands.abstraction.SubCommand;
 import me.aglerr.mobcoins.configs.ConfigValue;
-import me.aglerr.mobcoins.utils.Common;
+import me.aglerr.mobcoins.utils.ItemManager;
+import me.aglerr.mobcoins.utils.libs.Common;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -26,7 +28,7 @@ public class GiveRandomCommand extends SubCommand {
         return "mobcoins.admin";
     }
 
-    @Nullable
+    @NotNull
     @Override
     public List<String> parseTabCompletion(MobCoins plugin, CommandSender sender, String[] args) {
         if(args.length == 2){
@@ -46,7 +48,7 @@ public class GiveRandomCommand extends SubCommand {
         if(args.length == 5){
             return Collections.singletonList("<maximum amount>");
         }
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
@@ -82,7 +84,7 @@ public class GiveRandomCommand extends SubCommand {
 
         PlayerData playerData = MobCoinsAPI.getPlayerData(player);
         if(playerData == null){
-            Common.debug(true,
+            Common.debug(
                     "Command: /mobcoins give",
                     "No PlayerData found for " + player.getName()
             );
@@ -95,29 +97,29 @@ public class GiveRandomCommand extends SubCommand {
             sender.sendMessage(Common.color(ConfigValue.MESSAGES_ADD_COINS
                     .replace("{prefix}", ConfigValue.PREFIX)
                     .replace("{type}", type)
-                    .replace("{amount}", Common.format(amount))
+                    .replace("{amount}", Common.numberFormat(amount))
                     .replace("{player}", player.getName())));
 
             player.sendMessage(Common.color(ConfigValue.MESSAGES_ADD_COINS_OTHERS
                     .replace("{prefix}", ConfigValue.PREFIX)
                     .replace("{type}", type)
-                    .replace("{amount}", Common.format(amount))));
+                    .replace("{amount}", Common.numberFormat(amount))));
             return;
         }
 
         if(this.isPhysical(type)){
-            ItemStack stack = Common.createMobCoinItem(amount);
+            ItemStack stack = ItemManager.createMobCoinItem(amount);
 
             sender.sendMessage(Common.color(ConfigValue.MESSAGES_ADD_COINS
                     .replace("{prefix}", ConfigValue.PREFIX)
                     .replace("{type}", type)
-                    .replace("{amount}", Common.format(amount))
+                    .replace("{amount}", Common.numberFormat(amount))
                     .replace("{player}", player.getName())));
 
             player.sendMessage(Common.color(ConfigValue.MESSAGES_ADD_COINS_OTHERS
                     .replace("{prefix}", ConfigValue.PREFIX)
                     .replace("{type}", type)
-                    .replace("{amount}", Common.format(amount))));
+                    .replace("{amount}", Common.numberFormat(amount))));
 
             player.getInventory().addItem(stack);
             return;

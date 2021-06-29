@@ -9,11 +9,7 @@ public class ManagerHandler {
 
     private final Map<ManagerType, Manager> managerList = new HashMap<>();
 
-    private final MobCoins plugin;
-
     public ManagerHandler(MobCoins plugin){
-        this.plugin = plugin;
-
         this.managerList.put(ManagerType.DEPENDENCY_MANAGER, new DependencyManager(plugin));
         this.managerList.put(ManagerType.COIN_MOB_MANAGER, new CoinMobManager());
         this.managerList.put(ManagerType.PLAYER_DATA_MANAGER, new PlayerDataManager(plugin));

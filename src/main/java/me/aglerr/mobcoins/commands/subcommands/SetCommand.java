@@ -5,10 +5,11 @@ import me.aglerr.mobcoins.PlayerData;
 import me.aglerr.mobcoins.api.MobCoinsAPI;
 import me.aglerr.mobcoins.commands.abstraction.SubCommand;
 import me.aglerr.mobcoins.configs.ConfigValue;
-import me.aglerr.mobcoins.utils.Common;
+import me.aglerr.mobcoins.utils.libs.Common;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class SetCommand extends SubCommand {
         return "mobcoins.admin";
     }
 
-    @Nullable
+    @NotNull
     @Override
     public List<String> parseTabCompletion(MobCoins plugin, CommandSender sender, String[] args) {
 
@@ -37,7 +38,7 @@ public class SetCommand extends SubCommand {
             return Collections.singletonList("<amount>");
         }
 
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
@@ -57,7 +58,7 @@ public class SetCommand extends SubCommand {
 
         PlayerData playerData = MobCoinsAPI.getPlayerData(player);
         if(playerData == null){
-            Common.debug(true,
+            Common.debug(
                     "Command: /mobcoins set",
                     "No PlayerData found for " + player.getName()
             );
@@ -82,10 +83,7 @@ public class SetCommand extends SubCommand {
                 .replace("{prefix}", ConfigValue.PREFIX)
                 .replace("{amount}", String.valueOf(amount))));
 
-        Common.debug(true,
-                player.getName() + " coins has been set to " + amount
-        );
-
+        Common.debug(player.getName() + " coins has been set to " + amount);
     }
 
 }

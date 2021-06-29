@@ -6,7 +6,9 @@ import me.aglerr.mobcoins.configs.ConfigValue;
 import me.aglerr.mobcoins.configs.CustomConfig;
 import me.aglerr.mobcoins.managers.Manager;
 import me.aglerr.mobcoins.shops.items.TypeItem;
-import me.aglerr.mobcoins.utils.Common;
+import me.aglerr.mobcoins.utils.Utils;
+import me.aglerr.mobcoins.utils.libs.Common;
+import me.aglerr.mobcoins.utils.libs.Executor;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -21,7 +23,7 @@ public class CategoryShopManager implements Manager {
     private int DEFAULT_RESET_TIME;
 
     public String getFormattedResetTime(){
-        return Common.getFormattedTime(resetTime);
+        return Common.formatTime(resetTime);
     }
 
     private void resetPurchaseLimitAndStockInCategoryShop(){
@@ -53,7 +55,7 @@ public class CategoryShopManager implements Manager {
             resetTime = savedResetTime;
         }
         // Run the time task
-        Common.runTaskTimerAsynchronously(0, 20, () -> {
+        Executor.asyncTimer(0, 20, () -> {
             // Check if the reset time is or below 0
             if(resetTime <= 0){
                 // Set the reset time back to the default time
@@ -66,15 +68,14 @@ public class CategoryShopManager implements Manager {
                                 player.sendMessage(Common.color(message)));
                     }
                     // Send Titles
-                    Common.sendTitle(player, "categoryShop.refreshActions.titles", category, 0);
+                    Utils.sendTitle(player, "categoryShop.refreshActions.titles", category, 0);
                     // Play Sound
-                    Common.playSound(player, "categoryShop.refreshActions.sound", category);
+                    Utils.playSound(player, "categoryShop.refreshActions.sound", category);
                 });
                 // Executes command
                 if(ConfigValue.CATEGORY_COMMANDS_ENABLED){
                     ConfigValue.CATEGORY_COMMANDS_COMMANDS.forEach(command ->
-                            Common.runTask(() ->
-                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command)));
+                            Executor.sync(() -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command)));
                 }
                 // Reset purchase limit and stock
                 this.resetPurchaseLimitAndStockInCategoryShop();

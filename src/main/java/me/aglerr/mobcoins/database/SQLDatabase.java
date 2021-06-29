@@ -2,8 +2,8 @@ package me.aglerr.mobcoins.database;
 
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.configs.ConfigValue;
-import me.aglerr.mobcoins.utils.Common;
-import org.bukkit.Bukkit;
+import me.aglerr.mobcoins.utils.libs.Common;
+import org.bukkit.ChatColor;
 
 import java.io.File;
 import java.sql.Connection;
@@ -19,14 +19,10 @@ public class SQLDatabase {
     public int port;
     public boolean useSSL;
 
-    private final MobCoins plugin;
-
     public SQLDatabase(MobCoins plugin){
-        this.plugin = plugin;
-
-        Common.log(true, "Trying to connect to the database...");
+        Common.log(ChatColor.WHITE, "Trying to connect to the database...");
         if(ConfigValue.IS_MYSQL){
-            Common.log(true, "Database type is MySQL.");
+            Common.log(ChatColor.WHITE, "Database type is MySQL.");
             try{
                 host = ConfigValue.MYSQL_HOST;
                 database = ConfigValue.MYSQL_DATABASE;
@@ -41,15 +37,15 @@ public class SQLDatabase {
                         statement.execute();
                     }
                 }
-                Common.success(true, "MySQL connected!");
+                Common.log(ChatColor.GREEN, "MySQL connected!");
             } catch (Exception e){
-                Common.error(true, "There is an error connecting with the database!");
+                Common.log(ChatColor.RED, "There is an error connecting with the database!");
                 e.printStackTrace();
             }
             return;
         }
 
-        Common.log(true, "Database type is SQLite.");
+        Common.log(ChatColor.WHITE, "Database type is SQLite.");
         try{
             File databaseFile = new File(plugin.getDataFolder(), "database.db");
             if(!databaseFile.exists()){
@@ -62,9 +58,9 @@ public class SQLDatabase {
                     statement.execute();
                 }
             }
-            Common.success(true, "SQLite connected!");
+            Common.log(ChatColor.GREEN, "SQLite connected!");
         } catch(Exception e){
-            Common.error(true, "There is an error connecting with the database!");
+            Common.log(ChatColor.RED, "There is an error connecting with the database!");
             e.printStackTrace();
         }
     }
@@ -97,7 +93,7 @@ public class SQLDatabase {
                 statement.execute();
             }
         } catch (SQLException e){
-            Common.error(true,
+            Common.log(ChatColor.RED,
                     "Error while inserting data.",
                     "UUID: " + uuid,
                     "Coins: " + coins
@@ -118,7 +114,7 @@ public class SQLDatabase {
                 statement.executeUpdate();
             }
         } catch (SQLException e){
-            Common.error(true,
+            Common.log(ChatColor.RED,
                     "Error while updating data.",
                     "UUID: " + uuid,
                     "Coins: " + coins

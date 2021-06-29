@@ -4,11 +4,12 @@ import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.commands.abstraction.SubCommand;
 import me.aglerr.mobcoins.configs.ConfigValue;
 import me.aglerr.mobcoins.managers.managers.ShopManager;
-import me.aglerr.mobcoins.utils.Common;
+import me.aglerr.mobcoins.utils.libs.Common;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class OpenCategoryCommand extends SubCommand {
         return "mobcoins.admin";
     }
 
-    @Nullable
+    @NotNull
     @Override
     public List<String> parseTabCompletion(MobCoins plugin, CommandSender sender, String[] args) {
 
@@ -40,7 +41,7 @@ public class OpenCategoryCommand extends SubCommand {
             return suggestions;
         }
 
-        return null;
+        return new ArrayList<>();
     }
 
     @Override

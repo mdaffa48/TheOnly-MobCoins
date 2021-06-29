@@ -4,8 +4,9 @@ import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.commands.abstraction.SubCommand;
 import me.aglerr.mobcoins.commands.subcommands.*;
 import me.aglerr.mobcoins.configs.ConfigValue;
-import me.aglerr.mobcoins.utils.Common;
+import me.aglerr.mobcoins.utils.libs.Common;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.NotNull;
@@ -63,7 +64,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
 
             bukkitCommandMap.setAccessible(false);
         } catch (NoSuchFieldException | IllegalAccessException e) {
-            Common.error(true, "Failed registering commands");
+            Common.log(ChatColor.RED, "Failed registering commands");
             e.printStackTrace();
         }
 
@@ -130,37 +131,26 @@ public class MainCommand implements CommandExecutor, TabCompleter {
             }
 
             if(sender.hasPermission("mobcoins.admin")){
-                suggestions.add("set");
-                suggestions.add("give");
-                suggestions.add("take");
-                suggestions.add("about");
-                suggestions.add("opencategory");
-                suggestions.add("reload");
-                suggestions.add("giverandom");
+                suggestions.addAll(Arrays.asList("set", "give", "take", "about", "opencategory", "reload", "giverandom"));
             }
 
             return suggestions;
         }
 
-        if(args.length == 2){
+        if(args.length >= 2){
             SubCommand subCommand = this.subCommandMap.get(args[0].toLowerCase());
             if(subCommand == null) return null;
 
             if(subCommand.getPermission() == null){
                 return subCommand.parseTabCompletion(plugin, sender, args);
             }
-
-            if(subCommand.getPermission() != null){
-                if(!sender.hasPermission(subCommand.getPermission())){
-                    return null;
-                } else {
-                    return subCommand.parseTabCompletion(plugin, sender, args);
-                }
+            if(sender.hasPermission(subCommand.getPermission())){
+                return subCommand.parseTabCompletion(plugin, sender, args);
             }
-
+            return new ArrayList<>();
         }
 
-        return null;
+        return new ArrayList<>();
     }
 
     private void sendHelpMessages(CommandSender sender){

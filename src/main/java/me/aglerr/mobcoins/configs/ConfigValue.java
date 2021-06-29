@@ -6,7 +6,6 @@ import java.util.List;
 
 public class ConfigValue {
 
-    public static boolean isDebug = false;
     public static String PREFIX;
 
     public static boolean IS_MYSQL;

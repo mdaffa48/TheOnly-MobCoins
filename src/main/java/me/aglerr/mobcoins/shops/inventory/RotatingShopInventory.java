@@ -11,8 +11,9 @@ import me.aglerr.mobcoins.managers.managers.PurchaseLimitManager;
 import me.aglerr.mobcoins.managers.managers.ShopManager;
 import me.aglerr.mobcoins.managers.managers.StockManager;
 import me.aglerr.mobcoins.shops.items.TypeItem;
-import me.aglerr.mobcoins.utils.Common;
+import me.aglerr.mobcoins.utils.libs.Common;
 import me.aglerr.mobcoins.utils.ItemManager;
+import me.aglerr.mobcoins.utils.libs.Executor;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -32,7 +33,7 @@ public class RotatingShopInventory extends FastInv {
 
         if(ConfigValue.AUTO_UPDATE_ENABLED){
             // Start the updating task when player open the inventory
-            BukkitTask task = Common.runTaskTimer(0,
+            BukkitTask task = Executor.syncTimer(0,
                     ConfigValue.AUTO_UPDATE_UPDATE_EVERY,
                     () -> this.setAllItems(plugin, player));
 
@@ -47,7 +48,7 @@ public class RotatingShopInventory extends FastInv {
         // Loop through all loaded additional rotating items
         for(TypeItem item : shopManager.getItemsLoader().getAdditionalRotatingItems()){
             // Create the item
-            ItemStack stack = ItemManager.createItemStackWithHeadTextures(player, item);
+            ItemStack stack = ItemManager.createItemStackWithHeadTextures(player, item, item.getLore());
             // Put the item on the inventory
             this.setItems(Ints.toArray(item.getSlots()), stack, event -> {
 
@@ -71,9 +72,7 @@ public class RotatingShopInventory extends FastInv {
                 if(item.getType().equalsIgnoreCase("OPEN_CATEGORY")){
                     // Return if the item doesn't have any category set
                     if(item.getCategory() == null){
-                        Common.debug(true,
-                                player.getName() + " trying to open a category, but the item doesn't have a category set (item: " + item.getConfigKey() + ")"
-                        );
+                        Common.debug(player.getName() + " trying to open a category, but the item doesn't have a category set (item: " + item.getConfigKey() + ")");
                         return;
                     }
 
@@ -182,7 +181,7 @@ public class RotatingShopInventory extends FastInv {
         // Check if player has enough money
         PlayerData playerData = MobCoinsAPI.getPlayerData(player);
         if(playerData == null){
-            Common.debug(true,
+            Common.debug(
                     "Event: Opening Rotating Shop Inventory",
                     "No PlayerData found for " + player.getName() + " (player)"
             );

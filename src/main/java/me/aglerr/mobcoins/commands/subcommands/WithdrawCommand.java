@@ -5,12 +5,15 @@ import me.aglerr.mobcoins.PlayerData;
 import me.aglerr.mobcoins.api.MobCoinsAPI;
 import me.aglerr.mobcoins.commands.abstraction.SubCommand;
 import me.aglerr.mobcoins.configs.ConfigValue;
-import me.aglerr.mobcoins.utils.Common;
+import me.aglerr.mobcoins.utils.ItemManager;
+import me.aglerr.mobcoins.utils.libs.Common;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -22,7 +25,7 @@ public class WithdrawCommand extends SubCommand {
         return "mobcoins.withdraw";
     }
 
-    @Nullable
+    @NotNull
     @Override
     public List<String> parseTabCompletion(MobCoins plugin, CommandSender sender, String[] args) {
 
@@ -30,7 +33,7 @@ public class WithdrawCommand extends SubCommand {
             return Collections.singletonList("<amount>");
         }
 
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
@@ -52,7 +55,7 @@ public class WithdrawCommand extends SubCommand {
         PlayerData playerData = MobCoinsAPI.getPlayerData(player);
 
         if(playerData == null){
-            Common.debug(true,
+            Common.debug(
                     "Command: /mobcoins withdraw",
                     "No PlayerData found for " + player.getName()
             );
@@ -80,7 +83,7 @@ public class WithdrawCommand extends SubCommand {
         }
 
         playerData.reduceCoins(amount);
-        ItemStack stack = Common.createMobCoinItem(amount);
+        ItemStack stack = ItemManager.createMobCoinItem(amount);
 
         player.getInventory().addItem(stack);
         sender.sendMessage(Common.color(ConfigValue.MESSAGES_WITHDRAW

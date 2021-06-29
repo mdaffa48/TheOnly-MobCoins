@@ -1,7 +1,8 @@
 package me.aglerr.mobcoins.api.events;
 
 import me.aglerr.mobcoins.coinmob.CoinMob;
-import me.aglerr.mobcoins.utils.Common;
+import me.aglerr.mobcoins.utils.ItemManager;
+import me.aglerr.mobcoins.utils.libs.Common;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
@@ -25,7 +26,7 @@ public class MobCoinsSpawnEvent extends Event implements Cancellable {
         this.entity = entity;
         this.coinMob = coinMob;
         this.amountToDrop = amountToDrop;
-        this.itemStack = Common.createMobCoinItem(amountToDrop);
+        this.itemStack = ItemManager.createMobCoinItem(amountToDrop);
 
         this.isCancelled = false;
     }
@@ -86,7 +87,7 @@ public class MobCoinsSpawnEvent extends Event implements Cancellable {
      */
     public void setAmountToDrop(double amount){
         this.amountToDrop = amount;
-        this.itemStack = Common.createMobCoinItem(amount);
+        this.itemStack = ItemManager.createMobCoinItem(amount);
     }
 
     /**

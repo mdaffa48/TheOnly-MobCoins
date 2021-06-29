@@ -1,16 +1,18 @@
 package me.aglerr.mobcoins.managers.managers;
 
-import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.PlayerData;
 import me.aglerr.mobcoins.api.MobCoinsAPI;
 import me.aglerr.mobcoins.configs.ConfigValue;
 import me.aglerr.mobcoins.managers.Manager;
-import me.aglerr.mobcoins.utils.Common;
+import me.aglerr.mobcoins.utils.Utils;
+import me.aglerr.mobcoins.utils.libs.Common;
+import me.aglerr.mobcoins.utils.libs.Executor;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
@@ -40,7 +42,7 @@ public class SalaryManager implements Manager {
     @Override
     public void load() {
         int timeAndDelay = (20 * ConfigValue.SALARY_MODE_ANNOUNCE_EVERY);
-        Common.runTaskTimerAsynchronously(timeAndDelay, timeAndDelay, () -> {
+        Executor.asyncTimer(timeAndDelay, timeAndDelay, () -> {
             if(!ConfigValue.SALARY_MODE_ENABLED) return;
 
             // Loop through all salaries
@@ -60,7 +62,7 @@ public class SalaryManager implements Manager {
                 if(ConfigValue.SALARY_MODE_RECEIVE_AFTER_MESSAGE){
                     PlayerData playerData = MobCoinsAPI.getPlayerData(player);
                     if(playerData == null){
-                        Common.debug(true,
+                        Common.debug(
                                 "Event: Salary Announcement",
                                 "No PlayerData found for " + player.getName()
                         );
@@ -71,12 +73,12 @@ public class SalaryManager implements Manager {
                 }
 
                 // Send notification code (message, sound, title, actionbar)
-                ConfigValue.SALARY_MODE_MESSAGES.forEach(message -> player.sendMessage(Common.color(message.replace("{amount}", Common.format(salaryAmount)))));
-                Common.playSound(player, "sounds.onCoinsReceived", config);
-                Common.sendTitle(player, "titles.onCoinsReceived", config, salaryAmount);
-                Common.sendActionBar(player, "actionBar.onCoinsReceived", config, salaryAmount);
+                ConfigValue.SALARY_MODE_MESSAGES.forEach(message -> player.sendMessage(Common.color(message.replace("{amount}", Common.numberFormat(salaryAmount)))));
+                Utils.playSound(player, "sounds.onCoinsReceived", config);
+                Utils.sendTitle(player, "titles.onCoinsReceived", config, salaryAmount);
+                Utils.sendActionBar(player, "actionBar.onCoinsReceived", config, salaryAmount);
 
-                Common.debug(true, "Salary for " + player.getName() + " (coins: " + salaryAmount + ")");
+                Common.debug("Salary for " + player.getName() + " (coins: " + salaryAmount + ")");
                 // Remove player salary from the map
                 this.salaryMap.remove(uuid);
 

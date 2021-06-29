@@ -1,19 +1,19 @@
 package me.aglerr.mobcoins.managers.managers;
 
-import com.cryptomorin.xseries.messages.Titles;
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.configs.Config;
 import me.aglerr.mobcoins.configs.ConfigValue;
 import me.aglerr.mobcoins.configs.CustomConfig;
 import me.aglerr.mobcoins.managers.Manager;
 import me.aglerr.mobcoins.shops.items.TypeItem;
-import me.aglerr.mobcoins.utils.Common;
+import me.aglerr.mobcoins.utils.Utils;
+import me.aglerr.mobcoins.utils.libs.Common;
+import me.aglerr.mobcoins.utils.libs.Executor;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 public class RotatingShopManager implements Manager {
@@ -26,20 +26,12 @@ public class RotatingShopManager implements Manager {
     private int normalTime = 0;
     private int specialTime = 0;
 
-    public int getNormalTime(){
-        return normalTime;
-    }
-
-    public int getSpecialTime(){
-        return specialTime;
-    }
-
     public String getFormattedNormalTime(){
-        return Common.getFormattedTime(normalTime);
+        return Common.formatTime(normalTime);
     }
 
     public String getFormattedSpecialTime(){
-        return Common.getFormattedTime(specialTime);
+        return Common.formatTime(specialTime);
     }
 
     public void shuffleNormalItemsAndResetStockAndPurchaseLimit(){
@@ -153,7 +145,7 @@ public class RotatingShopManager implements Manager {
         }
 
         // Run task timer for handling the time and refreshing normal/special items event
-        Common.runTaskTimerAsynchronously(0, 20, () -> {
+        Executor.asyncTimer(0, 20, () -> {
 
             if(normalTime <= 0){
                 // Play bunch of events (send messages, titles, sound, commands)
@@ -163,15 +155,14 @@ public class RotatingShopManager implements Manager {
                         ConfigValue.NORMAL_BROADCAST_MESSAGE_MESSAGES.forEach(message -> player.sendMessage(Common.color(message)));
                     }
                     // Send Titles
-                    Common.sendTitle(player, "rotatingShop.refreshActions.normalItems.titles", rotating, 0);
+                    Utils.sendTitle(player, "rotatingShop.refreshActions.normalItems.titles", rotating, 0);
                     // Play Sound
-                    Common.playSound(player, "rotatingShop.refreshActions.normalItems.sound", rotating);
+                    Utils.playSound(player, "rotatingShop.refreshActions.normalItems.sound", rotating);
                 });
                 // Executes command
                 if(ConfigValue.NORMAL_IS_COMMAND){
                     ConfigValue.NORMAL_COMMAND_COMMANDS.forEach(message ->
-                            Common.runTask(() ->
-                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), message)));
+                            Executor.sync(() -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), message)));
                 }
                 // Shuffle/Rotate the item and reset stock and purchase limit
                 this.shuffleNormalItemsAndResetStockAndPurchaseLimit();
@@ -186,13 +177,13 @@ public class RotatingShopManager implements Manager {
                         ConfigValue.SPECIAL_BROADCAST_MESSAGE_MESSAGES.forEach(message -> player.sendMessage(Common.color(message)));
                     }
                     // Send Titles
-                    Common.sendTitle(player, "rotatingShop.refreshActions.specialItems.titles", rotating, 0);
+                    Utils.sendTitle(player, "rotatingShop.refreshActions.specialItems.titles", rotating, 0);
                     // Play Sound
-                    Common.playSound(player, "rotatingShop.refreshActions.specialItems.sound", rotating);
+                    Utils.playSound(player, "rotatingShop.refreshActions.specialItems.sound", rotating);
                 });
                 // Executes command
                 if(ConfigValue.SPECIAL_IS_COMMAND){
-                    ConfigValue.SPECIAL_COMMAND_COMMANDS.forEach(message -> Common.runTask(() ->
+                    ConfigValue.SPECIAL_COMMAND_COMMANDS.forEach(message -> Executor.sync(() ->
                             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), message)));
                 }
                 // Shuffle/Rotate the item and reset stock and purchase limit

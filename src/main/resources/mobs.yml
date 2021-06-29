@@ -1,6 +1,5 @@
 # Entity Type: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/EntityType.html
 # supports decimals and range, check example below!
-
 entities:
   PIG:
     chance: 26

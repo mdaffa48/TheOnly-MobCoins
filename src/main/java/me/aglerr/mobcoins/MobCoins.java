@@ -1,6 +1,5 @@
 package me.aglerr.mobcoins;
 
-import fr.mrmicky.fastinv.FastInvManager;
 import me.aglerr.mobcoins.commands.MainCommand;
 import me.aglerr.mobcoins.configs.Config;
 import me.aglerr.mobcoins.configs.ConfigValue;
@@ -12,10 +11,12 @@ import me.aglerr.mobcoins.managers.managers.RotatingShopManager;
 import me.aglerr.mobcoins.managers.managers.ShopManager;
 import me.aglerr.mobcoins.metrics.Metrics;
 import me.aglerr.mobcoins.shops.items.ItemsLoader;
-import me.aglerr.mobcoins.utils.Common;
+import me.aglerr.mobcoins.utils.Utils;
+import me.aglerr.mobcoins.utils.libs.Common;
 import me.aglerr.mobcoins.utils.ConfigUpdater;
 import me.aglerr.mobcoins.utils.UpdateChecker;
-import org.bukkit.command.CommandSender;
+import me.aglerr.mobcoins.utils.libs.Executor;
+import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
 
@@ -42,7 +43,12 @@ public class MobCoins extends JavaPlugin {
     public void onEnable(){
         // Initialize instance
         instance = this;
-        Common.log(false, Common.getStartupLogo());
+        // Injecting libs
+        Common.inject(this);
+        Common.setPrefix("[TheOnly-Mobcoins]");
+        Executor.inject(this);
+        // Send the-only logo
+        Utils.sendStartupLogo();
         // Initialize all config
         Config.initialize();
         // Initialize all config value
@@ -95,7 +101,7 @@ public class MobCoins extends JavaPlugin {
         try{
             ConfigUpdater.update(this, "config.yml", configFile, new ArrayList<>());
         } catch(IOException e){
-            Common.error(true, "Failed to update the config.yml");
+            Common.log(ChatColor.RED, "Failed to update the config.yml");
             e.printStackTrace();
         }
     }
@@ -103,17 +109,15 @@ public class MobCoins extends JavaPlugin {
     private void checkForUpdates(){
         // Return if notify update is disabled
         if(!ConfigValue.NOTIFY_UPDATE) return;
-        // Create a new instance of update checker
-        UpdateChecker updateChecker = UpdateChecker.init(this, 93470);
         // Initialize the update checker
-        this.updateChecker = updateChecker;
+        this.updateChecker = UpdateChecker.init(this, 93470);
         // Check the version and then send the messages
-        updateChecker.requestUpdateCheck().whenComplete((result, error) -> {
+        this.updateChecker.requestUpdateCheck().whenComplete((result, error) -> {
             // Messages if the plugin is not up to date
             if(result.requiresUpdate()){
-                Common.log(true, "Checking for updates...");
+                Common.log(ChatColor.WHITE, "Checking for updates...");
                 // The messages
-                List<String> messages = new ArrayList<>(Common.getUpdateMessage());
+                List<String> messages = new ArrayList<>(Utils.getUpdateMessage());
                 messages.addAll(Arrays.asList(
                         " ",
                         " There is a new version of TheOnly-Mobcoins available!",
@@ -122,24 +126,21 @@ public class MobCoins extends JavaPlugin {
                         " Please update to the newest version. Download:",
                         " &ehttps://www.spigotmc.org/resources/theonly-mobcoins.93470/"
                 ));
-                Common.runTaskLaterAsynchronously(20, () ->
-                        Common.log(false, messages));
+                Executor.asyncLater(20, () -> Common.log(ChatColor.WHITE, messages));
                 return;
             }
 
             switch(result.getReason()) {
                 // Messages if the server using latest version
                 case UP_TO_DATE: {
-                    Common.log(true, "Checking for updates...");
-                    Common.runTaskLaterAsynchronously(20, () -> Common.log(true,
-                            "&aYou are using the latest available version."
-                    ));
+                    Common.log(ChatColor.WHITE, "Checking for updates...");
+                    Executor.asyncLater(20, () -> Common.log(ChatColor.GREEN, "You are using the latest available version!"));
                     break;
                 }
                 // Messages if the server using unreleased version
                 case UNRELEASED_VERSION: {
-                    Common.log(true, "Checking for updates...");
-                    Common.runTaskLaterAsynchronously(20, () -> Common.log(true,
+                    Common.log(ChatColor.WHITE, "Checking for updates...");
+                    Executor.asyncLater(20, () -> Common.log(ChatColor.WHITE,
                             "===============================================",
                             "You are using unreleased version or development build!",
                             "This version is may be unstable. The latest available version is " + result.getNewestVersion(),
@@ -150,8 +151,8 @@ public class MobCoins extends JavaPlugin {
                 }
                 // Message if the reason is not on the above
                 default: {
-                    Common.log(true, "Checking for updates...");
-                    Common.runTaskLaterAsynchronously(20, () -> Common.log(true,
+                    Common.log(ChatColor.WHITE, "Checking for updates...");
+                    Executor.asyncLater(20, () -> Common.log(ChatColor.RED,
                             "Could not check for a new version of TheOnly-Mobcoins! (Reason: " + result.getReason() + ")"
                     ));
                 }

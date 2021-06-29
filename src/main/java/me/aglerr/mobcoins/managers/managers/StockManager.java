@@ -5,7 +5,8 @@ import me.aglerr.mobcoins.configs.ConfigValue;
 import me.aglerr.mobcoins.configs.CustomConfig;
 import me.aglerr.mobcoins.managers.Manager;
 import me.aglerr.mobcoins.shops.items.TypeItem;
-import me.aglerr.mobcoins.utils.Common;
+import me.aglerr.mobcoins.utils.libs.Common;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.HashMap;
@@ -59,7 +60,7 @@ public class StockManager implements Manager {
             int decreasedStock = item.getStock() - 1;
             this.stock.put(item.getConfigKey(), decreasedStock);
 
-            Common.debug(true, "Putting item stock data (item: {item}, original: {stock}, result: {result})"
+            Common.debug("Putting item stock data (item: {item}, original: {stock}, result: {result})"
                     .replace("{stock}", String.valueOf(item.getStock()))
                     .replace("{result}", String.valueOf(decreasedStock))
                     .replace("{item}", item.getConfigKey()));
@@ -75,7 +76,7 @@ public class StockManager implements Manager {
 
         this.stock.put(item.getConfigKey(), decreasedStock);
 
-        Common.debug(true, "Decreasing item stock data (item: {item}, before: {before}, after: {after})"
+        Common.debug("Decreasing item stock data (item: {item}, before: {before}, after: {after})"
                 .replace("{before}", String.valueOf(currentStock))
                 .replace("{after}", String.valueOf(decreasedStock))
                 .replace("{item}", item.getConfigKey()));
@@ -88,12 +89,12 @@ public class StockManager implements Manager {
 
     @Override
     public void load() {
-        Common.log(true, "Trying to load all item stock data");
+        Common.log(ChatColor.WHITE,"Loading all item stock data");
 
         FileConfiguration config = Config.TEMP_DATA.getConfig();
 
         if(!config.isConfigurationSection("stock")) {
-            Common.error(true, "Failed, because there is no item stock data");
+            Common.log(ChatColor.RED, "Failed, because there is no item stock data");
             return;
         }
 
@@ -102,12 +103,12 @@ public class StockManager implements Manager {
             this.stock.put(key, stockRemaining);
         }
 
-        Common.success(true, "Successfully loaded all item stock data");
+        Common.log(ChatColor.GREEN, "Successfully loaded all item stock data");
     }
 
     @Override
     public void save() {
-        Common.log(true, "Trying to save item stock data");
+        Common.log(ChatColor.WHITE,"Saving all item stock data");
 
         CustomConfig tempData = Config.TEMP_DATA;
         FileConfiguration config = tempData.getConfig();
@@ -118,6 +119,6 @@ public class StockManager implements Manager {
 
         tempData.saveConfig();
 
-        Common.success(true, "Successfully saved item stock data");
+        Common.log(ChatColor.GREEN, "Successfully saved all item stock data");
     }
 }

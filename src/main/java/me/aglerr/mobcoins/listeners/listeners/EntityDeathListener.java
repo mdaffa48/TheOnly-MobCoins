@@ -2,7 +2,6 @@ package me.aglerr.mobcoins.listeners.listeners;
 
 import io.lumine.xikage.mythicmobs.MythicMobs;
 import io.lumine.xikage.mythicmobs.api.bukkit.BukkitAPIHelper;
-import io.lumine.xikage.mythicmobs.mobs.MythicMob;
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.PlayerData;
 import me.aglerr.mobcoins.api.MobCoinsAPI;
@@ -13,7 +12,8 @@ import me.aglerr.mobcoins.configs.ConfigValue;
 import me.aglerr.mobcoins.managers.managers.DependencyManager;
 import me.aglerr.mobcoins.managers.managers.SalaryManager;
 import me.aglerr.mobcoins.managers.managers.SpawnerSpawnManager;
-import me.aglerr.mobcoins.utils.Common;
+import me.aglerr.mobcoins.utils.Utils;
+import me.aglerr.mobcoins.utils.libs.Common;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.LivingEntity;
@@ -80,7 +80,7 @@ public class EntityDeathListener implements Listener {
             ItemStack stack = spawnEvent.getItemStack();
             World world = entity.getWorld();
             world.dropItemNaturally(entity.getLocation(), stack);
-            Common.debug(true, "Successfully spawned physical mobcoin (coins: " + spawnEvent.getAmountToDrop() + ", mythicmobs: false)");
+            Common.debug("Successfully spawned physical mobcoin (coins: " + spawnEvent.getAmountToDrop() + ", mythicmobs: false)");
             return;
         }
 
@@ -89,7 +89,7 @@ public class EntityDeathListener implements Listener {
             Player player = entity.getKiller();
             PlayerData playerData = MobCoinsAPI.getPlayerData(player);
             if(playerData == null){
-                Common.debug(true,
+                Common.debug(
                         "Event: Entity Death Virtual Mobcoin",
                         "No PlayerData found for " + player.getName()
                 );
@@ -100,7 +100,7 @@ public class EntityDeathListener implements Listener {
             Bukkit.getPluginManager().callEvent(receiveEvent);
             if(receiveEvent.isCancelled()) return;
 
-            Common.debug(true, player.getName() + " received virtual mobcoins! (coins: " + receiveEvent.getAmountReceived() + ", reason: entity death, mythicmobs: false)");
+            Common.debug(player.getName() + " received virtual mobcoins! (coins: " + receiveEvent.getAmountReceived() + ", reason: entity death, mythicmobs: false)");
 
             // Check if Salary Mode is enabled
             if(ConfigValue.SALARY_MODE_ENABLED){
@@ -122,15 +122,15 @@ public class EntityDeathListener implements Listener {
             // Check if mobcoins receive message is enabled
             if(ConfigValue.IS_ENABLE_RECEIVE_MOBCOINS_MESSAGE){
                 // Play sound to the player
-                Common.playSound(player, "sounds.onCoinsReceived", plugin.getConfig());
+                Utils.playSound(player, "sounds.onCoinsReceived", plugin.getConfig());
                 // Send title to the player
-                Common.sendTitle(player, "titles.onCoinsReceived", plugin.getConfig(), receiveEvent.getAmountReceived());
+                Utils.sendTitle(player, "titles.onCoinsReceived", plugin.getConfig(), receiveEvent.getAmountReceived());
                 // Send action bar to the player
-                Common.sendActionBar(player, "actionBar.onCoinsReceived", plugin.getConfig(), receiveEvent.getAmountReceived());
+                Utils.sendActionBar(player, "actionBar.onCoinsReceived", plugin.getConfig(), receiveEvent.getAmountReceived());
                 // Send messages to the player
                 player.sendMessage(Common.color(ConfigValue.MESSAGES_COINS_RECEIVED
                         .replace("{prefix}", ConfigValue.PREFIX)
-                        .replace("{amount}", Common.format(receiveEvent.getAmountReceived()))));
+                        .replace("{amount}", Common.numberFormat(receiveEvent.getAmountReceived()))));
             }
 
         }

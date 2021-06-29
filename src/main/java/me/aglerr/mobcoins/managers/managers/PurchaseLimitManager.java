@@ -6,7 +6,8 @@ import me.aglerr.mobcoins.configs.Config;
 import me.aglerr.mobcoins.configs.CustomConfig;
 import me.aglerr.mobcoins.managers.Manager;
 import me.aglerr.mobcoins.shops.items.TypeItem;
-import me.aglerr.mobcoins.utils.Common;
+import me.aglerr.mobcoins.utils.libs.Common;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
@@ -56,7 +57,7 @@ public class PurchaseLimitManager implements Manager {
             // Putting the data on the table
             this.purchaseTable.put(uuid, item.getConfigKey(), increasedLimit);
 
-            Common.debug(true, "Increasing Purchase Limit (uuid: {uuid}, item: {item}, current: {current}, increased: {increased}, max limit: {max_limit})"
+            Common.debug("Increasing Purchase Limit (uuid: {uuid}, item: {item}, current: {current}, increased: {increased}, max limit: {max_limit})"
                     .replace("{uuid}", uuid.toString())
                     .replace("{current}", String.valueOf(currentLimit))
                     .replace("{increased}", String.valueOf(increasedLimit))
@@ -70,19 +71,19 @@ public class PurchaseLimitManager implements Manager {
         // Putting the data onto the table
         this.purchaseTable.put(uuid, item.getConfigKey(), 1);
 
-        Common.debug(true, "Putting Purchase Limit (uuid: {uuid}, item: {item})"
+        Common.debug("Putting Purchase Limit (uuid: {uuid}, item: {item})"
                 .replace("{uuid}", uuid.toString())
                 .replace("{item}", item.getConfigKey()));
     }
 
     @Override
     public void load() {
-        Common.log(true, "Trying to load all purchase limit data");
+        Common.log(ChatColor.WHITE,"Trying to load all purchase limit data");
 
         FileConfiguration config = Config.TEMP_DATA.getConfig();
 
         if(!config.isConfigurationSection("purchaseLimit")) {
-            Common.error(true, "Failed because there is no purchase limit data");
+            Common.log(ChatColor.RED, "Failed because there is no purchase limit data");
             return;
         }
 
@@ -93,13 +94,13 @@ public class PurchaseLimitManager implements Manager {
             }
         }
 
-        Common.success(true, "Successfully loaded all purchase limit data");
+        Common.log(ChatColor.GREEN, "Successfully loaded all purchase limit data");
 
     }
 
     @Override
     public void save() {
-        Common.log(true, "Trying to save all purchase limit data");
+        Common.log(ChatColor.WHITE, "Trying to save all purchase limit data");
 
         CustomConfig temp = Config.TEMP_DATA;
         FileConfiguration config = temp.getConfig();
@@ -113,7 +114,7 @@ public class PurchaseLimitManager implements Manager {
 
         temp.saveConfig();
 
-        Common.success(true, "Successfully saved all purchase limit data");
+        Common.log(ChatColor.GREEN, "Successfully saved all purchase limit data");
     }
 
 }

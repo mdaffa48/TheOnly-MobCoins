@@ -5,14 +5,14 @@ import me.aglerr.mobcoins.PlayerData;
 import me.aglerr.mobcoins.api.MobCoinsAPI;
 import me.aglerr.mobcoins.commands.abstraction.SubCommand;
 import me.aglerr.mobcoins.configs.ConfigValue;
-import me.aglerr.mobcoins.utils.Common;
+import me.aglerr.mobcoins.utils.libs.Common;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class BalanceCommand extends SubCommand {
@@ -23,7 +23,7 @@ public class BalanceCommand extends SubCommand {
         return "mobcoins.balance";
     }
 
-    @Nullable
+    @NotNull
     @Override
     public List<String> parseTabCompletion(MobCoins plugin, CommandSender sender, String[] args) {
 
@@ -35,7 +35,7 @@ public class BalanceCommand extends SubCommand {
             }
         }
 
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
@@ -47,7 +47,7 @@ public class BalanceCommand extends SubCommand {
                 Player player = (Player) sender;
                 PlayerData playerData = MobCoinsAPI.getPlayerData(player);
                 if(playerData == null) {
-                    Common.debug(true,
+                    Common.debug(
                             "Command: /mobcoins balance",
                             "No PlayerData found for " + player.getName()
                     );
@@ -82,7 +82,7 @@ public class BalanceCommand extends SubCommand {
 
             PlayerData playerData = MobCoinsAPI.getPlayerData(player);
             if(playerData == null){
-                Common.debug(true,
+                Common.debug(
                         "Command: /mobcoins balance [others]",
                         "No PlayerData found for " + player.getName()
                 );
