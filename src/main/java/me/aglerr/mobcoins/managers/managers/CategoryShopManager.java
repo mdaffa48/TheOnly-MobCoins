@@ -1,5 +1,7 @@
 package me.aglerr.mobcoins.managers.managers;
 
+import me.aglerr.lazylibs.libs.Common;
+import me.aglerr.lazylibs.libs.Executor;
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.configs.Config;
 import me.aglerr.mobcoins.configs.ConfigValue;
@@ -7,8 +9,6 @@ import me.aglerr.mobcoins.configs.CustomConfig;
 import me.aglerr.mobcoins.managers.Manager;
 import me.aglerr.mobcoins.shops.items.TypeItem;
 import me.aglerr.mobcoins.utils.Utils;
-import me.aglerr.mobcoins.utils.libs.Common;
-import me.aglerr.mobcoins.utils.libs.Executor;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 

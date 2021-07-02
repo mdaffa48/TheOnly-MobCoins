@@ -1,14 +1,14 @@
 package me.aglerr.mobcoins.listeners.listeners;
 
-import com.cryptomorin.xseries.XMaterial;
 import de.tr7zw.changeme.nbtapi.NBTItem;
+import me.aglerr.lazylibs.libs.Common;
+import me.aglerr.lazylibs.libs.XMaterial;
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.PlayerData;
 import me.aglerr.mobcoins.api.MobCoinsAPI;
 import me.aglerr.mobcoins.api.events.MobCoinsRedeemEvent;
 import me.aglerr.mobcoins.configs.ConfigValue;
 import me.aglerr.mobcoins.utils.Utils;
-import me.aglerr.mobcoins.utils.libs.Common;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

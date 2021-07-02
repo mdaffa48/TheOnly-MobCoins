@@ -1,18 +1,17 @@
 package me.aglerr.mobcoins.managers.managers;
 
+import me.aglerr.lazylibs.libs.Common;
+import me.aglerr.lazylibs.libs.Executor;
 import me.aglerr.mobcoins.PlayerData;
 import me.aglerr.mobcoins.api.MobCoinsAPI;
 import me.aglerr.mobcoins.configs.ConfigValue;
 import me.aglerr.mobcoins.managers.Manager;
 import me.aglerr.mobcoins.utils.Utils;
-import me.aglerr.mobcoins.utils.libs.Common;
-import me.aglerr.mobcoins.utils.libs.Executor;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 

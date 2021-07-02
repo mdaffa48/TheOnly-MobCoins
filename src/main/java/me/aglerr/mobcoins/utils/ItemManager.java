@@ -1,12 +1,12 @@
 package me.aglerr.mobcoins.utils;
 
-import com.cryptomorin.xseries.SkullUtils;
-import com.cryptomorin.xseries.XMaterial;
 import de.tr7zw.changeme.nbtapi.NBTItem;
-import fr.mrmicky.fastinv.ItemBuilder;
+import me.aglerr.lazylibs.libs.Common;
+import me.aglerr.lazylibs.libs.ItemBuilder;
+import me.aglerr.lazylibs.libs.SkullUtils;
+import me.aglerr.lazylibs.libs.XMaterial;
 import me.aglerr.mobcoins.configs.ConfigValue;
 import me.aglerr.mobcoins.shops.items.TypeItem;
-import me.aglerr.mobcoins.utils.libs.Common;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;

@@ -1,9 +1,9 @@
 package me.aglerr.mobcoins.commands.subcommands;
 
+import me.aglerr.lazylibs.libs.Common;
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.commands.abstraction.SubCommand;
 import me.aglerr.mobcoins.configs.ConfigValue;
-import me.aglerr.mobcoins.utils.libs.Common;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;

@@ -1,7 +1,9 @@
 package me.aglerr.mobcoins.shops.inventory;
 
 import com.google.common.primitives.Ints;
-import fr.mrmicky.fastinv.FastInv;
+import me.aglerr.lazylibs.inventory.LazyInventory;
+import me.aglerr.lazylibs.libs.Common;
+import me.aglerr.lazylibs.libs.Executor;
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.PlayerData;
 import me.aglerr.mobcoins.api.MobCoinsAPI;
@@ -11,9 +13,7 @@ import me.aglerr.mobcoins.managers.managers.PurchaseLimitManager;
 import me.aglerr.mobcoins.managers.managers.ShopManager;
 import me.aglerr.mobcoins.managers.managers.StockManager;
 import me.aglerr.mobcoins.shops.items.TypeItem;
-import me.aglerr.mobcoins.utils.libs.Common;
 import me.aglerr.mobcoins.utils.ItemManager;
-import me.aglerr.mobcoins.utils.libs.Executor;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -23,7 +23,7 @@ import org.bukkit.scheduler.BukkitTask;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RotatingShopInventory extends FastInv {
+public class RotatingShopInventory extends LazyInventory {
 
     public RotatingShopInventory(MobCoins plugin, Player player, int size, String title) {
         super(size, Common.color(title));
@@ -78,7 +78,6 @@ public class RotatingShopInventory extends FastInv {
 
                     // Opening category
                     shopManager.openCategoryShop(item.getCategory(), player);
-                    return;
                 }
 
             });
@@ -203,7 +202,7 @@ public class RotatingShopInventory extends FastInv {
             String title = confirmation.getString("title");
             int size = confirmation.getInt("size");
 
-            FastInv inventory = new ConfirmationInventory(plugin, player, stack, ShopManager.InventoryType.ROTATING_SHOP, playerData, item, null, size, title);
+            LazyInventory inventory = new ConfirmationInventory(plugin, player, stack, ShopManager.InventoryType.ROTATING_SHOP, playerData, item, null, size, title);
             inventory.open(player);
             return;
         }

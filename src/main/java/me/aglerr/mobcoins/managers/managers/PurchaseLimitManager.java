@@ -2,11 +2,11 @@ package me.aglerr.mobcoins.managers.managers;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
+import me.aglerr.lazylibs.libs.Common;
 import me.aglerr.mobcoins.configs.Config;
 import me.aglerr.mobcoins.configs.CustomConfig;
 import me.aglerr.mobcoins.managers.Manager;
 import me.aglerr.mobcoins.shops.items.TypeItem;
-import me.aglerr.mobcoins.utils.libs.Common;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -78,7 +78,7 @@ public class PurchaseLimitManager implements Manager {
 
     @Override
     public void load() {
-        Common.log(ChatColor.WHITE,"Trying to load all purchase limit data");
+        Common.log(ChatColor.RESET,"Trying to load all purchase limit data");
 
         FileConfiguration config = Config.TEMP_DATA.getConfig();
 
@@ -100,7 +100,7 @@ public class PurchaseLimitManager implements Manager {
 
     @Override
     public void save() {
-        Common.log(ChatColor.WHITE, "Trying to save all purchase limit data");
+        Common.log(ChatColor.RESET, "Trying to save all purchase limit data");
 
         CustomConfig temp = Config.TEMP_DATA;
         FileConfiguration config = temp.getConfig();

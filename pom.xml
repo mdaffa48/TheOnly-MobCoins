@@ -24,34 +24,14 @@
                 <configuration>
                     <relocations>
                         <relocation>
-                            <pattern>com.cryptomorin.xseries</pattern>
-                            <!-- Be sure to change the package below -->
-                            <shadedPattern>me.aglerr.mobcoins.utils</shadedPattern>
-                        </relocation>
-                        <relocation>
-                            <pattern>fr.mrmicky.fastinv</pattern>
-                            <!-- Replace 'com.yourpackae' with the package of your plugin ! -->
-                            <shadedPattern>me.aglerr.mobcoins.utils</shadedPattern>
+                            <pattern>me.aglerr.lazylibs</pattern>
+                            <shadedPattern>me.aglerr.donations.libs</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>de.tr7zw.changeme.nbtapi</pattern>
                             <shadedPattern>me.aglerr.mobcoins.utils</shadedPattern>
                         </relocation>
                     </relocations>
-                    <!-- Here you can remove the classes you don't use. -->
-                    <!-- These are some examples. -->
-                    <!-- The "unused" package and SkullCacheListener are excluded by default. -->
-                    <!-- Some utilities such a XItemStack depend on more than 3 other classes, so watch out. -->
-                    <filters>
-                        <filter>
-                            <artifact>*:*</artifact>
-                            <excludes>
-                                <exclude>com/cryptomorin/xseries/XBiome*</exclude>
-                                <exclude>com/cryptomorin/xseries/NMSExtras*</exclude>
-                                <exclude>com/cryptomorin/xseries/NoteBlockMusic*</exclude>
-                            </excludes>
-                        </filter>
-                    </filters>
                 </configuration>
                 <executions>
                     <execution>
@@ -70,10 +50,6 @@
         <repository>
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-        </repository>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
         </repository>
         <repository>
             <id>codemc-repo</id>
@@ -96,23 +72,13 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.16.5-R0.1-SNAPSHOT</version>
+            <version>1.17-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.intellij</groupId>
             <artifactId>annotations</artifactId>
             <version>12.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.cryptomorin</groupId>
-            <artifactId>XSeries</artifactId>
-            <version>7.9.1.1</version>
-        </dependency>
-        <dependency>
-            <groupId>fr.mrmicky</groupId>
-            <artifactId>FastInv</artifactId>
-            <version>3.0.3</version>
         </dependency>
         <dependency>
             <groupId>de.tr7zw</groupId>
@@ -130,6 +96,12 @@
             <artifactId>MythicMobs</artifactId>
             <version>4.9.1</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>me.aglerr.lazylibs.LazyLibs</groupId>
+            <artifactId>LazyLibs</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 

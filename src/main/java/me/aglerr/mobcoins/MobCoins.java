@@ -1,5 +1,9 @@
 package me.aglerr.mobcoins;
 
+import me.aglerr.lazylibs.LazyLibs;
+import me.aglerr.lazylibs.libs.Common;
+import me.aglerr.lazylibs.libs.ConfigUpdater;
+import me.aglerr.lazylibs.libs.UpdateChecker;
 import me.aglerr.mobcoins.commands.MainCommand;
 import me.aglerr.mobcoins.configs.Config;
 import me.aglerr.mobcoins.configs.ConfigValue;
@@ -12,13 +16,8 @@ import me.aglerr.mobcoins.managers.managers.ShopManager;
 import me.aglerr.mobcoins.metrics.Metrics;
 import me.aglerr.mobcoins.shops.items.ItemsLoader;
 import me.aglerr.mobcoins.utils.Utils;
-import me.aglerr.mobcoins.utils.libs.Common;
-import me.aglerr.mobcoins.utils.ConfigUpdater;
-import me.aglerr.mobcoins.utils.UpdateChecker;
-import me.aglerr.mobcoins.utils.libs.Executor;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,13 +27,14 @@ import java.util.List;
 
 public class MobCoins extends JavaPlugin {
 
+    private static final int RESOURCE_ID = 93470;
+
     private static MobCoins instance;
 
     private final ManagerHandler managerHandler = new ManagerHandler(this);
     private final ListenerHandler listenerHandler = new ListenerHandler(this);
 
     private SQLDatabase database;
-    private UpdateChecker updateChecker = null;
 
     /**
      * Plugin startup logic
@@ -44,9 +44,8 @@ public class MobCoins extends JavaPlugin {
         // Initialize instance
         instance = this;
         // Injecting libs
-        Common.inject(this);
+        LazyLibs.inject(this);
         Common.setPrefix("[TheOnly-Mobcoins]");
-        Executor.inject(this);
         // Send the-only logo
         Utils.sendStartupLogo();
         // Initialize all config
@@ -110,54 +109,12 @@ public class MobCoins extends JavaPlugin {
         // Return if notify update is disabled
         if(!ConfigValue.NOTIFY_UPDATE) return;
         // Initialize the update checker
-        this.updateChecker = UpdateChecker.init(this, 93470);
-        // Check the version and then send the messages
-        this.updateChecker.requestUpdateCheck().whenComplete((result, error) -> {
-            // Messages if the plugin is not up to date
-            if(result.requiresUpdate()){
-                Common.log(ChatColor.WHITE, "Checking for updates...");
-                // The messages
-                List<String> messages = new ArrayList<>(Utils.getUpdateMessage());
-                messages.addAll(Arrays.asList(
-                        " ",
-                        " There is a new version of TheOnly-Mobcoins available!",
-                        " &aLatest Version: " + result.getNewestVersion(),
-                        " &cCurrent Version: " + this.getDescription().getVersion(),
-                        " Please update to the newest version. Download:",
-                        " &ehttps://www.spigotmc.org/resources/theonly-mobcoins.93470/"
-                ));
-                Executor.asyncLater(20, () -> Common.log(ChatColor.WHITE, messages));
-                return;
-            }
-
-            switch(result.getReason()) {
-                // Messages if the server using latest version
-                case UP_TO_DATE: {
-                    Common.log(ChatColor.WHITE, "Checking for updates...");
-                    Executor.asyncLater(20, () -> Common.log(ChatColor.GREEN, "You are using the latest available version!"));
-                    break;
-                }
-                // Messages if the server using unreleased version
-                case UNRELEASED_VERSION: {
-                    Common.log(ChatColor.WHITE, "Checking for updates...");
-                    Executor.asyncLater(20, () -> Common.log(ChatColor.WHITE,
-                            "===============================================",
-                            "You are using unreleased version or development build!",
-                            "This version is may be unstable. The latest available version is " + result.getNewestVersion(),
-                            "Download them at &ehttps://www.spigotmc.org/resources/theonly-mobcoins.93470/",
-                            "==============================================="
-                    ));
-                    break;
-                }
-                // Message if the reason is not on the above
-                default: {
-                    Common.log(ChatColor.WHITE, "Checking for updates...");
-                    Executor.asyncLater(20, () -> Common.log(ChatColor.RED,
-                            "Could not check for a new version of TheOnly-Mobcoins! (Reason: " + result.getReason() + ")"
-                    ));
-                }
-            }
-        });
+        UpdateChecker.init(this, RESOURCE_ID)
+                .setDownloadLink("https://www.spigotmc.org/resources/93470/")
+                .setDonationLink("https://paypal.me/mdaffa48")
+                .setColoredConsoleOutput(true)
+                .setNotifyOpsOnJoin(true)
+                .checkNow();
     }
 
     /**
@@ -174,10 +131,5 @@ public class MobCoins extends JavaPlugin {
 
     public ManagerHandler getManagerHandler() {
         return managerHandler;
-    }
-
-    @Nullable
-    public UpdateChecker getUpdateChecker(){
-        return this.updateChecker;
     }
 }

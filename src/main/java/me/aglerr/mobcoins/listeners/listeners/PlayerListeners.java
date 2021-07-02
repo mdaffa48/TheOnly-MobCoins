@@ -1,23 +1,16 @@
 package me.aglerr.mobcoins.listeners.listeners;
 
+import me.aglerr.lazylibs.libs.Executor;
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.configs.ConfigValue;
 import me.aglerr.mobcoins.managers.managers.PlayerDataManager;
 import me.aglerr.mobcoins.managers.managers.SpawnerSpawnManager;
-import me.aglerr.mobcoins.utils.libs.Common;
-import me.aglerr.mobcoins.utils.UpdateChecker;
-import me.aglerr.mobcoins.utils.libs.Executor;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class PlayerListeners implements Listener {
 
@@ -30,33 +23,6 @@ public class PlayerListeners implements Listener {
     public void onPlayerPreLogin(AsyncPlayerPreLoginEvent event){
         PlayerDataManager playerDataManager = plugin.getManagerHandler().getPlayerDataManager();
         playerDataManager.handlePreLoginEvent(event);
-    }
-
-    @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event){
-        // Giving notify update notification
-        // Return if notify update is disabled
-        if(!ConfigValue.NOTIFY_UPDATE) return;
-        // Get the UpdateResult
-        UpdateChecker.UpdateResult result = plugin.getUpdateChecker().getLastResult();
-        // Return if the update result is null
-        if(result == null) return;
-        // Get the Player object
-        Player player = event.getPlayer();
-        // Check if the plugin require an update
-        if(result.requiresUpdate()){
-            // Send the messages
-            List<String> messages = Arrays.asList(
-                    "&6======================================",
-                    " &fThere is a new version of TheOnly-Mobcoins",
-                    " &aLatest Version: " + result.getNewestVersion(),
-                    " &cCurrent Version: " + plugin.getDescription().getVersion(),
-                    " &fPlease update to the newest version. Download:",
-                    " &ehttps://www.spigotmc.org/resources/theonly-mobcoins.93470/",
-                    "&6======================================"
-            );
-            messages.forEach(message -> player.sendMessage(Common.color(message)));
-        }
     }
 
     @EventHandler

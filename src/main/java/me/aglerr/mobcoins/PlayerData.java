@@ -1,7 +1,7 @@
 package me.aglerr.mobcoins;
 
+import me.aglerr.lazylibs.libs.Common;
 import me.aglerr.mobcoins.database.SQLDatabase;
-import me.aglerr.mobcoins.utils.libs.Common;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.jetbrains.annotations.NotNull;
@@ -10,7 +10,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Locale;
 import java.util.UUID;
 
 public class PlayerData implements Cloneable {

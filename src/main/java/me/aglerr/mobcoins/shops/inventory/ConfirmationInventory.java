@@ -1,7 +1,8 @@
 package me.aglerr.mobcoins.shops.inventory;
 
 import com.google.common.primitives.Ints;
-import fr.mrmicky.fastinv.FastInv;
+import me.aglerr.lazylibs.inventory.LazyInventory;
+import me.aglerr.lazylibs.libs.Common;
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.PlayerData;
 import me.aglerr.mobcoins.configs.ConfigValue;
@@ -9,7 +10,6 @@ import me.aglerr.mobcoins.managers.managers.PurchaseLimitManager;
 import me.aglerr.mobcoins.managers.managers.ShopManager;
 import me.aglerr.mobcoins.managers.managers.StockManager;
 import me.aglerr.mobcoins.shops.items.TypeItem;
-import me.aglerr.mobcoins.utils.libs.Common;
 import me.aglerr.mobcoins.utils.ItemManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -19,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * This inventory used when player want to purchase something on the shop if the options is enabled
  */
-public class ConfirmationInventory extends FastInv {
+public class ConfirmationInventory extends LazyInventory {
 
     public ConfirmationInventory(MobCoins plugin, Player player, ItemStack stack, ShopManager.InventoryType inventoryType, PlayerData playerData, TypeItem buyItem, @Nullable String category, int size, String title) {
         super(size, Common.color(title));

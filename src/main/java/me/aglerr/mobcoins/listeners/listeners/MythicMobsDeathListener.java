@@ -1,6 +1,7 @@
 package me.aglerr.mobcoins.listeners.listeners;
 
 import io.lumine.xikage.mythicmobs.api.bukkit.events.MythicMobDeathEvent;
+import me.aglerr.lazylibs.libs.Common;
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.PlayerData;
 import me.aglerr.mobcoins.api.MobCoinsAPI;
@@ -10,7 +11,6 @@ import me.aglerr.mobcoins.coinmob.CoinMob;
 import me.aglerr.mobcoins.configs.ConfigValue;
 import me.aglerr.mobcoins.managers.managers.SalaryManager;
 import me.aglerr.mobcoins.utils.Utils;
-import me.aglerr.mobcoins.utils.libs.Common;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;

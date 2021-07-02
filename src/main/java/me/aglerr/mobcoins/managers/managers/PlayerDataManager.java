@@ -1,12 +1,12 @@
 package me.aglerr.mobcoins.managers.managers;
 
+import me.aglerr.lazylibs.libs.Common;
+import me.aglerr.lazylibs.libs.Executor;
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.PlayerData;
 import me.aglerr.mobcoins.configs.ConfigValue;
 import me.aglerr.mobcoins.database.SQLDatabase;
 import me.aglerr.mobcoins.managers.Manager;
-import me.aglerr.mobcoins.utils.libs.Common;
-import me.aglerr.mobcoins.utils.libs.Executor;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
@@ -176,7 +176,7 @@ public class PlayerDataManager implements Manager {
             }
 
             if(ConfigValue.AUTO_SAVE_SEND_MESSAGE){
-                Common.log(ChatColor.WHITE, "Successfully saved " + totalSaved + " player data!");
+                Common.log(ChatColor.RESET, "Successfully saved " + totalSaved + " player data!");
             }
 
         });

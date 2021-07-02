@@ -2,7 +2,6 @@ package me.aglerr.mobcoins.api.events;
 
 import me.aglerr.mobcoins.coinmob.CoinMob;
 import me.aglerr.mobcoins.utils.ItemManager;
-import me.aglerr.mobcoins.utils.libs.Common;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;

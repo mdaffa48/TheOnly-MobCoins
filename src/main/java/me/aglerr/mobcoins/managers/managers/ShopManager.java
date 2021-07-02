@@ -1,7 +1,7 @@
 package me.aglerr.mobcoins.managers.managers;
 
-import fr.mrmicky.fastinv.FastInv;
-import fr.mrmicky.fastinv.FastInvManager;
+import me.aglerr.lazylibs.inventory.LazyInventory;
+import me.aglerr.lazylibs.inventory.LazyInventoryManager;
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.configs.Config;
 import me.aglerr.mobcoins.managers.Manager;
@@ -42,7 +42,7 @@ public class ShopManager implements Manager {
             String title = config.getString("title");
             int size = config.getInt("size");
 
-            FastInv inventory = new MainMenuInventory(plugin, player, size, title);
+            LazyInventory inventory = new MainMenuInventory(plugin, player, size, title);
             inventory.open(player);
             return;
         }
@@ -55,7 +55,7 @@ public class ShopManager implements Manager {
             String title = config.getString("title");
             int size = config.getInt("size");
 
-            FastInv inventory = new RotatingShopInventory(plugin, player, size, title);
+            LazyInventory inventory = new RotatingShopInventory(plugin, player, size, title);
             inventory.open(player);
             return;
         }
@@ -68,7 +68,7 @@ public class ShopManager implements Manager {
             String title = config.getString("title");
             int size = config.getInt("size");
 
-            FastInv inventory = new CategoryInventory(plugin, player, size, title);
+            LazyInventory inventory = new CategoryInventory(plugin, player, size, title);
             inventory.open(player);
         }
 
@@ -85,7 +85,7 @@ public class ShopManager implements Manager {
         String title = config.getString("title");
         int size = config.getInt("size");
 
-        FastInv inventory = new CategoryShopInventory(plugin, player, category, size, title);
+        LazyInventory inventory = new CategoryShopInventory(plugin, player, category, size, title);
         inventory.open(player);
     }
 
@@ -96,7 +96,7 @@ public class ShopManager implements Manager {
     @Override
     public void load() {
         loadItems();
-        FastInvManager.register(plugin);
+        LazyInventoryManager.register(plugin);
     }
 
     @Override

@@ -1,19 +1,19 @@
 package me.aglerr.mobcoins.shops.inventory;
 
 import com.google.common.primitives.Ints;
-import fr.mrmicky.fastinv.FastInv;
+import me.aglerr.lazylibs.inventory.LazyInventory;
+import me.aglerr.lazylibs.libs.Common;
+import me.aglerr.lazylibs.libs.Executor;
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.configs.ConfigValue;
 import me.aglerr.mobcoins.managers.managers.ShopManager;
 import me.aglerr.mobcoins.shops.items.TypeItem;
-import me.aglerr.mobcoins.utils.libs.Common;
 import me.aglerr.mobcoins.utils.ItemManager;
-import me.aglerr.mobcoins.utils.libs.Executor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
 
-public class MainMenuInventory extends FastInv {
+public class MainMenuInventory extends LazyInventory {
 
     public MainMenuInventory(MobCoins plugin, Player player, int size, String title) {
         super(size, Common.color(title));
@@ -67,7 +67,6 @@ public class MainMenuInventory extends FastInv {
 
                     // Opening category
                     shopManager.openCategoryShop(item.getCategory(), player);
-                    return;
                 }
 
             });

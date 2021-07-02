@@ -1,8 +1,8 @@
 package me.aglerr.mobcoins.database;
 
+import me.aglerr.lazylibs.libs.Common;
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.configs.ConfigValue;
-import me.aglerr.mobcoins.utils.libs.Common;
 import org.bukkit.ChatColor;
 
 import java.io.File;
@@ -20,9 +20,9 @@ public class SQLDatabase {
     public boolean useSSL;
 
     public SQLDatabase(MobCoins plugin){
-        Common.log(ChatColor.WHITE, "Trying to connect to the database...");
+        Common.log(ChatColor.RESET, "Trying to connect to the database...");
         if(ConfigValue.IS_MYSQL){
-            Common.log(ChatColor.WHITE, "Database type is MySQL.");
+            Common.log(ChatColor.RESET, "Database type is MySQL.");
             try{
                 host = ConfigValue.MYSQL_HOST;
                 database = ConfigValue.MYSQL_DATABASE;
@@ -45,7 +45,7 @@ public class SQLDatabase {
             return;
         }
 
-        Common.log(ChatColor.WHITE, "Database type is SQLite.");
+        Common.log(ChatColor.RESET, "Database type is SQLite.");
         try{
             File databaseFile = new File(plugin.getDataFolder(), "database.db");
             if(!databaseFile.exists()){

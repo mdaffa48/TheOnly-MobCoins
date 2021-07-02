@@ -1,11 +1,11 @@
 package me.aglerr.mobcoins.managers.managers;
 
+import me.aglerr.lazylibs.libs.Common;
 import me.aglerr.mobcoins.configs.Config;
 import me.aglerr.mobcoins.configs.ConfigValue;
 import me.aglerr.mobcoins.configs.CustomConfig;
 import me.aglerr.mobcoins.managers.Manager;
 import me.aglerr.mobcoins.shops.items.TypeItem;
-import me.aglerr.mobcoins.utils.libs.Common;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -89,7 +89,7 @@ public class StockManager implements Manager {
 
     @Override
     public void load() {
-        Common.log(ChatColor.WHITE,"Loading all item stock data");
+        Common.log(ChatColor.RESET,"Loading all item stock data");
 
         FileConfiguration config = Config.TEMP_DATA.getConfig();
 
@@ -108,7 +108,7 @@ public class StockManager implements Manager {
 
     @Override
     public void save() {
-        Common.log(ChatColor.WHITE,"Saving all item stock data");
+        Common.log(ChatColor.RESET,"Saving all item stock data");
 
         CustomConfig tempData = Config.TEMP_DATA;
         FileConfiguration config = tempData.getConfig();

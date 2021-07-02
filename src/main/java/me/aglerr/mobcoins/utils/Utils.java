@@ -1,10 +1,10 @@
 package me.aglerr.mobcoins.utils;
 
-import com.cryptomorin.xseries.XSound;
-import com.cryptomorin.xseries.messages.ActionBar;
-import com.cryptomorin.xseries.messages.Titles;
+import me.aglerr.lazylibs.libs.Common;
+import me.aglerr.lazylibs.libs.XSound;
+import me.aglerr.lazylibs.libs.messages.ActionBar;
+import me.aglerr.lazylibs.libs.messages.Titles;
 import me.aglerr.mobcoins.MobCoins;
-import me.aglerr.mobcoins.utils.libs.Common;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -12,7 +12,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 
 public class Utils {
 
