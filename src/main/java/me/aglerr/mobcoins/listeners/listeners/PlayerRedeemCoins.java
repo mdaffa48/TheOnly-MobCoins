@@ -93,8 +93,8 @@ public class PlayerRedeemCoins implements Listener {
         // Send notification such as message and sound
         player.sendMessage(Common.color(ConfigValue.MESSAGES_REDEEM
                 .replace("{prefix}", ConfigValue.PREFIX)
-                .replace("{amount}", String.valueOf(redeemEvent.getAmount())
-                .replace("{amount_rounded)", (int) redeemEvent.getAmount() + ""))));
+                .replace("{amount}", String.valueOf(redeemEvent.getAmount()))
+                .replace("{amount_rounded}", Utils.integer(redeemEvent.getAmount()))));
 
         Utils.playSound(player, "sounds.onCoinsRedeem", plugin.getConfig());
 

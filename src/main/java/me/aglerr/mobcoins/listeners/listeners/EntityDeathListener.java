@@ -134,10 +134,10 @@ public class EntityDeathListener implements Listener {
                 // Send action bar to the player
                 Utils.sendActionBar(player, "actionBar.onCoinsReceived", plugin.getConfig(), receiveEvent.getAmountReceived());
                 // Send messages to the player
-                Utils.sendMessage(player, Common.color(ConfigValue.MESSAGES_COINS_RECEIVED
+                player.sendMessage(Common.color(ConfigValue.MESSAGES_COINS_RECEIVED
                         .replace("{prefix}", ConfigValue.PREFIX)
-                        .replace("{amount}", Common.numberFormat(receiveEvent.getAmountReceived())
-                        .replace("{amount_rounded}", (int) receiveEvent.getAmountReceived() + ""))));
+                        .replace("{amount}", Common.numberFormat(receiveEvent.getAmountReceived()))
+                        .replace("{amount_rounded}", Utils.integer(receiveEvent.getAmountReceived()))));
             }
 
         }

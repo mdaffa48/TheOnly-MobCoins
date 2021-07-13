@@ -72,7 +72,9 @@ public class SalaryManager implements Manager {
                 }
 
                 // Send notification code (message, sound, title, actionbar)
-                ConfigValue.SALARY_MODE_MESSAGES.forEach(message -> player.sendMessage(Common.color(message.replace("{amount}", Common.numberFormat(salaryAmount)))));
+                ConfigValue.SALARY_MODE_MESSAGES.forEach(message -> player.sendMessage(Common.color(message
+                        .replace("{amount}", Common.numberFormat(salaryAmount))
+                        .replace("{amount_rounded}", Utils.integer(salaryAmount)))));
                 Utils.playSound(player, "sounds.onCoinsReceived", config);
                 Utils.sendTitle(player, "titles.onCoinsReceived", config, salaryAmount);
                 Utils.sendActionBar(player, "actionBar.onCoinsReceived", config, salaryAmount);

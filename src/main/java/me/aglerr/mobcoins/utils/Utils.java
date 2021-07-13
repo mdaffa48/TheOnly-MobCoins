@@ -99,11 +99,8 @@ public class Utils {
         ActionBar.sendActionBar(MobCoins.getInstance(), player, Common.color(message), 60L);
     }
 
-    public static void sendMessage(Player player, String message){
-        if(message.equalsIgnoreCase("")){
-            return;
-        }
-        player.sendMessage(message);
+    public static String integer(double amount){
+        return String.valueOf((int) amount);
     }
 
 }
