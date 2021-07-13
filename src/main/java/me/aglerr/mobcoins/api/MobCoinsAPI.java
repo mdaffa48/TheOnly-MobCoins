@@ -4,7 +4,10 @@ import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.PlayerData;
 import me.aglerr.mobcoins.coinmob.CoinMob;
 import me.aglerr.mobcoins.managers.ManagerHandler;
+import me.aglerr.mobcoins.managers.managers.CoinMobManager;
+import me.aglerr.mobcoins.managers.managers.PlayerDataManager;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
 
 public class MobCoinsAPI {
@@ -17,8 +20,8 @@ public class MobCoinsAPI {
      */
     @Nullable
     public static PlayerData getPlayerData(Player player){
-        ManagerHandler managerHandler = MobCoins.getInstance().getManagerHandler();
-        return managerHandler.getPlayerDataManager().getPlayerData(player);
+        PlayerDataManager data = MobCoins.getInstance().getManagerHandler().getPlayerDataManager();
+        return data.getPlayerData(player);
     }
 
     /**
@@ -29,8 +32,8 @@ public class MobCoinsAPI {
      */
     @Nullable
     public static CoinMob getCoinMob(String mobType){
-        ManagerHandler managerHandler = MobCoins.getInstance().getManagerHandler();
-        return managerHandler.getCoinMobManager().getCoinMob(mobType);
+        CoinMobManager coinMobManager = MobCoins.getInstance().getManagerHandler().getCoinMobManager();
+        return coinMobManager.getCoinMob(mobType);
     }
 
 }

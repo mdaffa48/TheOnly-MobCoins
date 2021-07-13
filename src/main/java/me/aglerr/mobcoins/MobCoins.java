@@ -26,6 +26,11 @@ import java.util.ArrayList;
 public class MobCoins extends JavaPlugin {
 
     private static final int RESOURCE_ID = 93470;
+    private static final String SPIGOT_RESOURCE = "https://www.spigotmc.org/resources/93470/";
+    private static final String MC_MARKET_RESOURCE = "https://www.mc-market.org/resources/20645/";
+    private static final String SPIGOT = "Spigot";
+    private static final String MC_MARKET = "MC-Market";
+    private static final String DONATION_LINK = "https://paypal.me/mdaffa48/";
 
     private static MobCoins instance;
 
@@ -108,8 +113,11 @@ public class MobCoins extends JavaPlugin {
         if(!ConfigValue.NOTIFY_UPDATE) return;
         // Initialize the update checker
         UpdateChecker.init(this, RESOURCE_ID)
-                .setDownloadLink("https://www.spigotmc.org/resources/93470/")
-                .setDonationLink("https://paypal.me/mdaffa48")
+                .setFreeDownloadLink(SPIGOT_RESOURCE)
+                .setPaidDownloadLink(MC_MARKET_RESOURCE)
+                .setNameFreeVersion(SPIGOT)
+                .setNamePaidVersion(MC_MARKET)
+                .setDonationLink(DONATION_LINK)
                 .setColoredConsoleOutput(true)
                 .setNotifyOpsOnJoin(true)
                 .checkNow();

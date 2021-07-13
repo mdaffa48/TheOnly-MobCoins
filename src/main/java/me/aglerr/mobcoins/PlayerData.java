@@ -70,7 +70,7 @@ public class PlayerData implements Cloneable {
      * @return player's rounded mobcoins amount
      */
     public int getCoinsRounded(){
-        return (int) Math.round(this.coins);
+        return (int) this.coins;
     }
 
     /**

@@ -67,7 +67,6 @@ public class MainCommand implements CommandExecutor, TabCompleter {
             Common.log(ChatColor.RED, "Failed registering commands");
             e.printStackTrace();
         }
-
     }
 
     @Override
