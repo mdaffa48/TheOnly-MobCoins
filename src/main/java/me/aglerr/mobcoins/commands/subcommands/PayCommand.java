@@ -114,12 +114,14 @@ public class PayCommand extends SubCommand {
         player.sendMessage(Common.color(ConfigValue.MESSAGES_PAY
                 .replace("{prefix}", ConfigValue.PREFIX)
                 .replace("{amount}", String.valueOf(amount))
-                .replace("{player}", target.getName())));
+                .replace("{player}", target.getName())
+                .replace("{amount_rounded}", (int) amount + "")));
 
         target.sendMessage(Common.color(ConfigValue.MESSAGES_PAY_OTHERS
                 .replace("{prefix}", ConfigValue.PREFIX)
                 .replace("{amount}", String.valueOf(amount))
-                .replace("{player}", player.getName())));
+                .replace("{player}", player.getName())
+                .replace("{amount_rounded}", (int) amount + "")));
 
     }
 

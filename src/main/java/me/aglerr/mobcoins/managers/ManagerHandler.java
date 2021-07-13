@@ -20,6 +20,7 @@ public class ManagerHandler {
         this.managerList.put(ManagerType.PURCHASE_LIMIT_MANAGER, new PurchaseLimitManager());
         this.managerList.put(ManagerType.ROTATING_SHOP_MANAGER, new RotatingShopManager(plugin));
         this.managerList.put(ManagerType.CATEGORY_SHOP_MANAGER, new CategoryShopManager(plugin));
+        this.managerList.put(ManagerType.NOTIFICATION_MANAGER, new NotificationManager());
     }
 
     public void loadAllManagers(){
@@ -74,6 +75,10 @@ public class ManagerHandler {
         return (CategoryShopManager) this.managerList.get(ManagerType.CATEGORY_SHOP_MANAGER);
     }
 
+    public NotificationManager getNotificationManager(){
+        return (NotificationManager) this.managerList.get(ManagerType.NOTIFICATION_MANAGER);
+    }
+
     private enum ManagerType{
         COIN_MOB_MANAGER,
         PLAYER_DATA_MANAGER,
@@ -84,7 +89,8 @@ public class ManagerHandler {
         STOCK_MANAGER,
         PURCHASE_LIMIT_MANAGER,
         ROTATING_SHOP_MANAGER,
-        CATEGORY_SHOP_MANAGER
+        CATEGORY_SHOP_MANAGER,
+        NOTIFICATION_MANAGER
     }
 
 }

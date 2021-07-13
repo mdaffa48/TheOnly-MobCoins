@@ -1,10 +1,15 @@
 package me.aglerr.mobcoins.utils;
 
 import me.aglerr.lazylibs.libs.Common;
+import me.aglerr.lazylibs.libs.ReflectionUtils;
 import me.aglerr.lazylibs.libs.XSound;
 import me.aglerr.lazylibs.libs.messages.ActionBar;
 import me.aglerr.lazylibs.libs.messages.Titles;
 import me.aglerr.mobcoins.MobCoins;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -63,8 +68,14 @@ public class Utils {
         boolean enabled = config.getBoolean(path + ".enabled");
         if(!enabled) return;
 
-        String title = config.getString(path + ".title").replace("{amount}", Common.numberFormat(coinPlaceholder));
-        String subTitle = config.getString(path + ".subTitle").replace("{amount}", Common.numberFormat(coinPlaceholder));
+        String title = config.getString(path + ".title")
+                .replace("{amount}", Common.numberFormat(coinPlaceholder))
+                .replace("{amount_rounded}", (int) coinPlaceholder + "");
+
+        String subTitle = config.getString(path + ".subTitle")
+                .replace("{amount}", Common.numberFormat(coinPlaceholder))
+                .replace("{amount_rounded}", (int) coinPlaceholder + "");
+
         int fadeIn = config.getInt(path + ".fadeIn");
         int stay = config.getInt(path + ".stay");
         int fadeOut = config.getInt(path + ".fadeOut");
@@ -76,8 +87,23 @@ public class Utils {
         boolean enabled = config.getBoolean(path + ".enabled");
         if(!enabled) return;
 
-        String message = config.getString(path + ".message").replace("{amount}", Common.numberFormat(coinPlaceholder));
+        String message = config.getString(path + ".message")
+                .replace("{amount}", Common.numberFormat(coinPlaceholder))
+                .replace("{amount_rounded}", (int) coinPlaceholder + "");
+
+        if(Bukkit.getVersion().contains("1.8")){
+            ActionBar8.sendActionBarMessage(player, Common.color(message), 3, MobCoins.getInstance());
+            return;
+        }
+
         ActionBar.sendActionBar(MobCoins.getInstance(), player, Common.color(message), 60L);
+    }
+
+    public static void sendMessage(Player player, String message){
+        if(message.equalsIgnoreCase("")){
+            return;
+        }
+        player.sendMessage(message);
     }
 
 }

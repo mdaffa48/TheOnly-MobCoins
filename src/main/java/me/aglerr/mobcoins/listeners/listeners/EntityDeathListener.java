@@ -11,6 +11,7 @@ import me.aglerr.mobcoins.api.events.MobCoinsSpawnEvent;
 import me.aglerr.mobcoins.coinmob.CoinMob;
 import me.aglerr.mobcoins.configs.ConfigValue;
 import me.aglerr.mobcoins.managers.managers.DependencyManager;
+import me.aglerr.mobcoins.managers.managers.NotificationManager;
 import me.aglerr.mobcoins.managers.managers.SalaryManager;
 import me.aglerr.mobcoins.managers.managers.SpawnerSpawnManager;
 import me.aglerr.mobcoins.utils.Utils;
@@ -121,6 +122,11 @@ public class EntityDeathListener implements Listener {
 
             // Check if mobcoins receive message is enabled
             if(ConfigValue.IS_ENABLE_RECEIVE_MOBCOINS_MESSAGE){
+                // Get the notification manager
+                NotificationManager notificationManager = plugin.getManagerHandler().getNotificationManager();
+                // If the player muted the notification, just return
+                if(notificationManager.isMuted(player))
+                    return;
                 // Play sound to the player
                 Utils.playSound(player, "sounds.onCoinsReceived", plugin.getConfig());
                 // Send title to the player
@@ -128,9 +134,10 @@ public class EntityDeathListener implements Listener {
                 // Send action bar to the player
                 Utils.sendActionBar(player, "actionBar.onCoinsReceived", plugin.getConfig(), receiveEvent.getAmountReceived());
                 // Send messages to the player
-                player.sendMessage(Common.color(ConfigValue.MESSAGES_COINS_RECEIVED
+                Utils.sendMessage(player, Common.color(ConfigValue.MESSAGES_COINS_RECEIVED
                         .replace("{prefix}", ConfigValue.PREFIX)
-                        .replace("{amount}", Common.numberFormat(receiveEvent.getAmountReceived()))));
+                        .replace("{amount}", Common.numberFormat(receiveEvent.getAmountReceived())
+                        .replace("{amount_rounded}", (int) receiveEvent.getAmountReceived() + ""))));
             }
 
         }

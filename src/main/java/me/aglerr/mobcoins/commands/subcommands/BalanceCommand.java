@@ -56,7 +56,8 @@ public class BalanceCommand extends SubCommand {
 
                 sender.sendMessage(Common.color(ConfigValue.MESSAGES_BALANCE
                         .replace("{prefix}", ConfigValue.PREFIX)
-                        .replace("{coins}", playerData.getCoinsFormatted())));
+                        .replace("{coins}", playerData.getCoinsFormatted())
+                        .replace("{coins_rounded}", playerData.getCoinsRounded() + "")));
 
                 return;
             }
@@ -91,7 +92,9 @@ public class BalanceCommand extends SubCommand {
 
             sender.sendMessage(Common.color(ConfigValue.MESSAGES_BALANCE_OTHERS
                     .replace("{prefix}", ConfigValue.PREFIX)
-                    .replace("{player}", player.getName())));
+                    .replace("{player}", player.getName())
+                    .replace("{coins}", playerData.getCoinsFormatted())
+                    .replace("{coins_rounded}", playerData.getCoinsRounded() + "")));
 
         }
 

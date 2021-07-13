@@ -77,11 +77,13 @@ public class SetCommand extends SubCommand {
         sender.sendMessage(Common.color(ConfigValue.MESSAGES_SET_COINS
                 .replace("{prefix}", ConfigValue.PREFIX)
                 .replace("{player}", player.getName())
-                .replace("{amount}", String.valueOf(amount))));
+                .replace("{amount}", String.valueOf(amount))
+                .replace("{amount_rounded}", (int) amount + "")));
 
         player.sendMessage(Common.color(ConfigValue.MESSAGES_SET_COINS_OTHERS
                 .replace("{prefix}", ConfigValue.PREFIX)
-                .replace("{amount}", String.valueOf(amount))));
+                .replace("{amount}", String.valueOf(amount))
+                .replace("{amount_rounded}", (int) amount + "")));
 
         Common.debug(player.getName() + " coins has been set to " + amount);
     }

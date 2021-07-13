@@ -43,6 +43,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
         this.subCommandMap.put("top", new TopCommand());
         this.subCommandMap.put("withdraw", new WithdrawCommand());
         this.subCommandMap.put("debug", new DebugCommand());
+        this.subCommandMap.put("notification", new NotificationCommand());
     }
 
     public void registerThisCommand(){
@@ -127,6 +128,10 @@ public class MainCommand implements CommandExecutor, TabCompleter {
 
             if(sender.hasPermission("mobcoins.top")){
                 suggestions.add("top");
+            }
+
+            if(sender.hasPermission("mobcoins.notification")){
+                suggestions.add("notification");
             }
 
             if(sender.hasPermission("mobcoins.admin")){

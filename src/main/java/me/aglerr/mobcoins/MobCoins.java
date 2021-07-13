@@ -53,6 +53,8 @@ public class MobCoins extends JavaPlugin {
         Utils.sendStartupLogo();
         // Initialize all config
         Config.initialize();
+        // Update the config
+        this.updateConfig();
         // Initialize all config value
         ConfigValue.initializeValue();
         // Initialize database
@@ -63,8 +65,6 @@ public class MobCoins extends JavaPlugin {
         this.listenerHandler.registerAllListeners();
         // Register main commands
         new MainCommand(this).registerThisCommand();
-        // Update the config
-        this.updateConfig();
         // Enable metrics
         new Metrics(this, 11755);
         // Check for the plugin updates

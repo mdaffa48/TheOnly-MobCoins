@@ -98,12 +98,14 @@ public class GiveRandomCommand extends SubCommand {
                     .replace("{prefix}", ConfigValue.PREFIX)
                     .replace("{type}", type)
                     .replace("{amount}", Common.numberFormat(amount))
-                    .replace("{player}", player.getName())));
+                    .replace("{player}", player.getName())
+                    .replace("{amount_rounded}", (int) amount + "")));
 
             player.sendMessage(Common.color(ConfigValue.MESSAGES_ADD_COINS_OTHERS
                     .replace("{prefix}", ConfigValue.PREFIX)
                     .replace("{type}", type)
-                    .replace("{amount}", Common.numberFormat(amount))));
+                    .replace("{amount}", Common.numberFormat(amount))
+                    .replace("{amount_rounded}", (int) amount + "")));
             return;
         }
 
@@ -114,12 +116,14 @@ public class GiveRandomCommand extends SubCommand {
                     .replace("{prefix}", ConfigValue.PREFIX)
                     .replace("{type}", type)
                     .replace("{amount}", Common.numberFormat(amount))
-                    .replace("{player}", player.getName())));
+                    .replace("{player}", player.getName())
+                    .replace("{amount_rounded}", (int) amount + "")));
 
             player.sendMessage(Common.color(ConfigValue.MESSAGES_ADD_COINS_OTHERS
                     .replace("{prefix}", ConfigValue.PREFIX)
                     .replace("{type}", type)
-                    .replace("{amount}", Common.numberFormat(amount))));
+                    .replace("{amount}", Common.numberFormat(amount))
+                    .replace("{amount_rounded}", (int) amount + "")));
 
             player.getInventory().addItem(stack);
             return;

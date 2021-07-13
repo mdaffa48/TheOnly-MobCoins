@@ -88,7 +88,8 @@ public class WithdrawCommand extends SubCommand {
         player.getInventory().addItem(stack);
         sender.sendMessage(Common.color(ConfigValue.MESSAGES_WITHDRAW
                 .replace("{prefix}", ConfigValue.PREFIX)
-                .replace("{amount}", String.valueOf(amount))));
+                .replace("{amount}", String.valueOf(amount))
+                .replace("{amount_rounded}", (int) amount + "")));
 
     }
 

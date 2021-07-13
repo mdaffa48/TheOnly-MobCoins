@@ -74,7 +74,9 @@ public class ItemManager {
         ItemStack stack = null;
 
         List<String> parsedLore = new ArrayList<>();
-        ConfigValue.MOBCOINS_ITEM_LORE.forEach(line -> parsedLore.add(line.replace("{amount}", String.valueOf(amount))));
+        ConfigValue.MOBCOINS_ITEM_LORE.forEach(line -> parsedLore.add(line
+                .replace("{amount}", amount + "")
+                .replace("{amount_rounded}", (int) amount + "")));
 
         if(ConfigValue.MOBCOINS_ITEM_MATERIAL.contains(";")){
             String[] split = ConfigValue.MOBCOINS_ITEM_MATERIAL.split(";");
