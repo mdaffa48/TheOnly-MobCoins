@@ -6,7 +6,7 @@
 
     <groupId>me.aglerr.mobcoins</groupId>
     <artifactId>TheOnly-MobCoins</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <build>
         <plugins>
             <plugin>
@@ -25,7 +25,7 @@
                     <relocations>
                         <relocation>
                             <pattern>me.aglerr.lazylibs</pattern>
-                            <shadedPattern>me.aglerr.donations.libs</shadedPattern>
+                            <shadedPattern>me.aglerr.mobcoins.utils</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>de.tr7zw.changeme.nbtapi</pattern>
@@ -73,6 +73,12 @@
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <version>1.17-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot</artifactId>
+            <version>1.8.8-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
