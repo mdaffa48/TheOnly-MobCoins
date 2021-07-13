@@ -54,6 +54,8 @@ public class ConfigValue {
     public static String MESSAGES_WITHDRAW;
     public static String MESSAGES_CATEGORY_NOT_EXISTS;
     public static String MESSAGES_RELOAD;
+    public static String MESSAGES_NOTIFICATION_MUTED;
+    public static String MESSAGES_NOTIFICATION_UN_MUTED;
 
     public static List<String> MESSAGES_HELP;
     public static List<String> MESSAGES_HELP_ADMIN;
@@ -158,6 +160,8 @@ public class ConfigValue {
         MESSAGES_WITHDRAW = config.getString("messages.withdraw");
         MESSAGES_CATEGORY_NOT_EXISTS = config.getString("messages.categoryNotExists");
         MESSAGES_RELOAD = config.getString("messages.reload");
+        MESSAGES_NOTIFICATION_MUTED = config.getString("messages.notificationMuted");
+        MESSAGES_NOTIFICATION_UN_MUTED = config.getString("messages.notificationUnmuted");
 
         MESSAGES_HELP = config.getStringList("messages.help");
         MESSAGES_HELP_ADMIN = config.getStringList("messages.helpAdmin");
