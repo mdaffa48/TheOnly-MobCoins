@@ -172,6 +172,8 @@ messages:
   inventoryFull: "{prefix} &cYour inventory is full, Please make some space!"
   withdraw: "{prefix} &aYou have withdrawed &6{amount} &acoins."
   categoryNotExists: "{prefix} &cCategory '{category}' is doesn't exist!"
+  notificationMuted: "{prefix} &7You have &cdisabled &7mobcoins notification!"
+  notificationUnmuted: "{prefix} &7You have &aenabled &7mobcoins notification!"
   topLeaderboard:
     - "&6--------------------------------------"
     - "  &7Mobcoins Leaderboard"
@@ -196,6 +198,7 @@ messages:
     - "&e- /mobcoins shop &7- open up the shop menu"
     - "&e- /mobcoins withdraw <amount> &7- turn virtual mobcoins into physical"
     - "&e- /mobcoins top &7- shows the mobcoins leaderboard"
+    - "&e- /mobcoins notification &7- disable mobcoins receive notification"
   helpAdmin:
     - "&e&lMobcoins Help &7(Admin) - by aglerr"
     - "&e- /mobcoins help &7- shows up help messages"
@@ -204,6 +207,7 @@ messages:
     - "&e- /mobcoins shop &7- open up the shop menu"
     - "&e- /mobcoins withdraw <amount> &7- turn virtual mobcoins into physical"
     - "&e- /mobcoins top &7- shows the mobcoins leaderboard"
+    - "&e- /mobcoins notification &7- disable mobcoins receive notification"
     - "&e- /mobcoins about &7- see the plugin version and authors"
     - "&e- /mobcoins debug &7- enable/disable debug mode"
     - "&e- /mobcoins give <virtual/physical> <player> <amount> &7- gives virtual/physical mobcoins to the player"
