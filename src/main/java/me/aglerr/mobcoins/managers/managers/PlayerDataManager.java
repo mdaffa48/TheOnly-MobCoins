@@ -103,21 +103,13 @@ public class PlayerDataManager implements Manager {
     }
 
     public List<PlayerData> getMobcoinsTop() {
-
-        List<PlayerData> coins = new ArrayList<>();
-        for(String uuid : this.playerDataMap.keySet()){
-            coins.add(this.playerDataMap.get(uuid));
-        }
-
-        List<PlayerData> convert = new ArrayList<>(coins);
-
+        List<PlayerData> convert = new ArrayList<>(this.playerDataMap.values());
         convert.sort((data1, data2) -> {
             Float d1 = (float) data1.getCoins();
             Float d2 = (float) data2.getCoins();
 
             return d2.compareTo(d1);
         });
-
         return convert;
     }
 
