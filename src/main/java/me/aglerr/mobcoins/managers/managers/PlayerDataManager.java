@@ -111,7 +111,7 @@ public class PlayerDataManager implements Manager {
 
         List<PlayerData> convert = new ArrayList<>(coins);
 
-        coins.sort((data1, data2) -> {
+        convert.sort((data1, data2) -> {
             Float d1 = (float) data1.getCoins();
             Float d2 = (float) data2.getCoins();
 
