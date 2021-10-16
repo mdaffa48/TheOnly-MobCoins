@@ -18,6 +18,7 @@ public class DependencyManager implements Manager {
     public static boolean WILD_STACKER;
     public static boolean MYTHIC_MOBS;
     public static boolean PLACEHOLDER_API;
+    public static boolean SUPER_MOB_COINS;
 
     public void notificationMessage(){
         Common.log(ChatColor.RESET, "Notification message!");
@@ -41,6 +42,7 @@ public class DependencyManager implements Manager {
         WILD_STACKER = pm.getPlugin("WildStacker") != null;
         MYTHIC_MOBS = pm.getPlugin("MythicMobs") != null;
         PLACEHOLDER_API = pm.getPlugin("PlaceholderAPI") != null;
+        SUPER_MOB_COINS = pm.getPlugin("SuperMobCoins") != null;
 
         notificationMessage();
     }

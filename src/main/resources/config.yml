@@ -17,6 +17,12 @@ autoSave:
   interval: 300
   sendMessage: true
 
+# How long should we update leaderboard?
+# Time is in seconds
+# Recommended every 5 minutes, or higher If it cause performance issues
+leaderboard:
+  updateEvery: 300
+
 # Should we notified you when there's an update?
 notifyUpdate: true
 
@@ -174,6 +180,8 @@ messages:
   categoryNotExists: "{prefix} &cCategory '{category}' is doesn't exist!"
   notificationMuted: "{prefix} &7You have &cdisabled &7mobcoins notification!"
   notificationUnmuted: "{prefix} &7You have &aenabled &7mobcoins notification!"
+  loadData: "{prefix} &7Loading your mobcoins data..."
+  finishedLoadData: "{prefix} &7Successfully loaded your mobcoins data!"
   topLeaderboard:
     - "&6--------------------------------------"
     - "  &7Mobcoins Leaderboard"

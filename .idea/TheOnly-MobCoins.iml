@@ -24,5 +24,14 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.jetbrains:annotations:19.0.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: io.lumine.xikage:MythicMobs:4.9.1" level="project" />
     <orderEntry type="library" name="Maven: me.aglerr.lazylibs.LazyLibs:LazyLibs:1.0" level="project" />
+    <orderEntry type="module-library">
+      <library name="Maven: me.aglerr.krakenmobcoins:KrakenMobCoins:2.4">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/deps/KrakenMobcoins-2.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>

@@ -29,6 +29,8 @@ public class ConfigValue {
     public static boolean IS_ENABLE_RECEIVE_MOBCOINS_MESSAGE;
     public static boolean NOTIFY_UPDATE;
 
+    public static int LEADERBOARD_UPDATE_EVERY;
+
     public static String MESSAGES_NO_PERMISSION;
     public static String MESSAGES_BALANCE;
     public static String MESSAGES_BALANCE_OTHERS;
@@ -56,6 +58,8 @@ public class ConfigValue {
     public static String MESSAGES_RELOAD;
     public static String MESSAGES_NOTIFICATION_MUTED;
     public static String MESSAGES_NOTIFICATION_UN_MUTED;
+    public static String MESSAGES_LOAD_DATA;
+    public static String MESSAGES_FINISHED_LOAD_DATA;
 
     public static List<String> MESSAGES_HELP;
     public static List<String> MESSAGES_HELP_ADMIN;
@@ -135,6 +139,8 @@ public class ConfigValue {
         MYSQL_PORT = config.getInt("mysql.port");
         MYSQL_USESSL = config.getBoolean("mysql.useSSL");
 
+        LEADERBOARD_UPDATE_EVERY = config.getInt("leaderboard.updateEvery");
+
         MESSAGES_NO_PERMISSION = config.getString("messages.noPermission");
         MESSAGES_BALANCE = config.getString("messages.balance");
         MESSAGES_BALANCE_OTHERS = config.getString("messages.balanceOthers");
@@ -162,6 +168,8 @@ public class ConfigValue {
         MESSAGES_RELOAD = config.getString("messages.reload");
         MESSAGES_NOTIFICATION_MUTED = config.getString("messages.notificationMuted");
         MESSAGES_NOTIFICATION_UN_MUTED = config.getString("messages.notificationUnmuted");
+        MESSAGES_LOAD_DATA = config.getString("messages.loadData");
+        MESSAGES_FINISHED_LOAD_DATA = config.getString("messages.finishedLoadData");
 
         MESSAGES_HELP = config.getStringList("messages.help");
         MESSAGES_HELP_ADMIN = config.getStringList("messages.helpAdmin");

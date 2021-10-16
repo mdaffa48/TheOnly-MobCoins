@@ -89,7 +89,7 @@ public class PlayerData implements Cloneable {
      * @param amount the amount coins that will be added
      */
     public void addCoins(double amount){
-        this.coins = (this.coins + amount);
+        this.coins = this.coins + amount;
     }
 
     /**
@@ -98,7 +98,7 @@ public class PlayerData implements Cloneable {
      * @param amount the amount coins that will be reduced
      */
     public void reduceCoins(double amount){
-        this.coins = (this.coins - amount);
+        this.coins = this.coins - amount;
     }
 
     /**

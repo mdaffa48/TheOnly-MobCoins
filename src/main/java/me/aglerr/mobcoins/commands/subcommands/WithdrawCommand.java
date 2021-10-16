@@ -76,6 +76,12 @@ public class WithdrawCommand extends SubCommand {
             return;
         }
 
+        if(amount <= 0){
+            sender.sendMessage(Common.color(ConfigValue.MESSAGES_MINIMUM_AMOUNT
+                    .replace("{prefix}", ConfigValue.PREFIX)));
+            return;
+        }
+
         if(isInventoryFull(player)){
             sender.sendMessage(Common.color(ConfigValue.MESSAGES_INVENTORY_FULL
                     .replace("{prefix}", ConfigValue.PREFIX)));

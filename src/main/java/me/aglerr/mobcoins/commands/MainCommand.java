@@ -135,7 +135,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
             }
 
             if(sender.hasPermission("mobcoins.admin")){
-                suggestions.addAll(Arrays.asList("set", "give", "take", "about", "opencategory", "reload", "giverandom"));
+                suggestions.addAll(Arrays.asList("set", "give", "take", "about", "opencategory", "reload", "giverandom", "convertdata"));
             }
 
             return suggestions;

@@ -1,5 +1,6 @@
 package me.aglerr.mobcoins.listeners.listeners;
 
+import me.aglerr.lazylibs.libs.Common;
 import me.aglerr.lazylibs.libs.Executor;
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.configs.ConfigValue;
@@ -10,6 +11,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 public class PlayerListeners implements Listener {
@@ -20,9 +22,11 @@ public class PlayerListeners implements Listener {
     }
 
     @EventHandler
-    public void onPlayerPreLogin(AsyncPlayerPreLoginEvent event){
+    public void onPlayerJoin(PlayerJoinEvent event){
         PlayerDataManager playerDataManager = plugin.getManagerHandler().getPlayerDataManager();
-        playerDataManager.handlePreLoginEvent(event);
+        event.getPlayer().sendMessage(Common.color(ConfigValue.MESSAGES_LOAD_DATA
+                .replace("{prefix}", ConfigValue.PREFIX)));
+        Executor.asyncLater(100L, () -> playerDataManager.handleLoginEvent(event));
     }
 
     @EventHandler

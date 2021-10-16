@@ -36,7 +36,7 @@ public class ItemManager {
                 skullMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
                 SkullUtils.applySkin(skullMeta, PlaceholderAPI.setPlaceholders(player, split[1]));
                 if(item.isGlow()){
-                    skullMeta.addEnchant(Enchantment.ARROW_INFINITE, 1, true);
+                    skullMeta.addEnchant(Enchantment.DURABILITY, 1, true);
                     skullMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
                 }
                 stack.setItemMeta(skullMeta);
@@ -64,7 +64,7 @@ public class ItemManager {
                 .flags(ItemFlag.HIDE_ATTRIBUTES)
                 .amount(item.getAmount() <= 0 ? 1 : item.getAmount());
 
-        if(item.isGlow()) builder.enchant(Enchantment.ARROW_INFINITE).flags(ItemFlag.HIDE_ENCHANTS);
+        if(item.isGlow()) builder.enchant(Enchantment.DURABILITY).flags(ItemFlag.HIDE_ENCHANTS);
         stack = builder.build();
         return stack;
     }
@@ -86,7 +86,7 @@ public class ItemManager {
                 skullMeta.setDisplayName(Common.color(ConfigValue.MOBCOINS_ITEM_NAME));
                 skullMeta.setLore(Common.color(parsedLore));
                 if(ConfigValue.MOBCOINS_ITEM_GLOW){
-                    skullMeta.addEnchant(Enchantment.ARROW_INFINITE, 1, true);
+                    skullMeta.addEnchant(Enchantment.DURABILITY, 1, true);
                     skullMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
                 }
                 skullMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
@@ -98,7 +98,7 @@ public class ItemManager {
                     .lore(Common.color(parsedLore))
                     .flags(ItemFlag.HIDE_ATTRIBUTES);
 
-            if(ConfigValue.MOBCOINS_ITEM_GLOW) builder.enchant(Enchantment.ARROW_INFINITE).flags(ItemFlag.HIDE_ENCHANTS);
+            if(ConfigValue.MOBCOINS_ITEM_GLOW) builder.enchant(Enchantment.DURABILITY).flags(ItemFlag.HIDE_ENCHANTS);
             stack = builder.build();
         }
 

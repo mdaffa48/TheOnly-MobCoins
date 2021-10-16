@@ -6,7 +6,7 @@
 
     <groupId>me.aglerr.mobcoins</groupId>
     <artifactId>TheOnly-MobCoins</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
     <build>
         <plugins>
             <plugin>
@@ -103,6 +103,13 @@
             <artifactId>LazyLibs</artifactId>
             <version>1.0</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>me.aglerr.krakenmobcoins</groupId>
+            <artifactId>KrakenMobCoins</artifactId>
+            <version>2.4</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/deps/KrakenMobcoins-2.4.jar</systemPath>
         </dependency>
     </dependencies>
 

@@ -1,13 +1,15 @@
 package me.aglerr.mobcoins.shops.items;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 public class TypeItem {
 
-    private final String configKey;
+    private final @NotNull String configKey;
     private final String type;
     private final String category;
-    private final String material;
+    private final @NotNull String material;
     private final String name;
     private final boolean glow;
     private final List<Integer> slots;
@@ -40,7 +42,7 @@ public class TypeItem {
         this.fileName = fileName;
     }
 
-    public String getConfigKey(){
+    public @NotNull String getConfigKey(){
         return configKey;
     }
 
@@ -52,11 +54,14 @@ public class TypeItem {
         return category;
     }
 
-    public String getMaterial() {
+    public @NotNull String getMaterial() {
         return material;
     }
 
     public String getName() {
+        if(name == null){
+            return "&cThis is the default name, check your configuration!";
+        }
         return name;
     }
 

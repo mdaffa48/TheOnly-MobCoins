@@ -10,15 +10,19 @@ import me.aglerr.mobcoins.managers.Manager;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.sql.*;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class PlayerDataManager implements Manager {
 
-    private final Map<String, PlayerData> playerDataMap = new HashMap<>();
-    private final Map<String, PlayerData> valueModify = new HashMap<>();
+    private final Map<String, PlayerData> playerDataMap = new ConcurrentHashMap<>();
+    private final Map<String, PlayerData> valueModify = new ConcurrentHashMap<>();
+    private List<PlayerData> leaderboard;
 
     private final MobCoins plugin;
 
@@ -28,7 +32,7 @@ public class PlayerDataManager implements Manager {
 
     @Nullable
     public PlayerData getPlayerData(Player player) {
-        return this.playerDataMap.get(player.getUniqueId().toString());
+        return getPlayerData(player.getUniqueId().toString());
     }
 
     @Nullable
@@ -36,14 +40,18 @@ public class PlayerDataManager implements Manager {
         return this.playerDataMap.get(uuid);
     }
 
-    public void handlePreLoginEvent(AsyncPlayerPreLoginEvent event) {
+    public void overrideData(PlayerData playerData){
+        playerDataMap.put(playerData.getUUID(), playerData);
+    }
+
+    public void handleLoginEvent(PlayerJoinEvent event) {
         SQLDatabase database = plugin.getDatabase();
-        String uuid = event.getUniqueId().toString();
+        String uuid = event.getPlayer().getUniqueId().toString();
 
         String command = "SELECT * FROM `" + database.getTable() + "` " +
                          "WHERE `uuid`=?";
 
-        Common.debug("Loading " + event.getName() + " data");
+        Common.debug("Loading " + event.getPlayer().getName() + " data");
 
         try (Connection connection = database.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(command)) {
@@ -60,12 +68,15 @@ public class PlayerDataManager implements Manager {
 
                     this.playerDataMap.put(uuid, playerData);
                     this.valueModify.put(uuid, playerData.clone());
-                    event.allow();
-                    Common.debug("Successfully loaded " + event.getName() + " data. (Coins: " + playerData.getCoins() + ")");
+
+                    event.getPlayer().sendMessage(Common.color(ConfigValue.MESSAGES_FINISHED_LOAD_DATA
+                            .replace("{prefix}", ConfigValue.PREFIX)));
+
+                    Common.debug("Successfully loaded " + event.getPlayer().getName() + " data. (Coins: " + playerData.getCoins() + ")");
                 }
             }
         } catch (SQLException e) {
-            Common.log(ChatColor.RED, "Error while loading " + event.getName() + " data!");
+            Common.log(ChatColor.RED, "Error while loading " + event.getPlayer().getName() + " data!");
             e.printStackTrace();
         }
     }
@@ -99,10 +110,9 @@ public class PlayerDataManager implements Manager {
         this.valueModify.remove(uuid);
 
         Common.debug("Saving tasks is completed");
-
     }
 
-    public List<PlayerData> getMobcoinsTop() {
+    /*public List<PlayerData> getMobcoinsTop() {
         List<PlayerData> convert = new ArrayList<>(this.playerDataMap.values());
         convert.sort((data1, data2) -> {
             Float d1 = (float) data1.getCoins();
@@ -111,6 +121,51 @@ public class PlayerDataManager implements Manager {
             return d2.compareTo(d1);
         });
         return convert;
+    }*/
+
+    public List<PlayerData> getMobcoinsTop(){
+        if(leaderboard == null){
+            Executor.async(this::updateLeaderboard);
+        }
+        return leaderboard;
+    }
+
+    public void updateLeaderboard(){
+        SQLDatabase database = plugin.getDatabase();
+
+        Common.debug("Updating top mobcoins leaderboard!");
+
+        String command = "SELECT * FROM '" + database.getTable() + "'";
+        List<PlayerData> playerDataList = new ArrayList<>();
+
+        try(Connection connection = database.getConnection()){
+            try(PreparedStatement statement = connection.prepareStatement(command)){
+                try(ResultSet resultSet = statement.executeQuery()){
+                    while(resultSet.next()){
+                        String uuid = resultSet.getString("uuid");
+                        double coins = Double.parseDouble(resultSet.getString("coins"));
+
+                        playerDataList.add(new PlayerData(uuid, coins));
+                    }
+                }
+            }
+        } catch (SQLException ex){
+            Common.log(ChatColor.RED, "There is an error while updating leaderboard!");
+            ex.printStackTrace();
+        }
+
+        playerDataList.forEach(playerData -> {
+            System.out.println(playerData.getName() + " | " + playerData.getCoins());
+        });
+
+        playerDataList.sort((data1, data2) -> {
+            Float d1 = (float) data1.getCoins();
+            Float d2 = (float) data2.getCoins();
+
+            return d2.compareTo(d1);
+        });
+
+        leaderboard = playerDataList;
     }
 
     @Override
@@ -172,6 +227,9 @@ public class PlayerDataManager implements Manager {
             }
 
         });
+
+        // Start the leaderboard update task too
+        Executor.asyncTimer(0L, 20L * ConfigValue.LEADERBOARD_UPDATE_EVERY, this::updateLeaderboard);
 
     }
 

@@ -1,6 +1,8 @@
 package me.aglerr.mobcoins;
 
 import me.aglerr.lazylibs.LazyLibs;
+import me.aglerr.lazylibs.inventory.LazyInventory;
+import me.aglerr.lazylibs.inventory.LazyInventoryManager;
 import me.aglerr.lazylibs.libs.Common;
 import me.aglerr.lazylibs.libs.ConfigUpdater;
 import me.aglerr.lazylibs.libs.UpdateChecker;
@@ -51,10 +53,10 @@ public class MobCoins extends JavaPlugin {
         Common.setPrefix("[TheOnly-Mobcoins]");
         // Send the-only logo
         Utils.sendStartupLogo();
-        // Initialize all config
-        Config.initialize();
         // Update the config
         this.updateConfig();
+        // Initialize all config
+        Config.initialize();
         // Initialize all config value
         ConfigValue.initializeValue();
         // Initialize database
@@ -69,6 +71,7 @@ public class MobCoins extends JavaPlugin {
         new Metrics(this, 11755);
         // Check for the plugin updates
         this.checkForUpdates();
+        // Start update leaderboard task
     }
 
     /**
@@ -84,6 +87,8 @@ public class MobCoins extends JavaPlugin {
         RotatingShopManager rotatingShopManager = this.managerHandler.getRotatingShopManager();
         CoinMobManager coinMobManager = this.managerHandler.getCoinMobManager();
         ItemsLoader itemsLoader = shopManager.getItemsLoader();
+        // First of all, close all inventory first
+        LazyInventoryManager.closeAll();
         // Reload all configuration
         Config.reloadAllConfigs();
         // Re-initialize the config value

@@ -79,7 +79,7 @@ public class PayCommand extends SubCommand {
             return;
         }
 
-        PlayerData targetData = MobCoinsAPI.getPlayerData(player);
+        PlayerData targetData = MobCoinsAPI.getPlayerData(target);
         if(targetData == null){
             Common.debug(
                     "Command: /mobcoins pay",
@@ -122,7 +122,6 @@ public class PayCommand extends SubCommand {
                 .replace("{amount}", String.valueOf(amount))
                 .replace("{player}", player.getName())
                 .replace("{amount_rounded}", (int) amount + "")));
-
     }
 
 }

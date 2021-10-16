@@ -19,6 +19,8 @@ public class SQLDatabase {
     public int port;
     public boolean useSSL;
 
+    private Connection connection;
+
     public SQLDatabase(MobCoins plugin){
         Common.log(ChatColor.RESET, "Trying to connect to the database...");
         if(ConfigValue.IS_MYSQL){
@@ -69,7 +71,14 @@ public class SQLDatabase {
         return table;
     }
 
-    public Connection getConnection() throws SQLException {
+    public Connection getConnection() throws SQLException{
+        if(connection == null || connection.isClosed()){
+            connection = openConnection();
+        }
+        return connection;
+    }
+
+    public Connection openConnection() throws SQLException {
         if(ConfigValue.IS_MYSQL){
             String url = "jdbc:mysql://{host}:{port}/{database}?verifyServerCertificate=false&useSSL={useSSL}"
                     .replace("{host}", this.host)
