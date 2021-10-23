@@ -6,7 +6,7 @@
 
     <groupId>me.aglerr.mobcoins</groupId>
     <artifactId>TheOnly-MobCoins</artifactId>
-    <version>1.0.5</version>
+    <version>1.0.7</version>
     <build>
         <plugins>
             <plugin>
@@ -76,6 +76,11 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>4.0.3</version>
+        </dependency>
+        <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
             <version>1.8.8-R0.1-SNAPSHOT</version>
@@ -110,6 +115,13 @@
             <version>2.4</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/deps/KrakenMobcoins-2.4.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>me.jet315.minions</groupId>
+            <artifactId>JetsMinion-API</artifactId>
+            <version>7.2.8</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/deps/JetsMinions-7.2.8.jar</systemPath>
         </dependency>
     </dependencies>
 

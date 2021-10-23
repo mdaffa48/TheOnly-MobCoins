@@ -1,17 +1,18 @@
 package me.aglerr.mobcoins.database;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import me.aglerr.lazylibs.libs.Common;
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.configs.ConfigValue;
 import org.bukkit.ChatColor;
 
 import java.io.File;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class SQLDatabase {
+
+    private HikariDataSource hikari;
 
     private final String table = "theonly_mobcoins";
 
@@ -22,48 +23,78 @@ public class SQLDatabase {
     private Connection connection;
 
     public SQLDatabase(MobCoins plugin){
+        hikari = new HikariDataSource();
+
         Common.log(ChatColor.RESET, "Trying to connect to the database...");
         if(ConfigValue.IS_MYSQL){
             Common.log(ChatColor.RESET, "Database type is MySQL.");
             try{
-                host = ConfigValue.MYSQL_HOST;
+
+                hikari.setDataSourceClassName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
+                hikari.addDataSourceProperty("serverName", ConfigValue.MYSQL_HOST);
+                hikari.addDataSourceProperty("port", ConfigValue.MYSQL_PORT);
+                hikari.addDataSourceProperty("databaseName", ConfigValue.MYSQL_DATABASE);
+                hikari.addDataSourceProperty("user", ConfigValue.MYSQL_USERNAME);
+                hikari.addDataSourceProperty("password", ConfigValue.MYSQL_PASSWORD);
+                hikari.addDataSourceProperty("useSSL", ConfigValue.MYSQL_USESSL);
+                hikari.addDataSourceProperty("prepStmtCacheSize", 250);
+                hikari.addDataSourceProperty("prepStmtCacheSqlLimit", 2048);
+
+                /*host = ConfigValue.MYSQL_HOST;
                 database = ConfigValue.MYSQL_DATABASE;
                 username = ConfigValue.MYSQL_USERNAME;
                 password = ConfigValue.MYSQL_PASSWORD;
                 port = ConfigValue.MYSQL_PORT;
                 useSSL = ConfigValue.MYSQL_USESSL;
-                Class.forName("com.mysql.jdbc.Driver");
-                try(Connection connection = this.getConnection()){
-                    String command = "CREATE TABLE IF NOT EXISTS " + this.table + " (uuid Text, coins Text)";
-                    try(PreparedStatement statement = connection.prepareStatement(command)){
-                        statement.execute();
-                    }
+                Class.forName("com.mysql.jdbc.Driver");*/
+
+                String command = "CREATE TABLE IF NOT EXISTS " + this.table + " (uuid Text, coins Text)";
+                try(Connection connection = this.getConnection();
+                    PreparedStatement statement = connection.prepareStatement(command)){
+                    statement.execute();
                 }
+
+                updateDatabase();
+
                 Common.log(ChatColor.GREEN, "MySQL connected!");
             } catch (Exception e){
                 Common.log(ChatColor.RED, "There is an error connecting with the database!");
                 e.printStackTrace();
             }
-            return;
-        }
 
-        Common.log(ChatColor.RESET, "Database type is SQLite.");
-        try{
-            File databaseFile = new File(plugin.getDataFolder(), "database.db");
-            if(!databaseFile.exists()){
-                databaseFile.createNewFile();
-            }
-            Class.forName("org.sqlite.JDBC");
-            try(Connection connection = this.getConnection()){
+        } else {
+            Common.log(ChatColor.RESET, "Database type is SQLite.");
+            try{
+                File databaseFile = new File(plugin.getDataFolder(), "database.db");
+                if(!databaseFile.exists()){
+                    databaseFile.createNewFile();
+                }
+
+                HikariConfig hikariConfig = new HikariConfig();
+                hikariConfig.setPoolName("MobcoinsSQLitePool");
+                hikariConfig.setDriverClassName("org.sqlite.JDBC");
+                hikariConfig.setJdbcUrl("jdbc:sqlite:plugins/TheOnly-MobCoins/database.db");
+                hikariConfig.setConnectionTestQuery("SELECT 1");
+                hikariConfig.setMaxLifetime(60000);
+                hikariConfig.setIdleTimeout(45000);
+                hikariConfig.setMaximumPoolSize(1);
+
+                hikari = new HikariDataSource(hikariConfig);
+
+                // Class.forName("org.sqlite.JDBC");
                 String command = "CREATE TABLE IF NOT EXISTS " + this.table + " (uuid Text, coins Text)";
-                try(PreparedStatement statement = connection.prepareStatement(command)){
+                try(Connection connection = this.getConnection();
+                    PreparedStatement statement = connection.prepareStatement(command)){
                     statement.execute();
                 }
+
+                updateDatabase();
+
+                Common.log(ChatColor.GREEN, "SQLite connected!");
+            } catch(Exception e){
+                Common.log(ChatColor.RED, "There is an error connecting with the database!");
+                e.printStackTrace();
             }
-            Common.log(ChatColor.GREEN, "SQLite connected!");
-        } catch(Exception e){
-            Common.log(ChatColor.RED, "There is an error connecting with the database!");
-            e.printStackTrace();
         }
     }
 
@@ -72,10 +103,11 @@ public class SQLDatabase {
     }
 
     public Connection getConnection() throws SQLException{
-        if(connection == null || connection.isClosed()){
+        return hikari.getConnection();
+        /*if(connection == null || connection.isClosed()){
             connection = openConnection();
         }
-        return connection;
+        return connection;*/
     }
 
     public Connection openConnection() throws SQLException {
@@ -91,14 +123,34 @@ public class SQLDatabase {
         return DriverManager.getConnection("jdbc:sqlite:plugins/TheOnly-MobCoins/database.db");
     }
 
-    public void insert(String uuid, String coins){
+    /**
+     * This method is to update database below version 1.0.7
+     */
+    private void updateDatabase() throws SQLException {
+        DatabaseMetaData dmd = getConnection().getMetaData();
+        ResultSet resultSet = dmd.getColumns(null, null, this.table, "notification");
+        if(!resultSet.next()){
+            Common.log(ChatColor.RED, "You are using the old database for this plugin, begin updating...");
+            String command = "ALTER TABLE " + this.table + " ADD notification text;";
+
+            try(Connection connection = this.getConnection();
+                PreparedStatement statement = connection.prepareStatement(command)){
+                statement.execute();
+            }
+
+            Common.log(ChatColor.GREEN, "Successfully updated the database, enjoy!");
+        }
+    }
+
+    public void insert(String uuid, String coins, String notification){
         String command = "INSERT INTO " + this.table + " " +
-                         "(uuid, coins) VALUES (?, ?);";
+                         "(uuid, coins, notification) VALUES (?, ?, ?);";
 
         try(Connection connection = this.getConnection()){
             try(PreparedStatement statement = connection.prepareStatement(command)){
                 statement.setString(1, uuid);
                 statement.setString(2, coins);
+                statement.setString(3, notification);
                 statement.execute();
             }
         } catch (SQLException e){
@@ -111,15 +163,17 @@ public class SQLDatabase {
         }
     }
 
-    public void update(String uuid, String coins){
+    public void update(String uuid, String coins, String notification){
         String command = "UPDATE " + this.table + " " +
-                         "SET coins = ? " +
+                         "SET coins = ?, " +
+                             "notification = ? " +
                          "WHERE uuid = ?";
 
         try(Connection connection = this.getConnection()){
             try(PreparedStatement statement = connection.prepareStatement(command)){
                 statement.setString(1, coins);
-                statement.setString(2, uuid);
+                statement.setString(2, notification);
+                statement.setString(3, uuid);
                 statement.executeUpdate();
             }
         } catch (SQLException e){
@@ -129,6 +183,12 @@ public class SQLDatabase {
                     "Coins: " + coins
             );
             e.printStackTrace();
+        }
+    }
+
+    public void onDisable(){
+        if(hikari != null){
+            hikari.close();
         }
     }
 

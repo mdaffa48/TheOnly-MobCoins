@@ -1,0 +1,65 @@
+title: "Toggle Inventory"
+size: 27
+
+glowOnEnabled: true
+
+placeholders:
+  statusEnabled: "&aEnabled"
+  statusDisabled: "&cDisabled"
+
+fillInventory:
+  enabled: true
+  material: BLACK_STAINED_GLASS_PANE
+  name: "&f"
+
+soundNotification:
+  material: NOTE_BLOCK
+  slot: 11
+  name: "&eSound Notification"
+  lore:
+    - "&7This notification will play you a"
+    - "&7sound when you received mobcoins."
+    - ""
+    - "   &e- &fStatus: {status}"
+    - ""
+    - "&aClick to toggle!"
+
+titleNotification:
+  material: NAME_TAG
+  slot: 12
+  name: "&eTitle Notification"
+  lore:
+    - "&7This notification will send you a"
+    - "&7title bar message (big message on your"
+    - "&7middle of the screen) when you received"
+    - "&7mobcoins."
+    - ""
+    - "   &e- &fStatus: {status}"
+    - ""
+    - "&aClick to toggle!"
+
+actionBarNotification:
+  material: TORCH
+  slot: 14
+  name: "&eAction Bar Notification"
+  lore:
+    - "&7This notification will send you a little"
+    - "&7message right in between your health and"
+    - "&7hunger bar when you received mobcoins."
+    - ""
+    - "   &e- &fStatus: {status}"
+    - ""
+    - "&aClick to toggle!"
+
+messageNotification:
+  material: BOOK
+  slot: 15
+  name: "&eMessage Notification"
+  lore:
+    - "&7This notification will send you a"
+    - "&7message in your chat when you received"
+    - "&7mobcoins."
+    - ""
+    - "   &e- &fStatus: {status}"
+    - ""
+    - "&aClick to toggle!"

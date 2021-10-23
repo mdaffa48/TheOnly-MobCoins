@@ -11,6 +11,7 @@ import me.aglerr.mobcoins.coinmob.CoinMob;
 import me.aglerr.mobcoins.configs.ConfigValue;
 import me.aglerr.mobcoins.managers.managers.NotificationManager;
 import me.aglerr.mobcoins.managers.managers.SalaryManager;
+import me.aglerr.mobcoins.objects.NotificationUser;
 import me.aglerr.mobcoins.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -76,7 +77,7 @@ public class MythicMobsDeathListener implements Listener {
                 return;
             }
 
-            MobCoinsReceiveEvent receiveEvent = new MobCoinsReceiveEvent(player, (LivingEntity) entity, amountDrop, true, event.getMobType());
+            MobCoinsReceiveEvent receiveEvent = new MobCoinsReceiveEvent(player, (LivingEntity) entity, amountDrop, true, event.getMobType(), false);
             Bukkit.getPluginManager().callEvent(receiveEvent);
             if (receiveEvent.isCancelled()) return;
 
@@ -102,20 +103,9 @@ public class MythicMobsDeathListener implements Listener {
             if(ConfigValue.IS_ENABLE_RECEIVE_MOBCOINS_MESSAGE){
                 // Get the notification manager
                 NotificationManager notificationManager = plugin.getManagerHandler().getNotificationManager();
-                // If the player muted the notification, just return
-                if(notificationManager.isMuted(player))
-                    return;
-                // Play sound to the player
-                Utils.playSound(player, "sounds.onCoinsReceived", plugin.getConfig());
-                // Send title to the player
-                Utils.sendTitle(player, "titles.onCoinsReceived", plugin.getConfig(), receiveEvent.getAmountReceived());
-                // Send action bar to the player
-                Utils.sendActionBar(player, "actionBar.onCoinsReceived", plugin.getConfig(), receiveEvent.getAmountReceived());
-                // Send messages to the player
-                player.sendMessage(Common.color(ConfigValue.MESSAGES_COINS_RECEIVED
-                        .replace("{prefix}", ConfigValue.PREFIX)
-                        .replace("{amount}", Common.numberFormat(receiveEvent.getAmountReceived()))
-                        .replace("{amount_rounded}", Utils.integer(receiveEvent.getAmountReceived()))));
+                // Get the notification user and send the notification
+                NotificationUser notificationUser = notificationManager.getNotificationUser(player.getUniqueId());
+                notificationUser.sendNotification(receiveEvent.getAmountReceived(), false);
             }
         }
     }

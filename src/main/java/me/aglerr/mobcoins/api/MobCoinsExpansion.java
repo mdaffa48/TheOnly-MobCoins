@@ -4,6 +4,7 @@ import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.PlayerData;
 import me.aglerr.mobcoins.configs.ConfigValue;
 import me.aglerr.mobcoins.managers.managers.CategoryShopManager;
+import me.aglerr.mobcoins.managers.managers.NotificationManager;
 import me.aglerr.mobcoins.managers.managers.PlayerDataManager;
 import me.aglerr.mobcoins.managers.managers.RotatingShopManager;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
@@ -104,6 +105,7 @@ public class MobCoinsExpansion extends PlaceholderExpansion {
         PlayerDataManager playerDataManager = plugin.getManagerHandler().getPlayerDataManager();
         RotatingShopManager rotatingShopManager = plugin.getManagerHandler().getRotatingShopManager();
         CategoryShopManager categoryShopManager = plugin.getManagerHandler().getCategoryShopManager();
+        NotificationManager notificationManager = plugin.getManagerHandler().getNotificationManager();
 
         // %mobcoins_balance%
         if(identifier.equalsIgnoreCase("balance")){
@@ -153,6 +155,34 @@ public class MobCoinsExpansion extends PlaceholderExpansion {
         // %mobcoins_categorytime%
         if(identifier.equalsIgnoreCase("categorytime")){
             return categoryShopManager.getFormattedResetTime();
+        }
+
+        // %mobcoins_notification_sound%
+        if(identifier.equals("notification_sound")){
+            return notificationManager.getNotificationUser(player).isSound() ?
+                    ConfigValue.PLACEHOLDER_NOTIFICATION_ENABLED :
+                    ConfigValue.PLACEHOLDER_NOTIFICATION_DISABLED;
+        }
+
+        // %mobcoins_notification_title%
+        if(identifier.equals("notification_title")){
+            return notificationManager.getNotificationUser(player).isTitle() ?
+                    ConfigValue.PLACEHOLDER_NOTIFICATION_ENABLED :
+                    ConfigValue.PLACEHOLDER_NOTIFICATION_DISABLED;
+        }
+
+        // %mobcoins_notification_actionbar%
+        if(identifier.equals("notification_actionbar")){
+            return notificationManager.getNotificationUser(player).isActionBar() ?
+                    ConfigValue.PLACEHOLDER_NOTIFICATION_ENABLED :
+                    ConfigValue.PLACEHOLDER_NOTIFICATION_DISABLED;
+        }
+
+        // %mobcoins_notification_message%
+        if(identifier.equals("notification_message")){
+            return notificationManager.getNotificationUser(player).isMessage() ?
+                    ConfigValue.PLACEHOLDER_NOTIFICATION_ENABLED :
+                    ConfigValue.PLACEHOLDER_NOTIFICATION_DISABLED;
         }
 
         // %mobcoins_top_name_<index>%

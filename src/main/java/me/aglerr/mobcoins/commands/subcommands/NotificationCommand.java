@@ -3,9 +3,12 @@ package me.aglerr.mobcoins.commands.subcommands;
 import me.aglerr.lazylibs.libs.Common;
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.commands.abstraction.SubCommand;
+import me.aglerr.mobcoins.configs.Config;
 import me.aglerr.mobcoins.configs.ConfigValue;
 import me.aglerr.mobcoins.managers.managers.NotificationManager;
+import me.aglerr.mobcoins.shops.inventory.ToggleInventory;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -35,26 +38,13 @@ public class NotificationCommand extends SubCommand {
         // After the check above, we guaranteed the executor is player
         // So we can get the Player object
         Player player = (Player) sender;
-        // Get the notification manager
-        NotificationManager notificationManager = plugin.getManagerHandler().getNotificationManager();
+        // Get the file configuration of the toggle inventory
+        FileConfiguration config = Config.TOGGLE_INVENTORY_CONFIG.getConfig();
         // Check if the player has disabled notification
-        if(notificationManager.isMuted(player)){
-            // If the player has disabled notification, we want to
-            // un-mute them and send them a message
-            // First, unmute the player
-            notificationManager.unMute(player);
-            // Then send them a message
-            player.sendMessage(Common.color(ConfigValue.MESSAGES_NOTIFICATION_UN_MUTED
-                    .replace("{prefix}", ConfigValue.PREFIX)));
-        } else {
-            // If the player is enabled notification
-            // Mute the notification and send them a message
-            // First, we mute the notification for the player
-            notificationManager.mute(player);
-            // Send the player a message
-            player.sendMessage(Common.color(ConfigValue.MESSAGES_NOTIFICATION_MUTED
-                    .replace("{prefix}", ConfigValue.PREFIX)));
-        }
+        String title = config.getString("title");
+        int size = config.getInt("size");
+
+        new ToggleInventory(plugin, player, size, title).open(player);
     }
 
 }

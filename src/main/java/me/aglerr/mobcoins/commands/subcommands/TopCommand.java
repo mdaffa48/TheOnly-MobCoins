@@ -31,6 +31,11 @@ public class TopCommand extends SubCommand {
     @Override
     public void execute(MobCoins plugin, CommandSender sender, String[] args) {
 
+        if(!ConfigValue.LEADERBOARD_ENABLE){
+            sender.sendMessage(Common.color("&cLeaderboard is disabled!"));
+            return;
+        }
+
         // Send messages if the command executor is a player
         if(sender instanceof Player){
             Player player = (Player) sender;

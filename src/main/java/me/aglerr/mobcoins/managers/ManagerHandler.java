@@ -14,7 +14,7 @@ public class ManagerHandler {
         this.managerList.put(ManagerType.COIN_MOB_MANAGER, new CoinMobManager());
         this.managerList.put(ManagerType.PLAYER_DATA_MANAGER, new PlayerDataManager(plugin));
         this.managerList.put(ManagerType.SPAWNER_SPAWN_MANAGER, new SpawnerSpawnManager());
-        this.managerList.put(ManagerType.SALARY_MANAGER, new SalaryManager(plugin.getConfig()));
+        this.managerList.put(ManagerType.SALARY_MANAGER, new SalaryManager(plugin));
         this.managerList.put(ManagerType.SHOP_MANAGER, new ShopManager(plugin));
         this.managerList.put(ManagerType.STOCK_MANAGER, new StockManager());
         this.managerList.put(ManagerType.PURCHASE_LIMIT_MANAGER, new PurchaseLimitManager());

@@ -9,8 +9,10 @@ import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 /**
- * Called when player receives mobcoin from killing configured mobs in mobs.yml
+ * Called when player/minion receives mobcoin from killing configured mobs in mobs.yml
  */
 public class MobCoinsReceiveEvent extends Event implements Cancellable {
 
@@ -21,13 +23,15 @@ public class MobCoinsReceiveEvent extends Event implements Cancellable {
     private double amountReceived;
     private final boolean fromMythicMobs;
     private final MythicMob mythicMob;
+    private final boolean isMinion;
 
-    public MobCoinsReceiveEvent(Player player, LivingEntity entity, double amountReceived, boolean fromMythicMobs, MythicMob mythicMob){
+    public MobCoinsReceiveEvent(Player player, LivingEntity entity, double amountReceived, boolean fromMythicMobs, MythicMob mythicMob, boolean isMinion){
         this.player = player;
         this.entity = entity;
         this.amountReceived = amountReceived;
         this.fromMythicMobs = fromMythicMobs;
         this.mythicMob = mythicMob;
+        this.isMinion = isMinion;
 
         this.isCancelled = false;
     }
@@ -108,5 +112,15 @@ public class MobCoinsReceiveEvent extends Event implements Cancellable {
     @Nullable
     public MythicMob getMythicMob() {
         return mythicMob;
+    }
+
+    /**
+     * Check whether player receives mobcoins from (JetsMinion) minion
+     * Will return true if player receives mobcoins from minion and vice versa.
+     *
+     * @return boolean is minion that killed the mobs
+     */
+    public boolean isMinion(){
+        return this.isMinion;
     }
 }

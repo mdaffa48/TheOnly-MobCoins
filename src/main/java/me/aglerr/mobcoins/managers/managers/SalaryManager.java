@@ -2,10 +2,12 @@ package me.aglerr.mobcoins.managers.managers;
 
 import me.aglerr.lazylibs.libs.Common;
 import me.aglerr.lazylibs.libs.Executor;
+import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.PlayerData;
 import me.aglerr.mobcoins.api.MobCoinsAPI;
 import me.aglerr.mobcoins.configs.ConfigValue;
 import me.aglerr.mobcoins.managers.Manager;
+import me.aglerr.mobcoins.objects.NotificationUser;
 import me.aglerr.mobcoins.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -19,9 +21,9 @@ public class SalaryManager implements Manager {
 
     private final Map<UUID, Double> salaryMap = new HashMap<>();
 
-    private final FileConfiguration config;
-    public SalaryManager(FileConfiguration config){
-        this.config = config;
+    private final MobCoins plugin;
+    public SalaryManager(MobCoins plugin){
+        this.plugin = plugin;
     }
 
     public void putOrIncrementPlayerSalary(Player player, double amount){
@@ -72,17 +74,13 @@ public class SalaryManager implements Manager {
                 }
 
                 // Send notification code (message, sound, title, actionbar)
-                ConfigValue.SALARY_MODE_MESSAGES.forEach(message -> player.sendMessage(Common.color(message
-                        .replace("{amount}", Common.numberFormat(salaryAmount))
-                        .replace("{amount_rounded}", Utils.integer(salaryAmount)))));
-                Utils.playSound(player, "sounds.onCoinsReceived", config);
-                Utils.sendTitle(player, "titles.onCoinsReceived", config, salaryAmount);
-                Utils.sendActionBar(player, "actionBar.onCoinsReceived", config, salaryAmount);
+                NotificationManager notificationManager = plugin.getManagerHandler().getNotificationManager();
+                NotificationUser notificationUser = notificationManager.getNotificationUser(player);
+                notificationUser.sendNotification(salaryAmount, true);
 
                 Common.debug("Salary for " + player.getName() + " (coins: " + salaryAmount + ")");
                 // Remove player salary from the map
                 this.salaryMap.remove(uuid);
-
             }
         });
     }

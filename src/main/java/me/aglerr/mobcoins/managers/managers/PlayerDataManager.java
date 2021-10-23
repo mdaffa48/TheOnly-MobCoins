@@ -7,6 +7,8 @@ import me.aglerr.mobcoins.PlayerData;
 import me.aglerr.mobcoins.configs.ConfigValue;
 import me.aglerr.mobcoins.database.SQLDatabase;
 import me.aglerr.mobcoins.managers.Manager;
+import me.aglerr.mobcoins.objects.NotificationUser;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
@@ -53,6 +55,8 @@ public class PlayerDataManager implements Manager {
 
         Common.debug("Loading " + event.getPlayer().getName() + " data");
 
+        NotificationManager notificationManager = plugin.getManagerHandler().getNotificationManager();
+
         try (Connection connection = database.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(command)) {
                 statement.setString(1, uuid);
@@ -60,10 +64,25 @@ public class PlayerDataManager implements Manager {
 
                     PlayerData playerData;
                     if (resultSet.next()) {
+                        // Coins
                         double coins = Double.parseDouble(resultSet.getString("coins"));
                         playerData = new PlayerData(uuid, coins);
+
+                        // Notification
+                        String notification = resultSet.getString("notification");
+                        NotificationUser notificationUser = new NotificationUser(UUID.fromString(uuid));
+                        if(notification != null){
+                            notificationUser.unwrapOptions(notification);
+                        }
+                        notificationManager.addUser(notificationUser);
+
                     } else {
+                        // Coins
                         playerData = new PlayerData(uuid, ConfigValue.STARTING_BALANCE);
+
+                        // Notification
+                        NotificationUser notificationUser = new NotificationUser(UUID.fromString(uuid));
+                        notificationManager.addUser(notificationUser);
                     }
 
                     this.playerDataMap.put(uuid, playerData);
@@ -98,16 +117,14 @@ public class PlayerDataManager implements Manager {
             return;
         }
 
-        double coins1 = playerData.getCoins();
-        double coins2 = valueModify.getCoins();
+        NotificationManager notificationManager = plugin.getManagerHandler().getNotificationManager();
+        NotificationUser notificationUser = notificationManager.getNotificationUser(uuid);
 
-        if(coins1 != coins2){
-            Common.debug("Saving data to the database because value is not the same");
-            Executor.async(playerData::save);
-        }
+        Executor.async(() -> playerData.save(notificationUser));
 
         this.playerDataMap.remove(uuid);
         this.valueModify.remove(uuid);
+        notificationManager.removeUser(notificationUser);
 
         Common.debug("Saving tasks is completed");
     }
@@ -131,11 +148,15 @@ public class PlayerDataManager implements Manager {
     }
 
     public void updateLeaderboard(){
+        if(!ConfigValue.LEADERBOARD_ENABLE){
+            return;
+        }
+
         SQLDatabase database = plugin.getDatabase();
 
         Common.debug("Updating top mobcoins leaderboard!");
 
-        String command = "SELECT * FROM '" + database.getTable() + "'";
+        String command = "SELECT * FROM " + database.getTable();
         List<PlayerData> playerDataList = new ArrayList<>();
 
         try(Connection connection = database.getConnection()){
@@ -145,7 +166,12 @@ public class PlayerDataManager implements Manager {
                         String uuid = resultSet.getString("uuid");
                         double coins = Double.parseDouble(resultSet.getString("coins"));
 
-                        playerDataList.add(new PlayerData(uuid, coins));
+                        if(playerDataMap.containsKey(uuid)){
+                            playerDataList.add(playerDataMap.get(uuid).clone());
+                        } else {
+                            playerDataList.add(new PlayerData(uuid, coins));
+                        }
+
                     }
                 }
             }
@@ -153,10 +179,6 @@ public class PlayerDataManager implements Manager {
             Common.log(ChatColor.RED, "There is an error while updating leaderboard!");
             ex.printStackTrace();
         }
-
-        playerDataList.forEach(playerData -> {
-            System.out.println(playerData.getName() + " | " + playerData.getCoins());
-        });
 
         playerDataList.sort((data1, data2) -> {
             Float d1 = (float) data1.getCoins();
@@ -174,6 +196,7 @@ public class PlayerDataManager implements Manager {
         SQLDatabase database = plugin.getDatabase();
         int timeAndDelay = (20 * ConfigValue.AUTO_SAVE_INTERVAL);
         Executor.asyncTimer(timeAndDelay, timeAndDelay, () -> {
+            NotificationManager notificationManager = plugin.getManagerHandler().getNotificationManager();
             if(!ConfigValue.AUTO_SAVE_ENABLED) return;
 
             int totalSaved = 0;
@@ -181,6 +204,7 @@ public class PlayerDataManager implements Manager {
             try(Connection connection = database.getConnection()){
                 for(String uuid : this.playerDataMap.keySet()){
                     PlayerData playerData = this.playerDataMap.get(uuid);
+                    NotificationUser notificationUser = notificationManager.getNotificationUser(uuid);
 
                     String rowCommand = "SELECT * FROM {table} WHERE uuid=?"
                             .replace("{table}", database.getTable());
@@ -190,24 +214,26 @@ public class PlayerDataManager implements Manager {
                         try(ResultSet resultSet = statement.executeQuery()){
                             if(resultSet.next()){
 
-                                String updateCommand = "UPDATE {table} SET coins=? WHERE uuid=?"
+                                String updateCommand = "UPDATE {table} SET coins=?, notification=? WHERE uuid=?"
                                         .replace("{table}", database.getTable());
 
                                 try(PreparedStatement updateStatement = connection.prepareStatement(updateCommand)){
                                     updateStatement.setString(1, String.valueOf(playerData.getCoins()));
-                                    updateStatement.setString(2, playerData.getUUID());
+                                    updateStatement.setString(2, notificationUser.wrapOptions());
+                                    updateStatement.setString(3, playerData.getUUID());
                                     updateStatement.executeUpdate();
                                     Common.debug("Updating " + playerData.getName() + " data (coins: " + playerData.getCoins() + ")");
                                 }
 
                             } else {
 
-                                String insertCommand = "INSERT INTO {table} (uuid, coins) VALUES (?,?);"
+                                String insertCommand = "INSERT INTO {table} (uuid, coins, notification) VALUES (?,?,?);"
                                         .replace("{table}", database.getTable());
 
                                 try(PreparedStatement insertStatement = connection.prepareStatement(insertCommand)){
                                     insertStatement.setString(1, playerData.getUUID());
                                     insertStatement.setString(2, String.valueOf(playerData.getCoins()));
+                                    insertStatement.setString(3, notificationUser.wrapOptions());
                                     insertStatement.execute();
                                     Common.debug("Inserting " + playerData.getName() + " data (coins: " + playerData.getCoins() + ")");
                                 }
@@ -236,11 +262,13 @@ public class PlayerDataManager implements Manager {
     @Override
     public void save() {
         SQLDatabase database = plugin.getDatabase();
+        NotificationManager notificationManager = plugin.getManagerHandler().getNotificationManager();
         Common.debug("Trying to save all players data");
         try(Connection connection = database.getConnection()){
             for(String uuid : this.playerDataMap.keySet()){
                 PlayerData playerData = this.playerDataMap.get(uuid);
                 PlayerData valueModify = this.valueModify.get(uuid);
+                NotificationUser notificationUser = notificationManager.getNotificationUser(uuid);
 
                 if(playerData.getCoins() == valueModify.getCoins()){
                     Common.debug("Not saving " + uuid + "data (Reason: coins amount the same)");
@@ -257,24 +285,26 @@ public class PlayerDataManager implements Manager {
                     try(ResultSet resultSet = statement.executeQuery()){
                         if(resultSet.next()){
 
-                            String updateCommand = "UPDATE {table} SET coins=? WHERE uuid=?"
+                            String updateCommand = "UPDATE {table} SET coins=?, notification=? WHERE uuid=?"
                                     .replace("{table}", database.getTable());
 
                             try(PreparedStatement updateStatement = connection.prepareStatement(updateCommand)){
                                 updateStatement.setString(1, String.valueOf(playerData.getCoins()));
-                                updateStatement.setString(2, playerData.getUUID());
+                                updateStatement.setString(2, notificationUser.wrapOptions());
+                                updateStatement.setString(3, playerData.getUUID());
                                 updateStatement.executeUpdate();
                                 Common.debug("Updating " + playerData.getUUID() + " data (coins: " + playerData.getCoins() + ")");
                             }
 
                         } else {
 
-                            String insertCommand = "INSERT INTO {table} (uuid, coins) VALUES (?,?);"
+                            String insertCommand = "INSERT INTO {table} (uuid, coins, notification) VALUES (?,?,?);"
                                     .replace("{table}", database.getTable());
 
                             try(PreparedStatement insertStatement = connection.prepareStatement(insertCommand)){
                                 insertStatement.setString(1, playerData.getUUID());
                                 insertStatement.setString(2, String.valueOf(playerData.getCoins()));
+                                insertStatement.setString(3, notificationUser.wrapOptions());
                                 insertStatement.execute();
                                 Common.debug("Inserting " + playerData.getUUID() + " data (coins: " + playerData.getCoins() + ")");
                             }

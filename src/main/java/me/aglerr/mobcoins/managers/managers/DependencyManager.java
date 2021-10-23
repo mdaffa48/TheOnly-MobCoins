@@ -19,6 +19,7 @@ public class DependencyManager implements Manager {
     public static boolean MYTHIC_MOBS;
     public static boolean PLACEHOLDER_API;
     public static boolean SUPER_MOB_COINS;
+    public static boolean JETS_MINION;
 
     public void notificationMessage(){
         Common.log(ChatColor.RESET, "Notification message!");
@@ -34,6 +35,10 @@ public class DependencyManager implements Manager {
             Common.log(ChatColor.RESET, "PlaceholderAPI found, enabling hooks!");
             new MobCoinsExpansion(plugin).register();
         }
+
+        if(JETS_MINION){
+            Common.log(ChatColor.RESET, "JetsMinion found, enabling hooks!");
+        }
     }
 
     @Override
@@ -43,6 +48,7 @@ public class DependencyManager implements Manager {
         MYTHIC_MOBS = pm.getPlugin("MythicMobs") != null;
         PLACEHOLDER_API = pm.getPlugin("PlaceholderAPI") != null;
         SUPER_MOB_COINS = pm.getPlugin("SuperMobCoins") != null;
+        JETS_MINION = pm.getPlugin("JetsMinion") != null;
 
         notificationMessage();
     }

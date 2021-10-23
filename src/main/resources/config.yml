@@ -21,6 +21,7 @@ autoSave:
 # Time is in seconds
 # Recommended every 5 minutes, or higher If it cause performance issues
 leaderboard:
+  enabled: true
   updateEvery: 300
 
 # Should we notified you when there's an update?
@@ -79,6 +80,12 @@ salaryMode:
 # List of all placeholders that are being used
 # Information:
 # placeholders:
+#   (notificationEnable) Will be used on %mobcoins_notification_status% placeholder
+#                        If player enables notification message (/mc toggle) the placeholder will return
+#                        the configured message.
+#   (notificationDisable) Will be used on %mobcoins_notification_status% placeholder
+#                         If player disables notification message (/mc toggle) the placeholder will return
+#                         the configured message.
 #   (unlimitedStock) Will be used when shop item doesn't use stock system
 #   (outOfStock) Will be used when shop items is out of stock
 #   (mobCoinsTop) All placeholders for mobcoins top leaderboard
@@ -87,6 +94,8 @@ salaryMode:
 #     (uuidIfEmpty) Will be used If there is no player on that position
 #----------------------------------------------------------------------
 placeholders:
+  notificationEnable: "&aEnabled"
+  notificationDisable: "&cDisabled"
   unlimitedStock: "&aUnlimited"
   outOfStock: "&c&lOUT OF STOCK"
   mobCoinsTop:

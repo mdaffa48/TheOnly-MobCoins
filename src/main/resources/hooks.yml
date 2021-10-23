@@ -1,0 +1,24 @@
+# Configuration Explanation
+# With this hook, players can receive mobcoins from their Slayer minion
+# (jetsMinion) - Will only work If the player that is own the minion is online! (Only for Virtual Coins)
+#   (enabled) Should we enable this hook?
+#   (amountPercentage) How many % (percent) of mobcoins that minion receives will be given to the player
+#                      For example: Minion receives 10 mobcoins from killing a zombie, and If the configured
+#                                   percentage is 50, that means the player only receive 5 mobcoins.
+#                      Take this feature to balance the mobcoins economy because of automation.
+#   (usePermission) Should we use the permission feature? (Read below for explanation of permission feature)
+#   (permission) This feature is to enable only certain of players can be able to receive mobcoins from
+#                minion. With that, only players with specific configurable permission can be able to have
+#                automatic mobcoins income.
+#   (virtualCoins) If set to true, player will directly receive the mobcoins to their account
+#                  If set to false, physical mobcoins will be dropped to the linked chests by the minion
+#   (physicalCoinsRequiredOnline) If set to true, in order minions to drop mobcoins into the linked chest
+#                                   the owner of the minion must be online.
+#                                 If set to false, the minions will always drop mobcoins into the linked chest
+jetsMinion:
+  enabled: true
+  reducedPercentage: 50
+  usePermission: true
+  permission: "mobcoins.jetsminion.auto"
+  virtualCoins: true
+  physicalCoinsRequiredOnline: true

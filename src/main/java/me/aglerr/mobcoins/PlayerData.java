@@ -2,6 +2,7 @@ package me.aglerr.mobcoins;
 
 import me.aglerr.lazylibs.libs.Common;
 import me.aglerr.mobcoins.database.SQLDatabase;
+import me.aglerr.mobcoins.objects.NotificationUser;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.jetbrains.annotations.NotNull;
@@ -113,7 +114,7 @@ public class PlayerData implements Cloneable {
     /**
      * Save player data to the database (call it async if can)
      */
-    public void save() {
+    public void save(NotificationUser notificationUser) {
         // Get the database class
         SQLDatabase database = MobCoins.getInstance().getDatabase();
         // Create the sql command
@@ -132,10 +133,10 @@ public class PlayerData implements Cloneable {
                     // Check if the uuid exist on the database
                     if (resultSet.next()) {
                         // Update the data
-                        database.update(this.uuid, String.valueOf(this.coins));
+                        database.update(this.uuid, String.valueOf(this.coins), notificationUser.wrapOptions());
                     } else {
                         // If the uuid doesn't exist on the database, insert the data
-                        database.insert(this.uuid, String.valueOf(this.coins));
+                        database.insert(this.uuid, String.valueOf(this.coins), notificationUser.wrapOptions());
                     }
                     // Debug to the console
                     Common.debug("Sucessfully saved " + this.uuid + " data");

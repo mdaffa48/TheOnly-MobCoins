@@ -29,6 +29,7 @@ public class ConfigValue {
     public static boolean IS_ENABLE_RECEIVE_MOBCOINS_MESSAGE;
     public static boolean NOTIFY_UPDATE;
 
+    public static boolean LEADERBOARD_ENABLE;
     public static int LEADERBOARD_UPDATE_EVERY;
 
     public static String MESSAGES_NO_PERMISSION;
@@ -91,6 +92,8 @@ public class ConfigValue {
     // Placeholders
     public static String PLACEHOLDER_UNLIMITED_STOCK;
     public static String PLACEHOLDER_OUT_OF_STOCK;
+    public static String PLACEHOLDER_NOTIFICATION_ENABLED;
+    public static String PLACEHOLDER_NOTIFICATION_DISABLED;
 
     // Rotating Shop
     public static int DEFAULT_NORMAL_TIME_RESET;
@@ -139,6 +142,7 @@ public class ConfigValue {
         MYSQL_PORT = config.getInt("mysql.port");
         MYSQL_USESSL = config.getBoolean("mysql.useSSL");
 
+        LEADERBOARD_ENABLE = config.getBoolean("leaderboard.enabled");
         LEADERBOARD_UPDATE_EVERY = config.getInt("leaderboard.updateEvery");
 
         MESSAGES_NO_PERMISSION = config.getString("messages.noPermission");
@@ -205,6 +209,8 @@ public class ConfigValue {
 
         PLACEHOLDER_UNLIMITED_STOCK = config.getString("placeholders.unlimitedStock");
         PLACEHOLDER_OUT_OF_STOCK = config.getString("placeholders.outOfStock");
+        PLACEHOLDER_NOTIFICATION_ENABLED = config.getString("placeholders.notificationEnable");
+        PLACEHOLDER_NOTIFICATION_DISABLED = config.getString("placeholders.notificationDisable");
 
         DEFAULT_NORMAL_TIME_RESET = rotatingShop.getInt("rotatingShop.normalTimeReset");
         DEFAULT_SPECIAL_TIME_RESET = rotatingShop.getInt("rotatingShop.specialTimeReset");

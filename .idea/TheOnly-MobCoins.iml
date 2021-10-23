@@ -17,6 +17,8 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.google.code.gson:gson:2.8.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: net.md-5:bungeecord-chat:1.16-R0.4" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.yaml:snakeyaml:1.28" level="project" />
+    <orderEntry type="library" name="Maven: com.zaxxer:HikariCP:4.0.3" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:2.0.0-alpha1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: de.tr7zw:item-nbt-api:2.8.0" level="project" />
     <orderEntry type="library" name="Maven: de.tr7zw:functional-annotations:0.1-SNAPSHOT" level="project" />
@@ -28,6 +30,15 @@
       <library name="Maven: me.aglerr.krakenmobcoins:KrakenMobCoins:2.4">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/deps/KrakenMobcoins-2.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: me.jet315.minions:JetsMinion-API:7.2.8">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/deps/JetsMinions-7.2.8.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

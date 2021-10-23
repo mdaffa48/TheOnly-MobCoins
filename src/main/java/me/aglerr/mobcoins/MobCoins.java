@@ -9,6 +9,7 @@ import me.aglerr.lazylibs.libs.UpdateChecker;
 import me.aglerr.mobcoins.commands.MainCommand;
 import me.aglerr.mobcoins.configs.Config;
 import me.aglerr.mobcoins.configs.ConfigValue;
+import me.aglerr.mobcoins.configs.HooksValue;
 import me.aglerr.mobcoins.database.SQLDatabase;
 import me.aglerr.mobcoins.listeners.ListenerHandler;
 import me.aglerr.mobcoins.managers.ManagerHandler;
@@ -59,6 +60,7 @@ public class MobCoins extends JavaPlugin {
         Config.initialize();
         // Initialize all config value
         ConfigValue.initializeValue();
+        //HooksValue.initialize();
         // Initialize database
         database = new SQLDatabase(this);
         // Calling load() method from all Managers
@@ -80,6 +82,7 @@ public class MobCoins extends JavaPlugin {
     @Override
     public void onDisable(){
         this.managerHandler.saveAllManagers();
+        database.onDisable();
     }
 
     public void reloadEverything(){
@@ -93,6 +96,7 @@ public class MobCoins extends JavaPlugin {
         Config.reloadAllConfigs();
         // Re-initialize the config value
         ConfigValue.initializeValue();
+        //HooksValue.initialize();
         // Save the rotating items to the config
         rotatingShopManager.save();
         // Clear all items from the ItemsLoader and then load it back
@@ -105,10 +109,12 @@ public class MobCoins extends JavaPlugin {
 
     private void updateConfig(){
         File configFile = new File(this.getDataFolder(), "config.yml");
+        //File hooksFile = new File(this.getDataFolder(), "hooks.yml");
         try{
             ConfigUpdater.update(this, "config.yml", configFile, new ArrayList<>());
+            //ConfigUpdater.update(this, "hooks.yml", hooksFile, new ArrayList<>());
         } catch(IOException e){
-            Common.log(ChatColor.RED, "Failed to update the config.yml");
+            Common.log(ChatColor.RED, "Failed to update the config.yml or hooks.yml");
             e.printStackTrace();
         }
     }
