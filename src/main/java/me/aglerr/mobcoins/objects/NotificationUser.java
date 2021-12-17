@@ -1,6 +1,6 @@
 package me.aglerr.mobcoins.objects;
 
-import me.aglerr.lazylibs.libs.Common;
+import me.aglerr.mclibs.libs.Common;
 import me.aglerr.mobcoins.configs.Config;
 import me.aglerr.mobcoins.configs.ConfigValue;
 import me.aglerr.mobcoins.utils.Utils;
@@ -79,10 +79,11 @@ public class NotificationUser {
 
     public void unwrapOptions(String text){
         String[] split = text.split(";");
-        setSound(Boolean.getBoolean(split[0]));
-        setTitle(Boolean.getBoolean(split[1]));
-        setActionBar(Boolean.getBoolean(split[2]));
-        setMessage(Boolean.getBoolean(split[3]));
+
+        setSound(Boolean.parseBoolean(split[0]));
+        setTitle(Boolean.parseBoolean(split[1]));
+        setActionBar(Boolean.parseBoolean(split[2]));
+        setMessage(Boolean.parseBoolean(split[3]));
     }
 
     public void sendNotification(double amountReceived, boolean salary){
@@ -107,13 +108,13 @@ public class NotificationUser {
         if(message && !salary){
             player.sendMessage(Common.color(ConfigValue.MESSAGES_COINS_RECEIVED
                     .replace("{prefix}", ConfigValue.PREFIX)
-                    .replace("{amount}", Common.numberFormat(amountReceived))
+                    .replace("{amount}", Utils.digits(amountReceived))
                     .replace("{amount_rounded}", Utils.integer(amountReceived))));
         }
         // Send message but with salary mode
         if(message && salary){
             ConfigValue.SALARY_MODE_MESSAGES.forEach(message -> player.sendMessage(Common.color(message
-                    .replace("{amount}", Common.numberFormat(amountReceived))
+                    .replace("{amount}", Utils.digits(amountReceived))
                     .replace("{amount_rounded}", Utils.integer(amountReceived)))));
         }
     }

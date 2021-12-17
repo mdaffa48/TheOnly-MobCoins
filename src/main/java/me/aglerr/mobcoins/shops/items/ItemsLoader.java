@@ -2,7 +2,6 @@ package me.aglerr.mobcoins.shops.items;
 
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.configs.Config;
-import me.aglerr.mobcoins.configs.CustomConfig;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 

@@ -191,6 +191,8 @@ messages:
   notificationUnmuted: "{prefix} &7You have &aenabled &7mobcoins notification!"
   loadData: "{prefix} &7Loading your mobcoins data..."
   finishedLoadData: "{prefix} &7Successfully loaded your mobcoins data!"
+  salaryAdded: "{prefix} &aYou have added &e{amount} coins &ato &e{player} &asalary!"
+  salaryRemoved: "{prefix} &aYou have removed &e{amount} coins &afrom &e{player} &asalary!"
   topLeaderboard:
     - "&6--------------------------------------"
     - "  &7Mobcoins Leaderboard"
@@ -233,3 +235,5 @@ messages:
     - "&e- /mobcoins reload &7- reload the configuration"
     - "&e- /mobcoins set <player> <amount> &7- set players mobcoins"
     - "&e- /mobcoins take <player> <amount> &7- take players mobcoins"
+    - "&e- /mobcoins addsalary <player> <amount> &7- silently add coins to player's salary"
+    - "&e- /mobcoins removesalary <player> <amount> &7- silently removed coins from player's salary"

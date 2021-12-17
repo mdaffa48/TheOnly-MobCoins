@@ -1,22 +1,21 @@
 package me.aglerr.mobcoins.managers.managers;
 
-import me.aglerr.lazylibs.libs.Common;
-import me.aglerr.lazylibs.libs.Executor;
+import me.aglerr.mclibs.libs.Common;
+import me.aglerr.mclibs.libs.Debug;
+import me.aglerr.mclibs.libs.Executor;
+import me.aglerr.mclibs.mysql.SQLHelper;
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.PlayerData;
 import me.aglerr.mobcoins.configs.ConfigValue;
-import me.aglerr.mobcoins.database.SQLDatabase;
+import me.aglerr.mobcoins.database.SQLDatabaseInitializer;
 import me.aglerr.mobcoins.managers.Manager;
 import me.aglerr.mobcoins.objects.NotificationUser;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerLoginEvent;
 import org.jetbrains.annotations.Nullable;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -42,103 +41,62 @@ public class PlayerDataManager implements Manager {
         return this.playerDataMap.get(uuid);
     }
 
-    public void overrideData(PlayerData playerData){
-        playerDataMap.put(playerData.getUUID(), playerData);
-    }
-
-    public void handleLoginEvent(PlayerJoinEvent event) {
-        SQLDatabase database = plugin.getDatabase();
+    public void load(PlayerJoinEvent event){
+        NotificationManager notificationManager = plugin.getManagerHandler().getNotificationManager();
+        String name = event.getPlayer().getName();
         String uuid = event.getPlayer().getUniqueId().toString();
 
-        String command = "SELECT * FROM `" + database.getTable() + "` " +
-                         "WHERE `uuid`=?";
-
-        Common.debug("Loading " + event.getPlayer().getName() + " data");
-
-        NotificationManager notificationManager = plugin.getManagerHandler().getNotificationManager();
-
-        try (Connection connection = database.getConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement(command)) {
-                statement.setString(1, uuid);
-                try (ResultSet resultSet = statement.executeQuery()) {
-
+        String query = "SELECT * FROM `" + SQLDatabaseInitializer.MOBCOINS_TABLE + "` WHERE uuid=\"" + uuid + "\";";
+        SQLHelper.executeQuery(query,
+                resultSet -> {
                     PlayerData playerData;
-                    if (resultSet.next()) {
-                        // Coins
-                        double coins = Double.parseDouble(resultSet.getString("coins"));
-                        playerData = new PlayerData(uuid, coins);
+                    if(resultSet.next()){
+                        double coins = resultSet.getDouble("coins");
+                        playerData = new PlayerData(uuid, name, coins);
 
-                        // Notification
                         String notification = resultSet.getString("notification");
                         NotificationUser notificationUser = new NotificationUser(UUID.fromString(uuid));
                         if(notification != null){
                             notificationUser.unwrapOptions(notification);
                         }
                         notificationManager.addUser(notificationUser);
-
                     } else {
-                        // Coins
-                        playerData = new PlayerData(uuid, ConfigValue.STARTING_BALANCE);
-
-                        // Notification
+                        playerData = new PlayerData(uuid, name, ConfigValue.STARTING_BALANCE);
                         NotificationUser notificationUser = new NotificationUser(UUID.fromString(uuid));
                         notificationManager.addUser(notificationUser);
                     }
-
                     this.playerDataMap.put(uuid, playerData);
                     this.valueModify.put(uuid, playerData.clone());
 
-                    event.getPlayer().sendMessage(Common.color(ConfigValue.MESSAGES_FINISHED_LOAD_DATA
-                            .replace("{prefix}", ConfigValue.PREFIX)));
-
-                    Common.debug("Successfully loaded " + event.getPlayer().getName() + " data. (Coins: " + playerData.getCoins() + ")");
+                    Common.sendMessage(event.getPlayer(), ConfigValue.MESSAGES_FINISHED_LOAD_DATA
+                            .replace("{prefix}", ConfigValue.PREFIX));
+                    Debug.send("Successfully loaded " + event.getPlayer().getName() + " data. (Coins: " + playerData.getCoins() + ")");
                 }
-            }
-        } catch (SQLException e) {
-            Common.log(ChatColor.RED, "Error while loading " + event.getPlayer().getName() + " data!");
-            e.printStackTrace();
-        }
+        );
     }
 
-    public void forceSavePlayerData(Player player) {
+    public void save(Player player){
         String uuid = player.getUniqueId().toString();
         PlayerData playerData = this.playerDataMap.get(uuid);
         PlayerData valueModify = this.valueModify.get(uuid);
-
-        Common.debug("Saving " + player.getName() + " data");
-
+        Debug.send("Saving " + player.getName() + " data...");
         if (playerData == null) {
-            Common.debug("Returned because Player Data is null");
+            Debug.send("Returned because Player Data is null");
             return;
         }
 
         if (valueModify == null) {
-            Common.debug("Returned because Value Modify is null");
+            Debug.send("Returned because Value Modify is null");
             return;
         }
-
         NotificationManager notificationManager = plugin.getManagerHandler().getNotificationManager();
         NotificationUser notificationUser = notificationManager.getNotificationUser(uuid);
-
         Executor.async(() -> playerData.save(notificationUser));
-
         this.playerDataMap.remove(uuid);
         this.valueModify.remove(uuid);
         notificationManager.removeUser(notificationUser);
-
-        Common.debug("Saving tasks is completed");
+        Debug.send("Saving tasks is completed");
     }
-
-    /*public List<PlayerData> getMobcoinsTop() {
-        List<PlayerData> convert = new ArrayList<>(this.playerDataMap.values());
-        convert.sort((data1, data2) -> {
-            Float d1 = (float) data1.getCoins();
-            Float d2 = (float) data2.getCoins();
-
-            return d2.compareTo(d1);
-        });
-        return convert;
-    }*/
 
     public List<PlayerData> getMobcoinsTop(){
         if(leaderboard == null){
@@ -151,162 +109,130 @@ public class PlayerDataManager implements Manager {
         if(!ConfigValue.LEADERBOARD_ENABLE){
             return;
         }
-
-        SQLDatabase database = plugin.getDatabase();
-
-        Common.debug("Updating top mobcoins leaderboard!");
-
-        String command = "SELECT * FROM " + database.getTable();
+        Debug.send("Updating top mobcoins leaderboard!");
         List<PlayerData> playerDataList = new ArrayList<>();
-
-        try(Connection connection = database.getConnection()){
-            try(PreparedStatement statement = connection.prepareStatement(command)){
-                try(ResultSet resultSet = statement.executeQuery()){
+        SQLHelper.executeQuery("SELECT * FROM `" + SQLDatabaseInitializer.MOBCOINS_TABLE + "`;",
+                resultSet -> {
                     while(resultSet.next()){
                         String uuid = resultSet.getString("uuid");
-                        double coins = Double.parseDouble(resultSet.getString("coins"));
+                        String name = resultSet.getString("name");
+                        double coins = resultSet.getDouble("coins");
 
                         if(playerDataMap.containsKey(uuid)){
                             playerDataList.add(playerDataMap.get(uuid).clone());
                         } else {
-                            playerDataList.add(new PlayerData(uuid, coins));
+                            playerDataList.add(new PlayerData(uuid, name, coins));
                         }
-
                     }
                 }
-            }
-        } catch (SQLException ex){
-            Common.log(ChatColor.RED, "There is an error while updating leaderboard!");
-            ex.printStackTrace();
-        }
-
+        );
         playerDataList.sort((data1, data2) -> {
             Float d1 = (float) data1.getCoins();
             Float d2 = (float) data2.getCoins();
 
             return d2.compareTo(d1);
         });
-
         leaderboard = playerDataList;
     }
 
     @Override
     public void load() {
-
-        SQLDatabase database = plugin.getDatabase();
         int timeAndDelay = (20 * ConfigValue.AUTO_SAVE_INTERVAL);
         Executor.asyncTimer(timeAndDelay, timeAndDelay, () -> {
             NotificationManager notificationManager = plugin.getManagerHandler().getNotificationManager();
-            if(!ConfigValue.AUTO_SAVE_ENABLED) return;
-
+            if(!ConfigValue.AUTO_SAVE_ENABLED) {
+                return;
+            }
             int totalSaved = 0;
-
-            try(Connection connection = database.getConnection()){
-                for(String uuid : this.playerDataMap.keySet()){
-                    PlayerData playerData = this.playerDataMap.get(uuid);
-                    NotificationUser notificationUser = notificationManager.getNotificationUser(uuid);
-
-                    String rowCommand = "SELECT * FROM {table} WHERE uuid=?"
-                            .replace("{table}", database.getTable());
-
-                    try(PreparedStatement statement = connection.prepareStatement(rowCommand)){
-                        statement.setString(1, playerData.getUUID());
-                        try(ResultSet resultSet = statement.executeQuery()){
-                            if(resultSet.next()){
-
-                                String updateCommand = "UPDATE {table} SET coins=?, notification=? WHERE uuid=?"
-                                        .replace("{table}", database.getTable());
-
-                                try(PreparedStatement updateStatement = connection.prepareStatement(updateCommand)){
-                                    updateStatement.setString(1, String.valueOf(playerData.getCoins()));
-                                    updateStatement.setString(2, notificationUser.wrapOptions());
-                                    updateStatement.setString(3, playerData.getUUID());
-                                    updateStatement.executeUpdate();
-                                    Common.debug("Updating " + playerData.getName() + " data (coins: " + playerData.getCoins() + ")");
-                                }
-
-                            } else {
-
-                                String insertCommand = "INSERT INTO {table} (uuid, coins, notification) VALUES (?,?,?);"
-                                        .replace("{table}", database.getTable());
-
-                                try(PreparedStatement insertStatement = connection.prepareStatement(insertCommand)){
-                                    insertStatement.setString(1, playerData.getUUID());
-                                    insertStatement.setString(2, String.valueOf(playerData.getCoins()));
-                                    insertStatement.setString(3, notificationUser.wrapOptions());
-                                    insertStatement.execute();
-                                    Common.debug("Inserting " + playerData.getName() + " data (coins: " + playerData.getCoins() + ")");
-                                }
-                            }
-                        }
-                    }
+            try{
+                Connection connection = SQLHelper.getConnection();
+                for (PlayerData playerData : this.playerDataMap.values()) {
+                    NotificationUser notificationUser = notificationManager.getNotificationUser(playerData.getUUID());
+                    connection.prepareStatement("REPLACE INTO `" + SQLDatabaseInitializer.MOBCOINS_TABLE + "` VALUES (" +
+                            "\"" + playerData.getUUID() + "\", " +
+                            "\"" + playerData.getName() + "\", " +
+                            playerData.getCoins() + ", " +
+                            "\"" + notificationUser.wrapOptions() + "\"" + ");"
+                    );
                     totalSaved++;
                 }
-
-            } catch (SQLException e){
-                Common.log(ChatColor.RED, "Failed to save all players data (action: auto-save)");
-                e.printStackTrace();
+                connection.close();
+            } catch (SQLException ex){
+                Common.log("&cFailed to execute auto-save tasks!");
+                ex.printStackTrace();
             }
-
             if(ConfigValue.AUTO_SAVE_SEND_MESSAGE){
-                Common.log(ChatColor.RESET, "Successfully saved " + totalSaved + " player data!");
+                Common.log("&rSuccessfully saved " + totalSaved + " player data!");
             }
-
         });
-
         // Start the leaderboard update task too
         Executor.asyncTimer(0L, 20L * ConfigValue.LEADERBOARD_UPDATE_EVERY, this::updateLeaderboard);
-
     }
 
     @Override
     public void save() {
-        SQLDatabase database = plugin.getDatabase();
         NotificationManager notificationManager = plugin.getManagerHandler().getNotificationManager();
-        Common.debug("Trying to save all players data");
-        try(Connection connection = database.getConnection()){
+        Debug.send("Trying to save all players data");
+        for(String uuid : this.playerDataMap.keySet()){
+            PlayerData playerData = this.playerDataMap.get(uuid);
+            NotificationUser notificationUser = notificationManager.getNotificationUser(uuid);
+
+            playerData.save(notificationUser);
+        }
+
+        /*try(Connection connection = database.getConnection()){
             for(String uuid : this.playerDataMap.keySet()){
                 PlayerData playerData = this.playerDataMap.get(uuid);
                 PlayerData valueModify = this.valueModify.get(uuid);
                 NotificationUser notificationUser = notificationManager.getNotificationUser(uuid);
 
                 if(playerData.getCoins() == valueModify.getCoins()){
-                    Common.debug("Not saving " + uuid + "data (Reason: coins amount the same)");
+                    Debug.send("Not saving " + uuid + "data (Reason: coins amount the same)");
                     continue;
                 }
 
-                Common.debug("Trying to save " + uuid + " data");
+                Debug.send("Trying to save " + uuid + " data");
 
-                String getRowCommand = "SELECT * FROM {table} WHERE uuid=?"
+                String identifier = Bukkit.getOnlineMode() ? "WHERE uuid=?" : "WHERE name=?";
+                String getRowCommand = "SELECT * FROM {table} " + identifier
                         .replace("{table}", database.getTable());
 
                 try(PreparedStatement statement = connection.prepareStatement(getRowCommand)){
-                    statement.setString(1, playerData.getUUID());
+                    if(Bukkit.getOnlineMode()){
+                        statement.setString(1, playerData.getUUID());
+                    } else {
+                        statement.setString(1, playerData.getName());
+                    }
                     try(ResultSet resultSet = statement.executeQuery()){
                         if(resultSet.next()){
 
-                            String updateCommand = "UPDATE {table} SET coins=?, notification=? WHERE uuid=?"
+                            String updateCommand = "UPDATE {table} SET coins=?, notification=? " + identifier
                                     .replace("{table}", database.getTable());
 
                             try(PreparedStatement updateStatement = connection.prepareStatement(updateCommand)){
                                 updateStatement.setString(1, String.valueOf(playerData.getCoins()));
                                 updateStatement.setString(2, notificationUser.wrapOptions());
-                                updateStatement.setString(3, playerData.getUUID());
+                                if(Bukkit.getOnlineMode()){
+                                    updateStatement.setString(3, playerData.getUUID());
+                                } else {
+                                    updateStatement.setString(3, playerData.getName());
+                                }
                                 updateStatement.executeUpdate();
-                                Common.debug("Updating " + playerData.getUUID() + " data (coins: " + playerData.getCoins() + ")");
+                                Debug.send("Updating " + playerData.getUUID() + " data (coins: " + playerData.getCoins() + ")");
                             }
 
                         } else {
 
-                            String insertCommand = "INSERT INTO {table} (uuid, coins, notification) VALUES (?,?,?);"
+                            String insertCommand = "INSERT INTO {table} (uuid, name, coins, notification) VALUES (?,?,?);"
                                     .replace("{table}", database.getTable());
 
                             try(PreparedStatement insertStatement = connection.prepareStatement(insertCommand)){
                                 insertStatement.setString(1, playerData.getUUID());
-                                insertStatement.setString(2, String.valueOf(playerData.getCoins()));
-                                insertStatement.setString(3, notificationUser.wrapOptions());
+                                insertStatement.setString(2, playerData.getName());
+                                insertStatement.setString(3, String.valueOf(playerData.getCoins()));
+                                insertStatement.setString(4, notificationUser.wrapOptions());
                                 insertStatement.execute();
-                                Common.debug("Inserting " + playerData.getUUID() + " data (coins: " + playerData.getCoins() + ")");
+                                Debug.send("Inserting " + playerData.getUUID() + " data (coins: " + playerData.getCoins() + ")");
                             }
 
                         }
@@ -317,8 +243,8 @@ public class PlayerDataManager implements Manager {
             Common.log(ChatColor.RED, "Error saving all players data!");
             e.printStackTrace();
             return;
-        }
-        Common.debug("All players data are successfully saved");
+        }*/
+        Debug.send("All players data are successfully saved");
     }
 
 }

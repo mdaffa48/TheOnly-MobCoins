@@ -1,9 +1,10 @@
 package me.aglerr.mobcoins.shops.inventory;
 
 import com.google.common.primitives.Ints;
-import me.aglerr.lazylibs.inventory.LazyInventory;
-import me.aglerr.lazylibs.libs.Common;
-import me.aglerr.lazylibs.libs.Executor;
+import me.aglerr.mclibs.inventory.SimpleInventory;
+import me.aglerr.mclibs.libs.Common;
+import me.aglerr.mclibs.libs.Debug;
+import me.aglerr.mclibs.libs.Executor;
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.configs.ConfigValue;
 import me.aglerr.mobcoins.managers.managers.ShopManager;
@@ -13,7 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
 
-public class MainMenuInventory extends LazyInventory {
+public class MainMenuInventory extends SimpleInventory {
 
     public MainMenuInventory(MobCoins plugin, Player player, int size, String title) {
         super(size, Common.color(title));
@@ -61,7 +62,7 @@ public class MainMenuInventory extends LazyInventory {
                 if(item.getType().equalsIgnoreCase("OPEN_CATEGORY")){
                     // Return if the item doesn't have any category set
                     if(item.getCategory() == null){
-                        Common.debug(player.getName() + " trying to open a category, but the item doesn't have a category set (item: " + item.getConfigKey() + ")");
+                        Debug.send(player.getName() + " trying to open a category, but the item doesn't have a category set (item: " + item.getConfigKey() + ")");
                         return;
                     }
 

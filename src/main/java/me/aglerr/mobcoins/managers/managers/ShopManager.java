@@ -1,7 +1,6 @@
 package me.aglerr.mobcoins.managers.managers;
 
-import me.aglerr.lazylibs.inventory.LazyInventory;
-import me.aglerr.lazylibs.inventory.LazyInventoryManager;
+import me.aglerr.mclibs.inventory.SimpleInventory;
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.configs.Config;
 import me.aglerr.mobcoins.managers.Manager;
@@ -42,7 +41,7 @@ public class ShopManager implements Manager {
             String title = config.getString("title");
             int size = config.getInt("size");
 
-            LazyInventory inventory = new MainMenuInventory(plugin, player, size, title);
+            SimpleInventory inventory = new MainMenuInventory(plugin, player, size, title);
             inventory.open(player);
             return;
         }
@@ -55,7 +54,7 @@ public class ShopManager implements Manager {
             String title = config.getString("title");
             int size = config.getInt("size");
 
-            LazyInventory inventory = new RotatingShopInventory(plugin, player, size, title);
+            SimpleInventory inventory = new RotatingShopInventory(plugin, player, size, title);
             inventory.open(player);
             return;
         }
@@ -68,7 +67,7 @@ public class ShopManager implements Manager {
             String title = config.getString("title");
             int size = config.getInt("size");
 
-            LazyInventory inventory = new CategoryInventory(plugin, player, size, title);
+            SimpleInventory inventory = new CategoryInventory(plugin, player, size, title);
             inventory.open(player);
         }
 
@@ -85,7 +84,7 @@ public class ShopManager implements Manager {
         String title = config.getString("title");
         int size = config.getInt("size");
 
-        LazyInventory inventory = new CategoryShopInventory(plugin, player, category, size, title);
+        SimpleInventory inventory = new CategoryShopInventory(plugin, player, category, size, title);
         inventory.open(player);
     }
 
@@ -96,7 +95,6 @@ public class ShopManager implements Manager {
     @Override
     public void load() {
         loadItems();
-        LazyInventoryManager.register(plugin);
     }
 
     @Override

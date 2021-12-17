@@ -1,10 +1,11 @@
-package me.aglerr.mobcoins.commands.subcommands;
+package me.aglerr.mobcoins.subcommands;
 
-import me.aglerr.lazylibs.libs.Common;
+import me.aglerr.mclibs.commands.SubCommand;
+import me.aglerr.mclibs.libs.Common;
 import me.aglerr.mobcoins.MobCoins;
-import me.aglerr.mobcoins.commands.abstraction.SubCommand;
 import me.aglerr.mobcoins.configs.ConfigValue;
 import org.bukkit.command.CommandSender;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -12,6 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ReloadCommand extends SubCommand {
+
+    @NotNull
+    @Override
+    public String getName() {
+        return "reload";
+    }
 
     @Nullable
     @Override
@@ -21,12 +28,13 @@ public class ReloadCommand extends SubCommand {
 
     @NotNull
     @Override
-    public List<String> parseTabCompletion(MobCoins plugin, CommandSender sender, String[] args) {
+    public List<String> parseTabCompletions(JavaPlugin javaPlugin, CommandSender sender, String[] args) {
         return new ArrayList<>();
     }
 
     @Override
-    public void execute(MobCoins plugin, CommandSender sender, String[] args) {
+    public void execute(JavaPlugin javaPlugin, CommandSender sender, String[] args) {
+        MobCoins plugin = (MobCoins) javaPlugin;
 
         long startTime = System.currentTimeMillis();
         plugin.reloadEverything();
@@ -35,7 +43,6 @@ public class ReloadCommand extends SubCommand {
         sender.sendMessage(Common.color(ConfigValue.MESSAGES_RELOAD
                 .replace("{prefix}", ConfigValue.PREFIX)
                 .replace("{ms}", timeTaken + "")));
-
     }
 
 }

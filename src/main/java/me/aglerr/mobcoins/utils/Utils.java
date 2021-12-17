@@ -1,20 +1,18 @@
 package me.aglerr.mobcoins.utils;
 
-import me.aglerr.lazylibs.libs.Common;
-import me.aglerr.lazylibs.libs.ReflectionUtils;
-import me.aglerr.lazylibs.libs.XSound;
-import me.aglerr.lazylibs.libs.messages.ActionBar;
-import me.aglerr.lazylibs.libs.messages.Titles;
+import me.aglerr.mclibs.MCLibs;
+import me.aglerr.mclibs.libs.Common;
+import me.aglerr.mclibs.xseries.XSound;
+import me.aglerr.mclibs.xseries.messages.ActionBar;
+import me.aglerr.mclibs.xseries.messages.Titles;
 import me.aglerr.mobcoins.MobCoins;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.List;
 
@@ -69,11 +67,11 @@ public class Utils {
         if(!enabled) return;
 
         String title = config.getString(path + ".title")
-                .replace("{amount}", Common.numberFormat(coinPlaceholder))
+                .replace("{amount}", digits(coinPlaceholder))
                 .replace("{amount_rounded}", (int) coinPlaceholder + "");
 
         String subTitle = config.getString(path + ".subTitle")
-                .replace("{amount}", Common.numberFormat(coinPlaceholder))
+                .replace("{amount}", digits(coinPlaceholder))
                 .replace("{amount_rounded}", (int) coinPlaceholder + "");
 
         int fadeIn = config.getInt(path + ".fadeIn");
@@ -88,19 +86,75 @@ public class Utils {
         if(!enabled) return;
 
         String message = config.getString(path + ".message")
-                .replace("{amount}", Common.numberFormat(coinPlaceholder))
+                .replace("{amount}", digits(coinPlaceholder))
                 .replace("{amount_rounded}", (int) coinPlaceholder + "");
 
         if(Bukkit.getVersion().contains("1.8")){
-            ActionBar8.sendActionBarMessage(player, Common.color(message), 3, MobCoins.getInstance());
+            ActionBar8.sendActionBarMessage(player, Common.color(message), 3, MCLibs.INSTANCE);
             return;
         }
 
-        ActionBar.sendActionBar(MobCoins.getInstance(), player, Common.color(message), 60L);
+        ActionBar.sendActionBar(MCLibs.INSTANCE, player, Common.color(message), 60L);
     }
 
     public static String integer(double amount){
         return String.valueOf((int) amount);
+    }
+
+    public static String digits(double d){
+        NumberFormat numberFormat = NumberFormat.getInstance();
+        numberFormat.setMaximumFractionDigits(2);
+        numberFormat.setMinimumFractionDigits(0);
+        return numberFormat.format(d);
+    }
+
+    public static String formatTime(int seconds) {
+        if (seconds < 60) {
+            return seconds + "s";
+        }
+        int minutes = seconds / 60;
+        int s = 60 * minutes;
+        int secondsLeft = seconds - s;
+        if (minutes < 60) {
+            if (secondsLeft > 0) {
+                return minutes + "m " + secondsLeft + "s";
+            }
+            return minutes + "m";
+        }
+        if (minutes < 1440) {
+            String time;
+            int hours = minutes / 60;
+            time = hours + "h";
+            int inMins = 60 * hours;
+            int leftOver = minutes - inMins;
+            if (leftOver >= 1) {
+                time = time + " " + leftOver + "m";
+            }
+            if (secondsLeft > 0) {
+                time = time + " " + secondsLeft + "s";
+            }
+            return time;
+        }
+        String time;
+        int days = minutes / 1440;
+        time = days + "d";
+        int inMins = 1440 * days;
+        int leftOver = minutes - inMins;
+        if (leftOver >= 1) {
+            if (leftOver < 60) {
+                time = time + " " + leftOver + "m";
+            } else {
+                int hours = leftOver / 60;
+                time = time + " " + hours + "h";
+                int hoursInMins = 60 * hours;
+                int minsLeft = leftOver - hoursInMins;
+                time = time + " " + minsLeft + "m";
+            }
+        }
+        if (secondsLeft > 0) {
+            time = time + " " + secondsLeft + "s";
+        }
+        return time;
     }
 
 }

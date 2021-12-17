@@ -1,10 +1,10 @@
 package me.aglerr.mobcoins.utils;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
-import me.aglerr.lazylibs.libs.Common;
-import me.aglerr.lazylibs.libs.ItemBuilder;
-import me.aglerr.lazylibs.libs.SkullUtils;
-import me.aglerr.lazylibs.libs.XMaterial;
+import me.aglerr.mclibs.libs.Common;
+import me.aglerr.mclibs.libs.ItemBuilder;
+import me.aglerr.mclibs.xseries.SkullUtils;
+import me.aglerr.mclibs.xseries.XMaterial;
 import me.aglerr.mobcoins.configs.ConfigValue;
 import me.aglerr.mobcoins.shops.items.TypeItem;
 import me.clip.placeholderapi.PlaceholderAPI;

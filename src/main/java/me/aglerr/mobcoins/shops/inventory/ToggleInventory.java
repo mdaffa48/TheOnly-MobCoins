@@ -1,8 +1,8 @@
 package me.aglerr.mobcoins.shops.inventory;
 
-import me.aglerr.lazylibs.inventory.LazyInventory;
-import me.aglerr.lazylibs.libs.ItemBuilder;
-import me.aglerr.lazylibs.libs.XMaterial;
+import me.aglerr.mclibs.inventory.SimpleInventory;
+import me.aglerr.mclibs.libs.ItemBuilder;
+import me.aglerr.mclibs.xseries.XMaterial;
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.configs.Config;
 import me.aglerr.mobcoins.objects.NotificationUser;
@@ -14,7 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ToggleInventory extends LazyInventory {
+public class ToggleInventory extends SimpleInventory {
 
     private final NotificationUser notificationUser;
 

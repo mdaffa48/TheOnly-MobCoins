@@ -1,9 +1,10 @@
 package me.aglerr.mobcoins.shops.inventory;
 
 import com.google.common.primitives.Ints;
-import me.aglerr.lazylibs.inventory.LazyInventory;
-import me.aglerr.lazylibs.libs.Common;
-import me.aglerr.lazylibs.libs.Executor;
+import me.aglerr.mclibs.inventory.SimpleInventory;
+import me.aglerr.mclibs.libs.Common;
+import me.aglerr.mclibs.libs.Debug;
+import me.aglerr.mclibs.libs.Executor;
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.PlayerData;
 import me.aglerr.mobcoins.api.MobCoinsAPI;
@@ -23,7 +24,7 @@ import org.bukkit.scheduler.BukkitTask;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CategoryShopInventory extends LazyInventory {
+public class CategoryShopInventory extends SimpleInventory {
 
     public CategoryShopInventory(MobCoins plugin, Player player, String category, int size, String title) {
         super(size, Common.color(title));
@@ -103,7 +104,7 @@ public class CategoryShopInventory extends LazyInventory {
                 if(item.getType().equalsIgnoreCase("OPEN_CATEGORY")){
                     // Return if the item doesn't have any category set
                     if(item.getCategory() == null){
-                        Common.debug(player.getName() + " trying to open a category, but the item doesn't have a category set (item: " + item.getConfigKey() + ")");
+                        Debug.send(player.getName() + " trying to open a category, but the item doesn't have a category set (item: " + item.getConfigKey() + ")");
                         return;
                     }
 
@@ -142,7 +143,7 @@ public class CategoryShopInventory extends LazyInventory {
         // Check if player has enough money
         PlayerData playerData = MobCoinsAPI.getPlayerData(player);
         if(playerData == null){
-            Common.debug(
+            Debug.send(
                     "Event: Opening Rotating Shop Inventory",
                     "No PlayerData found for " + player.getName() + " (player)"
             );
@@ -164,7 +165,7 @@ public class CategoryShopInventory extends LazyInventory {
             String title = confirmation.getString("title");
             int size = confirmation.getInt("size");
 
-            LazyInventory inventory = new ConfirmationInventory(plugin, player, stack, ShopManager.InventoryType.CATEGORY_SHOP, playerData, item, item.getFileName(), size, title);
+            SimpleInventory inventory = new ConfirmationInventory(plugin, player, stack, ShopManager.InventoryType.CATEGORY_SHOP, playerData, item, item.getFileName(), size, title);
             inventory.open(player);
             return;
         }

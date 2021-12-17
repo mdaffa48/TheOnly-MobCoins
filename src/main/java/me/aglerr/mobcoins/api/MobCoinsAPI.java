@@ -12,6 +12,8 @@ import org.jetbrains.annotations.Nullable;
 
 public class MobCoinsAPI {
 
+    private static final MobCoins plugin = JavaPlugin.getPlugin(MobCoins.class);
+
     /**
      * Get PlayerData object to modify/get player mobcoins
      *
@@ -20,7 +22,7 @@ public class MobCoinsAPI {
      */
     @Nullable
     public static PlayerData getPlayerData(Player player){
-        PlayerDataManager data = MobCoins.getInstance().getManagerHandler().getPlayerDataManager();
+        PlayerDataManager data = plugin.getManagerHandler().getPlayerDataManager();
         return data.getPlayerData(player);
     }
 
@@ -32,8 +34,28 @@ public class MobCoinsAPI {
      */
     @Nullable
     public static CoinMob getCoinMob(String mobType){
-        CoinMobManager coinMobManager = MobCoins.getInstance().getManagerHandler().getCoinMobManager();
+        CoinMobManager coinMobManager = plugin.getManagerHandler().getCoinMobManager();
         return coinMobManager.getCoinMob(mobType);
+    }
+
+    /**
+     * Silently add coins to player's salary
+     *
+     * @param player - the player object
+     * @param amount - the amount of coins that's gonna be added
+     */
+    public static void addSalary(Player player, double amount){
+        plugin.getManagerHandler().getSalaryManager().putOrIncrementPlayerSalary(player, amount);
+    }
+
+    /**
+     * Silently remove coins from player's salary
+     *
+     * @param player - the player object
+     * @param amount - the amount of coins that's gonna be deducted from player salary
+     */
+    public static void removeSalary(Player player, double amount){
+        plugin.getManagerHandler().getSalaryManager().decreaseSalary(player, amount);
     }
 
 }

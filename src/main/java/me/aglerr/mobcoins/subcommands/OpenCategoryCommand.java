@@ -1,14 +1,15 @@
-package me.aglerr.mobcoins.commands.subcommands;
+package me.aglerr.mobcoins.subcommands;
 
-import me.aglerr.lazylibs.libs.Common;
+import me.aglerr.mclibs.commands.SubCommand;
+import me.aglerr.mclibs.libs.Common;
 import me.aglerr.mobcoins.MobCoins;
-import me.aglerr.mobcoins.commands.abstraction.SubCommand;
 import me.aglerr.mobcoins.configs.ConfigValue;
 import me.aglerr.mobcoins.managers.managers.ShopManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -16,6 +17,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OpenCategoryCommand extends SubCommand {
+
+    @NotNull
+    @Override
+    public String getName() {
+        return "opencategory";
+    }
 
     @Nullable
     @Override
@@ -25,8 +32,8 @@ public class OpenCategoryCommand extends SubCommand {
 
     @NotNull
     @Override
-    public List<String> parseTabCompletion(MobCoins plugin, CommandSender sender, String[] args) {
-
+    public List<String> parseTabCompletions(JavaPlugin javaPlugin, CommandSender sender, String[] args) {
+        MobCoins plugin = (MobCoins) javaPlugin;
         ShopManager shopManager = plugin.getManagerHandler().getShopManager();
 
         if(args.length == 2){
@@ -45,21 +52,18 @@ public class OpenCategoryCommand extends SubCommand {
     }
 
     @Override
-    public void execute(MobCoins plugin, CommandSender sender, String[] args) {
-
+    public void execute(JavaPlugin javaPlugin, CommandSender sender, String[] args) {
+        MobCoins plugin = (MobCoins) javaPlugin;
         if(args.length < 2){
             sender.sendMessage(Common.color("&cUsage: /mobcoins opencategory <category> [player]"));
             return;
         }
-
         ShopManager shopManager = plugin.getManagerHandler().getShopManager();
-
         if(args.length == 2){
             if(!(sender instanceof Player)){
                 sender.sendMessage(Common.color("&cUsage: /mobcoins opencategory <category> [player]"));
                 return;
             }
-
             Player player = (Player) sender;
             String category = args[1];
 

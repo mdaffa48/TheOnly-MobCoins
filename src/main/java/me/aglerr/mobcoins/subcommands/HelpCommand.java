@@ -1,10 +1,11 @@
-package me.aglerr.mobcoins.commands.subcommands;
+package me.aglerr.mobcoins.subcommands;
 
-import me.aglerr.lazylibs.libs.Common;
+import me.aglerr.mclibs.commands.SubCommand;
+import me.aglerr.mclibs.libs.Common;
 import me.aglerr.mobcoins.MobCoins;
-import me.aglerr.mobcoins.commands.abstraction.SubCommand;
 import me.aglerr.mobcoins.configs.ConfigValue;
 import org.bukkit.command.CommandSender;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -12,6 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HelpCommand extends SubCommand {
+
+    @NotNull
+    @Override
+    public String getName() {
+        return "help";
+    }
 
     @Nullable
     @Override
@@ -21,12 +28,12 @@ public class HelpCommand extends SubCommand {
 
     @NotNull
     @Override
-    public List<String> parseTabCompletion(MobCoins plugin, CommandSender sender, String[] args) {
+    public List<String> parseTabCompletions(JavaPlugin javaPlugin, CommandSender sender, String[] args) {
         return new ArrayList<>();
     }
 
     @Override
-    public void execute(MobCoins plugin, CommandSender sender, String[] args) {
+    public void execute(JavaPlugin javaPlugin, CommandSender sender, String[] args) {
         sendHelpMessages(sender);
     }
 
@@ -36,7 +43,6 @@ public class HelpCommand extends SubCommand {
                     sender.sendMessage(Common.color(message)));
             return;
         }
-
         ConfigValue.MESSAGES_HELP.forEach(message ->
                 sender.sendMessage(Common.color(message)));
     }

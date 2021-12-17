@@ -1,8 +1,8 @@
 package me.aglerr.mobcoins.managers.managers;
 
+import me.aglerr.mclibs.libs.CustomConfig;
 import me.aglerr.mobcoins.coinmob.CoinMob;
 import me.aglerr.mobcoins.configs.Config;
-import me.aglerr.mobcoins.configs.CustomConfig;
 import me.aglerr.mobcoins.managers.Manager;
 import org.bukkit.configuration.file.FileConfiguration;
 

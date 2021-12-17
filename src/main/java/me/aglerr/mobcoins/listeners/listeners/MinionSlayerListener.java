@@ -2,22 +2,16 @@ package me.aglerr.mobcoins.listeners.listeners;
 
 import io.lumine.xikage.mythicmobs.MythicMobs;
 import io.lumine.xikage.mythicmobs.api.bukkit.BukkitAPIHelper;
-import io.lumine.xikage.mythicmobs.mobs.ActiveMob;
 import io.lumine.xikage.mythicmobs.mobs.MythicMob;
-import me.aglerr.lazylibs.libs.Common;
+import me.aglerr.mclibs.libs.Debug;
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.PlayerData;
 import me.aglerr.mobcoins.api.MobCoinsAPI;
-import me.aglerr.mobcoins.api.events.MobCoinsReceiveEvent;
 import me.aglerr.mobcoins.coinmob.CoinMob;
-import me.aglerr.mobcoins.configs.Config;
 import me.aglerr.mobcoins.configs.ConfigValue;
 import me.aglerr.mobcoins.configs.HooksValue;
 import me.aglerr.mobcoins.managers.managers.*;
-import me.aglerr.mobcoins.utils.Utils;
 import me.jet315.minions.events.SlayerSlayEvent;
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -45,7 +39,7 @@ public class MinionSlayerListener implements Listener {
         if(HooksValue.JETS_MINION_VIRTUAL_MOBCOINS){
             PlayerData playerData = MobCoinsAPI.getPlayerData(player);
             if(playerData == null){
-                Common.debug(
+                Debug.send(
                         "Event: Minion Slayer",
                         "No PlayerData found for " + player.getName()
                 );
@@ -101,7 +95,7 @@ public class MinionSlayerListener implements Listener {
 
         if(HooksValue.JETS_MINION_VIRTUAL_MOBCOINS){
 
-            Common.debug(player.getName() + " received virtual mobcoins from slayer minion! (coins: " + totalCoins + ")");
+            Debug.send(player.getName() + " received virtual mobcoins from slayer minion! (coins: " + totalCoins + ")");
 
         }
 

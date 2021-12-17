@@ -1,10 +1,7 @@
 package me.aglerr.mobcoins.managers.managers;
 
-import me.aglerr.mobcoins.configs.Config;
-import me.aglerr.mobcoins.configs.CustomConfig;
 import me.aglerr.mobcoins.managers.Manager;
 import me.aglerr.mobcoins.objects.NotificationUser;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.util.*;

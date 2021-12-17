@@ -1,14 +1,16 @@
-package me.aglerr.mobcoins.commands.subcommands;
+package me.aglerr.mobcoins.subcommands;
 
-import me.aglerr.lazylibs.libs.Common;
+import me.aglerr.mclibs.commands.SubCommand;
+import me.aglerr.mclibs.libs.Common;
+import me.aglerr.mclibs.libs.Debug;
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.PlayerData;
 import me.aglerr.mobcoins.api.MobCoinsAPI;
-import me.aglerr.mobcoins.commands.abstraction.SubCommand;
 import me.aglerr.mobcoins.configs.ConfigValue;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,6 +20,12 @@ import java.util.List;
 
 public class PayCommand extends SubCommand {
 
+    @NotNull
+    @Override
+    public String getName() {
+        return "pay";
+    }
+
     @Nullable
     @Override
     public String getPermission() {
@@ -26,30 +34,24 @@ public class PayCommand extends SubCommand {
 
     @NotNull
     @Override
-    public List<String> parseTabCompletion(MobCoins plugin, CommandSender sender, String[] args) {
-
-        // mobcoins pay <player> <amount>
+    public List<String> parseTabCompletions(JavaPlugin javaPlugin, CommandSender sender, String[] args) {
         if(args.length == 2){
             List<String> suggestions = new ArrayList<>();
             Bukkit.getOnlinePlayers().forEach(player -> suggestions.add(player.getName()));
             return suggestions;
         }
-
         if(args.length == 3){
             return Collections.singletonList("<amount>");
         }
-
         return new ArrayList<>();
     }
 
     @Override
-    public void execute(MobCoins plugin, CommandSender sender, String[] args) {
-
+    public void execute(JavaPlugin javaPlugin, CommandSender sender, String[] args) {
         if(args.length < 3){
             sender.sendMessage(Common.color("&cUsage: /mobcoins pay <player> <amount>"));
             return;
         }
-
         if(!(sender instanceof Player)){
             sender.sendMessage(Common.color("&cOnly players may execute this command!"));
             return;
@@ -72,7 +74,7 @@ public class PayCommand extends SubCommand {
 
         PlayerData playerData = MobCoinsAPI.getPlayerData(player);
         if(playerData == null){
-            Common.debug(
+            Debug.send(
                     "Command: /mobcoins pay",
                     "No PlayerData found for " + player.getName() + " (player)"
             );
@@ -81,7 +83,7 @@ public class PayCommand extends SubCommand {
 
         PlayerData targetData = MobCoinsAPI.getPlayerData(target);
         if(targetData == null){
-            Common.debug(
+            Debug.send(
                     "Command: /mobcoins pay",
                     "No PlayerData found for " + target.getName() + " (target)"
             );

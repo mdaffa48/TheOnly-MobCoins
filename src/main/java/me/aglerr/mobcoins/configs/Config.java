@@ -1,5 +1,6 @@
 package me.aglerr.mobcoins.configs;
 
+import me.aglerr.mclibs.libs.CustomConfig;
 import me.aglerr.mobcoins.MobCoins;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -16,15 +17,15 @@ public class Config {
     public static CustomConfig TOGGLE_INVENTORY_CONFIG;
 
     public static void initialize(){
-        CONFIG = new CustomConfig(MobCoins.getInstance(), "config.yml", null);
-        MAIN_MENU_CONFIG = new CustomConfig(MobCoins.getInstance(), "main_menu.yml", "shops");
-        CATEGORY_SHOP_CONFIG = new CustomConfig(MobCoins.getInstance(), "category_shop.yml", "shops/category-shop");
-        ROTATING_SHOP_CONFIG = new CustomConfig(MobCoins.getInstance(), "rotating_shop.yml", "shops/rotating-shop");
-        MOBS = new CustomConfig(MobCoins.getInstance(), "mobs.yml", null);
-        TEMP_DATA = new CustomConfig(MobCoins.getInstance(), "temp_data.yml", null);
-        CONFIRMATION_MENU_CONFIG = new CustomConfig(MobCoins.getInstance(), "confirmation_menu.yml", "shops");
+        CONFIG = new CustomConfig("config.yml", null);
+        MAIN_MENU_CONFIG = new CustomConfig("main_menu.yml", "shops");
+        CATEGORY_SHOP_CONFIG = new CustomConfig("category_shop.yml", "shops/category-shop");
+        ROTATING_SHOP_CONFIG = new CustomConfig("rotating_shop.yml", "shops/rotating-shop");
+        MOBS = new CustomConfig("mobs.yml", null);
+        TEMP_DATA = new CustomConfig("temp_data.yml", null);
+        CONFIRMATION_MENU_CONFIG = new CustomConfig("confirmation_menu.yml", "shops");
         //HOOKS = new CustomConfig(MobCoins.getInstance(), "hooks.yml", null);
-        TOGGLE_INVENTORY_CONFIG = new CustomConfig(MobCoins.getInstance(), "toggle_inventory.yml", "inventories");
+        TOGGLE_INVENTORY_CONFIG = new CustomConfig("toggle_inventory.yml", "inventories");
     }
 
     public static void reloadAllConfigs(){

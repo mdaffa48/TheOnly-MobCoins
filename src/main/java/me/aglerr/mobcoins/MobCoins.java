@@ -1,16 +1,15 @@
 package me.aglerr.mobcoins;
 
-import me.aglerr.lazylibs.LazyLibs;
-import me.aglerr.lazylibs.inventory.LazyInventory;
-import me.aglerr.lazylibs.inventory.LazyInventoryManager;
-import me.aglerr.lazylibs.libs.Common;
-import me.aglerr.lazylibs.libs.ConfigUpdater;
-import me.aglerr.lazylibs.libs.UpdateChecker;
-import me.aglerr.mobcoins.commands.MainCommand;
+import me.aglerr.mclibs.MCLibs;
+import me.aglerr.mclibs.commands.SpigotCommand;
+import me.aglerr.mclibs.inventory.SimpleInventoryManager;
+import me.aglerr.mclibs.libs.Common;
+import me.aglerr.mclibs.libs.ConfigUpdater;
+import me.aglerr.mclibs.mysql.SQLHelper;
+import me.aglerr.mobcoins.database.SQLDatabaseInitializer;
+import me.aglerr.mobcoins.subcommands.*;
 import me.aglerr.mobcoins.configs.Config;
 import me.aglerr.mobcoins.configs.ConfigValue;
-import me.aglerr.mobcoins.configs.HooksValue;
-import me.aglerr.mobcoins.database.SQLDatabase;
 import me.aglerr.mobcoins.listeners.ListenerHandler;
 import me.aglerr.mobcoins.managers.ManagerHandler;
 import me.aglerr.mobcoins.managers.managers.CoinMobManager;
@@ -19,7 +18,7 @@ import me.aglerr.mobcoins.managers.managers.ShopManager;
 import me.aglerr.mobcoins.metrics.Metrics;
 import me.aglerr.mobcoins.shops.items.ItemsLoader;
 import me.aglerr.mobcoins.utils.Utils;
-import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -35,45 +34,36 @@ public class MobCoins extends JavaPlugin {
     private static final String MC_MARKET = "MC-Market";
     private static final String DONATION_LINK = "https://paypal.me/mdaffa48/";
 
-    private static MobCoins instance;
-
     private final ManagerHandler managerHandler = new ManagerHandler(this);
     private final ListenerHandler listenerHandler = new ListenerHandler(this);
-
-    private SQLDatabase database;
 
     /**
      * Plugin startup logic
      */
     @Override
     public void onEnable(){
-        // Initialize instance
-        instance = this;
         // Injecting libs
-        LazyLibs.inject(this);
+        MCLibs.init(this);
         Common.setPrefix("[TheOnly-Mobcoins]");
         // Send the-only logo
         Utils.sendStartupLogo();
-        // Update the config
-        this.updateConfig();
         // Initialize all config
         Config.initialize();
+        // Update the config
+        this.updateConfig();
         // Initialize all config value
         ConfigValue.initializeValue();
-        //HooksValue.initialize();
         // Initialize database
-        database = new SQLDatabase(this);
+        SQLDatabaseInitializer.getInstance().init(this);
         // Calling load() method from all Managers
         this.managerHandler.loadAllManagers();
         // Register all listeners
         this.listenerHandler.registerAllListeners();
         // Register main commands
-        new MainCommand(this).registerThisCommand();
+        this.registerCommands();
         // Enable metrics
         new Metrics(this, 11755);
-        // Check for the plugin updates
-        this.checkForUpdates();
-        // Start update leaderboard task
+        // Check for the database, if it's not successfully connected, disable the plugin
     }
 
     /**
@@ -82,7 +72,7 @@ public class MobCoins extends JavaPlugin {
     @Override
     public void onDisable(){
         this.managerHandler.saveAllManagers();
-        database.onDisable();
+        SQLHelper.close();
     }
 
     public void reloadEverything(){
@@ -91,7 +81,7 @@ public class MobCoins extends JavaPlugin {
         CoinMobManager coinMobManager = this.managerHandler.getCoinMobManager();
         ItemsLoader itemsLoader = shopManager.getItemsLoader();
         // First of all, close all inventory first
-        LazyInventoryManager.closeAll();
+        SimpleInventoryManager.closeAll();
         // Reload all configuration
         Config.reloadAllConfigs();
         // Re-initialize the config value
@@ -114,36 +104,49 @@ public class MobCoins extends JavaPlugin {
             ConfigUpdater.update(this, "config.yml", configFile, new ArrayList<>());
             //ConfigUpdater.update(this, "hooks.yml", hooksFile, new ArrayList<>());
         } catch(IOException e){
-            Common.log(ChatColor.RED, "Failed to update the config.yml or hooks.yml");
+            Common.log("&cFailed to update the config.yml");
             e.printStackTrace();
         }
+        Config.CONFIG.reloadConfig();
     }
 
-    private void checkForUpdates(){
-        // Return if notify update is disabled
-        if(!ConfigValue.NOTIFY_UPDATE) return;
-        // Initialize the update checker
-        UpdateChecker.init(this, RESOURCE_ID)
-                .setFreeDownloadLink(SPIGOT_RESOURCE)
-                .setPaidDownloadLink(MC_MARKET_RESOURCE)
-                .setNameFreeVersion(SPIGOT)
-                .setNamePaidVersion(MC_MARKET)
-                .setDonationLink(DONATION_LINK)
-                .setColoredConsoleOutput(true)
-                .setNotifyOpsOnJoin(true)
-                .checkNow();
+    private void registerCommands(){
+        new SpigotCommand(
+                this,
+                "mobcoins",
+                ConfigValue.ALIASES,
+                null,
+                this::sendHelpMessages,
+                onNoPermission -> onNoPermission.sendMessage(Common.color(ConfigValue.MESSAGES_NO_PERMISSION
+                        .replace("{prefix}", ConfigValue.PREFIX))),
+                this::sendHelpMessages,
+                new AboutCommand(),
+                new AddSalaryCommand(),
+                new BalanceCommand(),
+                new GiveCommand(),
+                new GiveRandomCommand(),
+                new HelpCommand(),
+                new NotificationCommand(),
+                new OpenCategoryCommand(),
+                new PayCommand(),
+                new ReloadCommand(),
+                new RemoveSalaryCommand(),
+                new SetCommand(),
+                new ShopCommand(),
+                new TakeCommand(),
+                new TopCommand(),
+                new WithdrawCommand()
+        ).register();
     }
 
-    /**
-     * Not for regular use.
-     * @return this class instance
-     */
-    public static MobCoins getInstance() {
-        return instance;
-    }
-
-    public SQLDatabase getDatabase() {
-        return database;
+    private void sendHelpMessages(CommandSender sender){
+        if(sender.hasPermission("mobcoins.admin")){
+            ConfigValue.MESSAGES_HELP_ADMIN.forEach(message ->
+                    sender.sendMessage(Common.color(message)));
+            return;
+        }
+        ConfigValue.MESSAGES_HELP.forEach(message ->
+                sender.sendMessage(Common.color(message)));
     }
 
     public ManagerHandler getManagerHandler() {

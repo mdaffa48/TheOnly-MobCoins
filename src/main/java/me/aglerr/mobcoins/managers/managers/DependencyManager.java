@@ -1,11 +1,10 @@
 package me.aglerr.mobcoins.managers.managers;
 
-import me.aglerr.lazylibs.libs.Common;
+import me.aglerr.mclibs.libs.Common;
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.api.MobCoinsExpansion;
 import me.aglerr.mobcoins.managers.Manager;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.plugin.PluginManager;
 
 public class DependencyManager implements Manager {
@@ -22,23 +21,22 @@ public class DependencyManager implements Manager {
     public static boolean JETS_MINION;
 
     public void notificationMessage(){
-        Common.log(ChatColor.RESET, "Notification message!");
         if(WILD_STACKER){
-            Common.log(ChatColor.RESET, "WildStacker found, enabling hooks!");
+            Common.log("&rWildStacker found, enabling hooks!");
         }
 
         if(MYTHIC_MOBS){
-            Common.log(ChatColor.RESET, "MythicMobs found, enabling hooks!");
+            Common.log("&rMythicMobs found, enabling hooks!");
         }
 
         if(PLACEHOLDER_API){
-            Common.log(ChatColor.RESET, "PlaceholderAPI found, enabling hooks!");
+            Common.log("&rPlaceholderAPI found, enabling hooks!");
             new MobCoinsExpansion(plugin).register();
         }
 
-        if(JETS_MINION){
+        /*if(JETS_MINION){
             Common.log(ChatColor.RESET, "JetsMinion found, enabling hooks!");
-        }
+        }*/
     }
 
     @Override

@@ -1,8 +1,9 @@
 package me.aglerr.mobcoins.listeners.listeners;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
-import me.aglerr.lazylibs.libs.Common;
-import me.aglerr.lazylibs.libs.XMaterial;
+import me.aglerr.mclibs.libs.Common;
+import me.aglerr.mclibs.libs.Debug;
+import me.aglerr.mclibs.xseries.XMaterial;
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.PlayerData;
 import me.aglerr.mobcoins.api.MobCoinsAPI;
@@ -57,7 +58,7 @@ public class PlayerRedeemCoins implements Listener {
         PlayerData playerData = MobCoinsAPI.getPlayerData(player);
         // Return if player doesn't have any data
         if(playerData == null){
-            Common.debug(
+            Debug.send(
                     "Event: MobCoins Redeem",
                     "No PlayerData found for " + player.getName()
             );
@@ -98,7 +99,7 @@ public class PlayerRedeemCoins implements Listener {
 
         Utils.playSound(player, "sounds.onCoinsRedeem", plugin.getConfig());
 
-        Common.debug(player.getName() + " redeemed " + redeemEvent.getAmount() + " coins");
+        Debug.send(player.getName() + " redeemed " + redeemEvent.getAmount() + " coins");
 
     }
 

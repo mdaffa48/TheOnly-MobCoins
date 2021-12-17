@@ -1,15 +1,14 @@
-package me.aglerr.mobcoins.commands.subcommands;
+package me.aglerr.mobcoins.subcommands;
 
-import me.aglerr.lazylibs.libs.Common;
+import me.aglerr.mclibs.commands.SubCommand;
+import me.aglerr.mclibs.libs.Common;
 import me.aglerr.mobcoins.MobCoins;
-import me.aglerr.mobcoins.commands.abstraction.SubCommand;
 import me.aglerr.mobcoins.configs.Config;
-import me.aglerr.mobcoins.configs.ConfigValue;
-import me.aglerr.mobcoins.managers.managers.NotificationManager;
 import me.aglerr.mobcoins.shops.inventory.ToggleInventory;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,18 +17,24 @@ import java.util.List;
 
 public class NotificationCommand extends SubCommand {
 
+    @NotNull
+    @Override
+    public String getName() {
+        return "notification";
+    }
+
     @Override
     public @Nullable String getPermission() {
         return "mobcoins.notification";
     }
 
     @Override
-    public @NotNull List<String> parseTabCompletion(MobCoins plugin, CommandSender sender, String[] args) {
+    public @NotNull List<String> parseTabCompletions(JavaPlugin javaPlugin, CommandSender sender, String[] args) {
         return new ArrayList<>();
     }
 
     @Override
-    public void execute(MobCoins plugin, CommandSender sender, String[] args) {
+    public void execute(JavaPlugin javaPlugin, CommandSender sender, String[] args) {
         // First of all, this plugin can only be executed by Player
         if(!(sender instanceof Player)){
             sender.sendMessage(Common.color("&cOnly players can execute this command!"));
@@ -44,7 +49,7 @@ public class NotificationCommand extends SubCommand {
         String title = config.getString("title");
         int size = config.getInt("size");
 
-        new ToggleInventory(plugin, player, size, title).open(player);
+        new ToggleInventory((MobCoins) javaPlugin, player, size, title).open(player);
     }
 
 }

@@ -1,15 +1,16 @@
-package me.aglerr.mobcoins.commands.subcommands;
+package me.aglerr.mobcoins.subcommands;
 
-import me.aglerr.lazylibs.libs.Common;
-import me.aglerr.mobcoins.MobCoins;
+import me.aglerr.mclibs.commands.SubCommand;
+import me.aglerr.mclibs.libs.Common;
+import me.aglerr.mclibs.libs.Debug;
 import me.aglerr.mobcoins.PlayerData;
 import me.aglerr.mobcoins.api.MobCoinsAPI;
-import me.aglerr.mobcoins.commands.abstraction.SubCommand;
 import me.aglerr.mobcoins.configs.ConfigValue;
 import me.aglerr.mobcoins.utils.ItemManager;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,6 +20,12 @@ import java.util.List;
 
 public class WithdrawCommand extends SubCommand {
 
+    @NotNull
+    @Override
+    public String getName() {
+        return "withdraw";
+    }
+
     @Nullable
     @Override
     public String getPermission() {
@@ -27,7 +34,7 @@ public class WithdrawCommand extends SubCommand {
 
     @NotNull
     @Override
-    public List<String> parseTabCompletion(MobCoins plugin, CommandSender sender, String[] args) {
+    public List<String> parseTabCompletions(JavaPlugin javaPlugin, CommandSender sender, String[] args) {
 
         if(args.length == 2){
             return Collections.singletonList("<amount>");
@@ -37,25 +44,21 @@ public class WithdrawCommand extends SubCommand {
     }
 
     @Override
-    public void execute(MobCoins plugin, CommandSender sender, String[] args) {
-
+    public void execute(JavaPlugin javaPlugin, CommandSender sender, String[] args) {
         if(!(sender instanceof Player)){
             sender.sendMessage(Common.color(ConfigValue.MESSAGES_NO_PERMISSION
                     .replace("{prefix}", ConfigValue.PREFIX)));
             return;
         }
-
-
         if(args.length < 2){
             sender.sendMessage(Common.color("&cUsage: /mobcoins withdraw <amount>"));
             return;
         }
-
         Player player = (Player) sender;
         PlayerData playerData = MobCoinsAPI.getPlayerData(player);
 
         if(playerData == null){
-            Common.debug(
+            Debug.send(
                     "Command: /mobcoins withdraw",
                     "No PlayerData found for " + player.getName()
             );

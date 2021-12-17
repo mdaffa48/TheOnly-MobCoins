@@ -1,29 +1,25 @@
 package me.aglerr.mobcoins;
 
-import me.aglerr.lazylibs.libs.Common;
-import me.aglerr.mobcoins.database.SQLDatabase;
+import me.aglerr.mclibs.mysql.SQLHelper;
+import me.aglerr.mobcoins.database.SQLDatabaseInitializer;
 import me.aglerr.mobcoins.objects.NotificationUser;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import me.aglerr.mobcoins.utils.Utils;
 import org.jetbrains.annotations.NotNull;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.UUID;
 
 public class PlayerData implements Cloneable {
 
     private final String uuid;
+    private final String name;
     private double coins = 0;
 
-    public PlayerData(String uuid) {
+    public PlayerData(String uuid, String name) {
         this.uuid = uuid;
+        this.name = name;
     }
 
-    public PlayerData(String uuid, double coins){
+    public PlayerData(String uuid, String name, double coins){
         this.uuid = uuid;
+        this.name = name;
         this.coins = coins;
     }
 
@@ -42,7 +38,7 @@ public class PlayerData implements Cloneable {
      * @return player's name
      */
     public String getName() {
-        return Bukkit.getOfflinePlayer(UUID.fromString(this.uuid)).getName();
+        return name;
     }
 
     /**
@@ -61,7 +57,7 @@ public class PlayerData implements Cloneable {
      * @return player's formatted mobcoins amount
      */
     public String getCoinsFormatted() {
-        return Common.numberFormat(this.coins);
+        return Utils.digits(this.coins);
     }
 
     /**
@@ -81,7 +77,7 @@ public class PlayerData implements Cloneable {
      * @return player's short formatted mobcoins amount
      */
     public String getCoinsShortFormat(){
-        return Common.shortFormat(this.coins);
+        return Utils.digits(this.coins);
     }
 
     /**
@@ -115,39 +111,12 @@ public class PlayerData implements Cloneable {
      * Save player data to the database (call it async if can)
      */
     public void save(NotificationUser notificationUser) {
-        // Get the database class
-        SQLDatabase database = MobCoins.getInstance().getDatabase();
-        // Create the sql command
-        String command = "SELECT * FROM {table} WHERE `uuid`=?"
-                .replace("{table}", database.getTable());
-        // Debug to console;
-        Common.debug("Start saving player data");
-        // Enhanced try/catch connection
-        try (Connection connection = database.getConnection()) {
-            // Enhanced try/catch prepared statement
-            try (PreparedStatement statement = connection.prepareStatement(command)) {
-                // Set the first argument to the uuid
-                statement.setString(1, this.uuid);
-                // Enhanced try/catch result set
-                try (ResultSet resultSet = statement.executeQuery()) {
-                    // Check if the uuid exist on the database
-                    if (resultSet.next()) {
-                        // Update the data
-                        database.update(this.uuid, String.valueOf(this.coins), notificationUser.wrapOptions());
-                    } else {
-                        // If the uuid doesn't exist on the database, insert the data
-                        database.insert(this.uuid, String.valueOf(this.coins), notificationUser.wrapOptions());
-                    }
-                    // Debug to the console
-                    Common.debug("Sucessfully saved " + this.uuid + " data");
-                }
-            }
-        } catch (SQLException e) {
-            Common.log(ChatColor.RED, "Error saving player data (UUID: {uuid}, Coins: {coins})"
-                    .replace("{uuid}", this.uuid)
-                    .replace("{coins}", this.coins + ""));
-            e.printStackTrace();
-        }
+        SQLHelper.executeUpdate("REPLACE INTO `" + SQLDatabaseInitializer.MOBCOINS_TABLE + "` VALUES (" +
+                "\"" + this.uuid + "\", " +
+                "\"" + this.name + "\", " +
+                this.coins + ", " +
+                "\"" + notificationUser.wrapOptions() + "\"" + ");"
+        );
     }
 
     /**

@@ -1,11 +1,11 @@
 package me.aglerr.mobcoins.managers.managers;
 
-import me.aglerr.lazylibs.libs.Common;
-import me.aglerr.lazylibs.libs.Executor;
+import me.aglerr.mclibs.libs.Common;
+import me.aglerr.mclibs.libs.CustomConfig;
+import me.aglerr.mclibs.libs.Executor;
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.configs.Config;
 import me.aglerr.mobcoins.configs.ConfigValue;
-import me.aglerr.mobcoins.configs.CustomConfig;
 import me.aglerr.mobcoins.managers.Manager;
 import me.aglerr.mobcoins.shops.items.TypeItem;
 import me.aglerr.mobcoins.utils.Utils;
@@ -23,7 +23,7 @@ public class CategoryShopManager implements Manager {
     private int DEFAULT_RESET_TIME;
 
     public String getFormattedResetTime(){
-        return Common.formatTime(resetTime);
+        return Utils.formatTime(resetTime);
     }
 
     private void resetPurchaseLimitAndStockInCategoryShop(){

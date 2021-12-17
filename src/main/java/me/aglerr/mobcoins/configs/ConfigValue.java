@@ -61,11 +61,14 @@ public class ConfigValue {
     public static String MESSAGES_NOTIFICATION_UN_MUTED;
     public static String MESSAGES_LOAD_DATA;
     public static String MESSAGES_FINISHED_LOAD_DATA;
+    public static String MESSAGES_SALARY_ADDED;
+    public static String MESSAGES_SALARY_REMOVED;
 
     public static List<String> MESSAGES_HELP;
     public static List<String> MESSAGES_HELP_ADMIN;
     public static List<String> MESSAGES_TOP_LEADERBOARD;
     public static List<String> DISABLED_WORLDS;
+    public static List<String> ALIASES;
 
     // Mobcoins Top Leaderboard
     public static String TOP_NAME_IF_EMPTY;
@@ -174,11 +177,14 @@ public class ConfigValue {
         MESSAGES_NOTIFICATION_UN_MUTED = config.getString("messages.notificationUnmuted");
         MESSAGES_LOAD_DATA = config.getString("messages.loadData");
         MESSAGES_FINISHED_LOAD_DATA = config.getString("messages.finishedLoadData");
+        MESSAGES_SALARY_ADDED = config.getString("messages.salaryAdded");
+        MESSAGES_SALARY_REMOVED = config.getString("messages.salaryRemoved");
 
         MESSAGES_HELP = config.getStringList("messages.help");
         MESSAGES_HELP_ADMIN = config.getStringList("messages.helpAdmin");
         MESSAGES_TOP_LEADERBOARD = config.getStringList("messages.topLeaderboard");
         DISABLED_WORLDS = config.getStringList("disabledWorlds");
+        ALIASES = config.getStringList("aliases");
 
         STARTING_BALANCE = config.getDouble("starting-balance");
 

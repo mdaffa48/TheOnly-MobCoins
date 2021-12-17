@@ -1,14 +1,16 @@
-package me.aglerr.mobcoins.commands.subcommands;
+package me.aglerr.mobcoins.subcommands;
 
-import me.aglerr.lazylibs.libs.Common;
+import me.aglerr.mclibs.commands.SubCommand;
+import me.aglerr.mclibs.libs.Common;
+import me.aglerr.mclibs.libs.Debug;
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.PlayerData;
 import me.aglerr.mobcoins.api.MobCoinsAPI;
-import me.aglerr.mobcoins.commands.abstraction.SubCommand;
 import me.aglerr.mobcoins.configs.ConfigValue;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -16,6 +18,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BalanceCommand extends SubCommand {
+
+    @NotNull
+    @Override
+    public String getName() {
+        return "balance";
+    }
 
     @Nullable
     @Override
@@ -25,8 +33,7 @@ public class BalanceCommand extends SubCommand {
 
     @NotNull
     @Override
-    public List<String> parseTabCompletion(MobCoins plugin, CommandSender sender, String[] args) {
-
+    public List<String> parseTabCompletions(JavaPlugin javaPlugin, CommandSender sender, String[] args) {
         if(sender.hasPermission("mobcoins.balance.others")){
             if(args.length == 2){
                 List<String> suggestions = new ArrayList<>();
@@ -34,12 +41,11 @@ public class BalanceCommand extends SubCommand {
                 return suggestions;
             }
         }
-
         return new ArrayList<>();
     }
 
     @Override
-    public void execute(MobCoins plugin, CommandSender sender, String[] args) {
+    public void execute(JavaPlugin javaPlugin, CommandSender sender, String[] args) {
 
         if(args.length == 1){
             if(sender instanceof Player){
@@ -47,7 +53,7 @@ public class BalanceCommand extends SubCommand {
                 Player player = (Player) sender;
                 PlayerData playerData = MobCoinsAPI.getPlayerData(player);
                 if(playerData == null) {
-                    Common.debug(
+                    Debug.send(
                             "Command: /mobcoins balance",
                             "No PlayerData found for " + player.getName()
                     );
@@ -83,7 +89,7 @@ public class BalanceCommand extends SubCommand {
 
             PlayerData playerData = MobCoinsAPI.getPlayerData(player);
             if(playerData == null){
-                Common.debug(
+                Debug.send(
                         "Command: /mobcoins balance [others]",
                         "No PlayerData found for " + player.getName()
                 );

@@ -1,16 +1,14 @@
 package me.aglerr.mobcoins.managers.managers;
 
-import me.aglerr.lazylibs.libs.Common;
-import me.aglerr.lazylibs.libs.Executor;
+import me.aglerr.mclibs.libs.Debug;
+import me.aglerr.mclibs.libs.Executor;
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.PlayerData;
 import me.aglerr.mobcoins.api.MobCoinsAPI;
 import me.aglerr.mobcoins.configs.ConfigValue;
 import me.aglerr.mobcoins.managers.Manager;
 import me.aglerr.mobcoins.objects.NotificationUser;
-import me.aglerr.mobcoins.utils.Utils;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -27,16 +25,30 @@ public class SalaryManager implements Manager {
     }
 
     public void putOrIncrementPlayerSalary(Player player, double amount){
-
         // Put if player doesn't have any salary
         this.salaryMap.putIfAbsent(player.getUniqueId(), amount);
-
         // Check if player already have salary
         if(this.salaryMap.containsKey(player.getUniqueId())){
             // Get player's current salary
             double currentSalary = this.salaryMap.get(player.getUniqueId());
             // Increment the player salary
             this.salaryMap.put(player.getUniqueId(), (currentSalary + amount));
+        }
+    }
+
+    public void decreaseSalary(Player player, double amount){
+        // Check if player already have salary
+        if(this.salaryMap.containsKey(player.getUniqueId())){
+            // Get player's current salary
+            double currentSalary = this.salaryMap.get(player.getUniqueId());
+            // Get the total amount by decreasing current salary with the amount to decrease
+            double totalAmount = currentSalary - amount;
+            // If the decreased amount is below zero, set it to 0
+            if(totalAmount < 0 ){
+                totalAmount = 0;
+            }
+            // Update the player salary
+            this.salaryMap.put(player.getUniqueId(), totalAmount);
         }
     }
 
@@ -63,7 +75,7 @@ public class SalaryManager implements Manager {
                 if(ConfigValue.SALARY_MODE_RECEIVE_AFTER_MESSAGE){
                     PlayerData playerData = MobCoinsAPI.getPlayerData(player);
                     if(playerData == null){
-                        Common.debug(
+                        Debug.send(
                                 "Event: Salary Announcement",
                                 "No PlayerData found for " + player.getName()
                         );
@@ -78,7 +90,7 @@ public class SalaryManager implements Manager {
                 NotificationUser notificationUser = notificationManager.getNotificationUser(player);
                 notificationUser.sendNotification(salaryAmount, true);
 
-                Common.debug("Salary for " + player.getName() + " (coins: " + salaryAmount + ")");
+                Debug.send("Salary for " + player.getName() + " (coins: " + salaryAmount + ")");
                 // Remove player salary from the map
                 this.salaryMap.remove(uuid);
             }

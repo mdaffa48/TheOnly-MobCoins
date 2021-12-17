@@ -2,7 +2,7 @@ package me.aglerr.mobcoins.listeners.listeners;
 
 import io.lumine.xikage.mythicmobs.MythicMobs;
 import io.lumine.xikage.mythicmobs.api.bukkit.BukkitAPIHelper;
-import me.aglerr.lazylibs.libs.Common;
+import me.aglerr.mclibs.libs.Debug;
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.PlayerData;
 import me.aglerr.mobcoins.api.MobCoinsAPI;
@@ -81,7 +81,7 @@ public class EntityDeathListener implements Listener {
             ItemStack stack = spawnEvent.getItemStack();
             World world = entity.getWorld();
             world.dropItemNaturally(entity.getLocation(), stack);
-            Common.debug("Successfully spawned physical mobcoin (coins: " + spawnEvent.getAmountToDrop() + ", mythicmobs: false)");
+            Debug.send("Successfully spawned physical mobcoin (coins: " + spawnEvent.getAmountToDrop() + ", mythicmobs: false)");
             return;
         }
 
@@ -90,7 +90,7 @@ public class EntityDeathListener implements Listener {
             Player player = entity.getKiller();
             PlayerData playerData = MobCoinsAPI.getPlayerData(player);
             if(playerData == null){
-                Common.debug(
+                Debug.send(
                         "Event: Entity Death Virtual Mobcoin",
                         "No PlayerData found for " + player.getName()
                 );
@@ -101,7 +101,7 @@ public class EntityDeathListener implements Listener {
             Bukkit.getPluginManager().callEvent(receiveEvent);
             if(receiveEvent.isCancelled()) return;
 
-            Common.debug(player.getName() + " received virtual mobcoins! (coins: " + receiveEvent.getAmountReceived() + ", reason: entity death, mythicmobs: false)");
+            Debug.send(player.getName() + " received virtual mobcoins! (coins: " + receiveEvent.getAmountReceived() + ", reason: entity death, mythicmobs: false)");
 
             // Check if Salary Mode is enabled
             if(ConfigValue.SALARY_MODE_ENABLED){

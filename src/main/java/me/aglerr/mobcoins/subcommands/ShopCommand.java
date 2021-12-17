@@ -1,13 +1,14 @@
-package me.aglerr.mobcoins.commands.subcommands;
+package me.aglerr.mobcoins.subcommands;
 
-import me.aglerr.lazylibs.libs.Common;
+import me.aglerr.mclibs.commands.SubCommand;
+import me.aglerr.mclibs.libs.Common;
 import me.aglerr.mobcoins.MobCoins;
-import me.aglerr.mobcoins.commands.abstraction.SubCommand;
 import me.aglerr.mobcoins.configs.ConfigValue;
 import me.aglerr.mobcoins.managers.managers.ShopManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -15,6 +16,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShopCommand extends SubCommand {
+
+    @NotNull
+    @Override
+    public String getName() {
+        return "shop";
+    }
 
     @Nullable
     @Override
@@ -24,8 +31,7 @@ public class ShopCommand extends SubCommand {
 
     @NotNull
     @Override
-    public List<String> parseTabCompletion(MobCoins plugin, CommandSender sender, String[] args) {
-
+    public List<String> parseTabCompletions(JavaPlugin javaPlugin, CommandSender sender, String[] args) {
         if(args.length == 2){
             if(sender.hasPermission("mobcoins.shop.others")){
                 List<String> suggestions = new ArrayList<>();
@@ -33,13 +39,12 @@ public class ShopCommand extends SubCommand {
                 return suggestions;
             }
         }
-
         return new ArrayList<>();
     }
 
     @Override
-    public void execute(MobCoins plugin, CommandSender sender, String[] args) {
-
+    public void execute(JavaPlugin javaPlugin, CommandSender sender, String[] args) {
+        MobCoins plugin = (MobCoins) javaPlugin;
         ShopManager shopManager = plugin.getManagerHandler().getShopManager();
         String shopBehaviour = ConfigValue.SHOP_BEHAVIOUR;
 

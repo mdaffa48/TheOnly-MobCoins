@@ -1,11 +1,11 @@
 package me.aglerr.mobcoins.managers.managers;
 
-import me.aglerr.lazylibs.libs.Common;
-import me.aglerr.lazylibs.libs.Executor;
+import me.aglerr.mclibs.libs.Common;
+import me.aglerr.mclibs.libs.CustomConfig;
+import me.aglerr.mclibs.libs.Executor;
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.configs.Config;
 import me.aglerr.mobcoins.configs.ConfigValue;
-import me.aglerr.mobcoins.configs.CustomConfig;
 import me.aglerr.mobcoins.managers.Manager;
 import me.aglerr.mobcoins.shops.items.TypeItem;
 import me.aglerr.mobcoins.utils.Utils;
@@ -27,11 +27,11 @@ public class RotatingShopManager implements Manager {
     private int specialTime = 0;
 
     public String getFormattedNormalTime(){
-        return Common.formatTime(normalTime);
+        return Utils.formatTime(normalTime);
     }
 
     public String getFormattedSpecialTime(){
-        return Common.formatTime(specialTime);
+        return Utils.formatTime(specialTime);
     }
 
     public void shuffleNormalItemsAndResetStockAndPurchaseLimit(){
@@ -146,7 +146,6 @@ public class RotatingShopManager implements Manager {
 
         // Run task timer for handling the time and refreshing normal/special items event
         Executor.asyncTimer(0, 20, () -> {
-
             if(normalTime <= 0){
                 // Play bunch of events (send messages, titles, sound, commands)
                 Bukkit.getOnlinePlayers().forEach(player -> {

@@ -1,9 +1,9 @@
-package me.aglerr.mobcoins.commands.subcommands;
+package me.aglerr.mobcoins.subcommands;
 
-import me.aglerr.lazylibs.libs.Common;
-import me.aglerr.mobcoins.MobCoins;
-import me.aglerr.mobcoins.commands.abstraction.SubCommand;
+import me.aglerr.mclibs.commands.SubCommand;
+import me.aglerr.mclibs.libs.Common;
 import org.bukkit.command.CommandSender;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -15,6 +15,12 @@ public class AboutCommand extends SubCommand {
 
     private final String userId = "%%__USER__%%";
 
+    @NotNull
+    @Override
+    public String getName() {
+        return "about";
+    }
+
     @Nullable
     @Override
     public String getPermission() {
@@ -23,18 +29,18 @@ public class AboutCommand extends SubCommand {
 
     @NotNull
     @Override
-    public List<String> parseTabCompletion(MobCoins plugin, CommandSender sender, String[] args) {
+    public List<String> parseTabCompletions(JavaPlugin javaPlugin, CommandSender sender, String[] args) {
         return new ArrayList<>();
     }
 
     @Override
-    public void execute(MobCoins plugin, CommandSender sender, String[] args) {
+    public void execute(JavaPlugin javaPlugin, CommandSender sender, String[] args) {
         String belong = "&4This plugin is registered to https://www.spigotmc.org/members/" + this.userId;
         List<String> messages = Arrays.asList(
                 "&6&m---------------------------------",
                 "&e&lTheOnly &7(MobCoins edition)",
-                "&fPlugin Version: &e" + plugin.getDescription().getVersion(),
-                "&fAuthors: &e" + plugin.getDescription().getAuthors(),
+                "&fPlugin Version: &e" + javaPlugin.getDescription().getVersion(),
+                "&fAuthors: &e" + javaPlugin.getDescription().getAuthors(),
                 belong,
                 "&6&m---------------------------------"
         );

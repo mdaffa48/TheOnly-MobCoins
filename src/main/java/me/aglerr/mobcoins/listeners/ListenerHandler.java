@@ -20,9 +20,9 @@ public class ListenerHandler {
         if(DependencyManager.MYTHIC_MOBS){
             this.register(new MythicMobsDeathListener(plugin));
         }
-        if(DependencyManager.JETS_MINION){
+        /*if(DependencyManager.JETS_MINION){
             this.register(new MinionSlayerListener(plugin));
-        }
+        }*/
     }
 
     private void register(Listener listener){
