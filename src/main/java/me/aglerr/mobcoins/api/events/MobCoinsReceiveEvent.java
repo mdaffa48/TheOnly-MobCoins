@@ -1,6 +1,6 @@
 package me.aglerr.mobcoins.api.events;
 
-import io.lumine.xikage.mythicmobs.mobs.MythicMob;
+import io.lumine.mythic.api.mobs.MythicMob;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
@@ -107,7 +107,7 @@ public class MobCoinsReceiveEvent extends Event implements Cancellable {
      * Get MythicMob object if the killed entity is mythic mob
      * return null if it's non-mythic mob mobs
      *
-     * @return {@link io.lumine.xikage.mythicmobs.mobs.MythicMob}
+     * @return {@link io.lumine.mythic.api.mobs.MythicMob}
      */
     @Nullable
     public MythicMob getMythicMob() {

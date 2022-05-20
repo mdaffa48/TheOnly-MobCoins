@@ -38,7 +38,7 @@ public class CoinMobManager implements Manager {
 
     @Override
     public void save() {
-        this.clearCoinMob();
+
     }
 
 }

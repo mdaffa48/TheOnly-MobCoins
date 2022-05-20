@@ -1,7 +1,7 @@
 package me.aglerr.mobcoins.listeners.listeners;
 
-import io.lumine.xikage.mythicmobs.MythicMobs;
-import io.lumine.xikage.mythicmobs.api.bukkit.BukkitAPIHelper;
+import io.lumine.mythic.bukkit.BukkitAPIHelper;
+import io.lumine.mythic.bukkit.MythicBukkit;
 import me.aglerr.mclibs.libs.Debug;
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.PlayerData;
@@ -40,7 +40,7 @@ public class EntityDeathListener implements Listener {
         // Check if MythicMobs is enabled
         if(DependencyManager.MYTHIC_MOBS){
             // Get the API from MythicMobs
-            BukkitAPIHelper mythicMobsAPI = MythicMobs.inst().getAPIHelper();
+            BukkitAPIHelper mythicMobsAPI = MythicBukkit.inst().getAPIHelper();
             // Return if the entity is a mythic mob
             if(mythicMobsAPI.isMythicMob(entity)){
                 return;

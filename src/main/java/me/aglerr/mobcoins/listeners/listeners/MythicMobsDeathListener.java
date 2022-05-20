@@ -1,6 +1,6 @@
 package me.aglerr.mobcoins.listeners.listeners;
 
-import io.lumine.xikage.mythicmobs.api.bukkit.events.MythicMobDeathEvent;
+import io.lumine.mythic.bukkit.events.MythicMobDeathEvent;
 import me.aglerr.mclibs.libs.Debug;
 import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.PlayerData;
