@@ -235,5 +235,5 @@ messages:
     - "&e- /mobcoins reload &7- reload the configuration"
     - "&e- /mobcoins set <player> <amount> &7- set players mobcoins"
     - "&e- /mobcoins take <player> <amount> &7- take players mobcoins"
-    - "&e- /mobcoins addsalary <player> <amount> &7- silently add coins to player's salary"
-    - "&e- /mobcoins removesalary <player> <amount> &7- silently removed coins from player's salary"
+    - "&e- /mobcoins addsalary <player> <amount> &7- silently add coins to player salary"
+    - "&e- /mobcoins removesalary <player> <amount> &7- silently removed coins from player salary"
