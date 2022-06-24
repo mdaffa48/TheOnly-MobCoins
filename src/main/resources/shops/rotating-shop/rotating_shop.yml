@@ -372,7 +372,7 @@ shops:
       - 'give {player} GOLD_BLOCK 32'
       - 'broadcast &e&l{player} just purchased 32x Gold Block'
   'diamondBlock':
-    material: IRON_BLOCK
+    material: DIAMOND_BLOCK
     name: '&b32x Diamond Block'
     amount: 32
     glowing: false
