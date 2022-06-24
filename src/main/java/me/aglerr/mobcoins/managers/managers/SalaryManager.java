@@ -92,7 +92,7 @@ public class SalaryManager implements Manager {
 
                 Debug.send("Salary for " + player.getName() + " (coins: " + salaryAmount + ")");
                 // Remove player salary from the map
-                this.salaryMap.remove(uuid);
+                this.salaryMap.put(player.getUniqueId(), 0.0);
             }
         });
     }
