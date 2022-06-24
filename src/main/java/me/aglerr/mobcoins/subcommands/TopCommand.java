@@ -2,7 +2,6 @@ package me.aglerr.mobcoins.subcommands;
 
 import me.aglerr.mclibs.commands.SubCommand;
 import me.aglerr.mclibs.libs.Common;
-import me.aglerr.mobcoins.MobCoins;
 import me.aglerr.mobcoins.configs.ConfigValue;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
