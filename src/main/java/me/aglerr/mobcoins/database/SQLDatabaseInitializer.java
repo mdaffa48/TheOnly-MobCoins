@@ -1,6 +1,6 @@
 package me.aglerr.mobcoins.database;
 
-import com.zaxxer.hikari.HikariConfig;
+import me.aglerr.mclibs.hikaricp.HikariConfig;
 import me.aglerr.mclibs.libs.Common;
 import me.aglerr.mclibs.mysql.HikariConfigBuilder;
 import me.aglerr.mclibs.mysql.SQLHelper;
