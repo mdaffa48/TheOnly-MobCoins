@@ -6,7 +6,7 @@
 
     <groupId>me.aglerr.mobcoins</groupId>
     <artifactId>TheOnly-MobCoins</artifactId>
-    <version>1.1.2</version>
+    <version>1.1.3</version>
     <build>
         <plugins>
             <plugin>
